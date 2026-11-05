@@ -141,13 +141,13 @@ if(typeof castraTrainerApproach==="function"){ const _0 = castraTrainerApproach;
 // menu ☰ → Sonus
 (function(){
   const i = CASTRA_MENU_ITEMS.findIndex(x=>x.id==="sacculus");
-  CASTRA_MENU_ITEMS.splice(i<0 ? CASTRA_MENU_ITEMS.length : i+1, 0, { id:"sonus", la:"Sonus", nl:"geluid aan of uit" });
+  CASTRA_MENU_ITEMS.splice(i<0 ? CASTRA_MENU_ITEMS.length : i+1, 0, { id:"sonus", la:"Geluid", nl:"sound on or off" });
 })();
 const _castraMenuViewFx0 = castraMenuView;
 castraMenuView = function(id){
   if(id!=="sonus") return _castraMenuViewFx0(id);
   const on = castraSndOn(), btn = "min-height:44px;padding:4px 16px;font-size:16px;font-family:inherit;cursor:pointer;border:2px solid var(--parch-edge,#4a3416);border-radius:8px;background:#e8c96a;color:var(--parch-ink,#2b1d0e)";
-  return `<h3 style="margin:0 0 6px">Sonus <small>geluid</small></h3>
+  return `<h3 style="margin:0 0 6px">Geluid <small>sound</small></h3>
     <div style="font-size:14px;margin-bottom:8px">Zachte geluidjes: stappen, een sprong, een rots die schuift, een vondst, een aankoop. Ze worden op het apparaat gemaakt en kosten geen data. Muziek is er (nog) niet.</div>
     <button style="${btn}" onclick="castraSndSet(${on?"false":"true"});castraMenuRender()">${on ? "🔊 Geluid staat aan: zet uit" : "🔇 Geluid staat uit: zet aan"}</button>
     <div style="margin-top:8px"><button style="${btn};background:rgba(0,0,0,.08)" onclick="castraSfx('jump')">Test: sprong</button> <button style="${btn};background:rgba(0,0,0,.08)" onclick="castraSfx('chest')">Test: kist</button></div>`;

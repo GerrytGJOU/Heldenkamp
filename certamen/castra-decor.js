@@ -22,9 +22,9 @@ const CASTRA_DECOR = [
   { id:"pot",      ic:"🏺", la:"Kruik",         nl:"jug",         cost:{ aes:10 } },
   { id:"hay",      ic:"🌾", la:"Hooibaal",        nl:"hay bale",      cost:{ lignum:10 } },
   { id:"fence",    ic:"🚧", la:"Hek",       nl:"fence",           cost:{ lignum:10 } },
-  { id:"sign",     ic:"🪧", la:"Titulus",      nl:"bord",          cost:{ lignum:10 } },
+  { id:"sign",     ic:"🪧", la:"Bord",      nl:"sign",          cost:{ lignum:10 } },
   { id:"well",     ic:"⛲", la:"Put",       nl:"well",           cost:{ aes:40 } },
-  { id:"tree_a",   ic:"🌲", la:"Pinus",        nl:"den",           cost:{ lignum:20 } },
+  { id:"tree_a",   ic:"🌲", la:"Den",        nl:"pine tree",           cost:{ lignum:20 } },
   { id:"tree_b",   ic:"🌳", la:"Boom",        nl:"tree",          cost:{ lignum:20 } },
 ];
 const CASTRA_DECOR_UI = { on:false, pick:"flower_w" };
@@ -78,7 +78,7 @@ function castraDecorTap(e){
   }
   if(castraSceneryTap(tx, ty)) return true;
   const d = castraDecorDef(CASTRA_DECOR_UI.pick); if(!d) return true;
-  if(castraDecorList().length >= castraDecorCap()){ toast("🎨 Kamp inrichten", "Het kamp is vol. Verbeter het Praetorium voor meer plekken."); return true; }
+  if(castraDecorList().length >= castraDecorCap()){ toast("🎨 Kamp inrichten", "Het kamp is vol. Verbeter het Hoofdgebouw voor meer plekken."); return true; }
   if(!castraDecorFree(tx, ty, d.id)){ toast("🎨 Kamp inrichten", "Hier kan niets staan: kies een vrij grasvak, niet op een pad of bij een poort."); return true; }
   if(!castraCanPay(d.cost)){ toast("🎨 Kamp inrichten", "Je hebt niet genoeg grondstoffen."); return true; }
   castraPay(d.cost);

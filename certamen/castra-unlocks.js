@@ -18,29 +18,29 @@ const CASTRA_UNLOCKS = [
   { id:"codex",     lvl:2,  la:"Codex",        nl:"de codex (alle soldaten en helden)",
     lines:[ { la:"Goed, leider {naam}! Je codex gaat open.", nl:"Good, leader {naam}! Your codex opens." },
             { la:"Hier zie je alle soldaten en helden.", nl:"Here you see all soldiers and heroes." } ] },
-  { id:"wereld",    lvl:3,  la:"Arcae",        nl:"kisten, voorwerpen en zoekopdrachten in de wereld",
+  { id:"wereld",    lvl:3,  la:"Kisten",        nl:"chests, items and quests in the world",
     lines:[ { la:"In de regio's staan kisten en opdrachten.", nl:"In the regions there are chests and tasks." },
             { la:"Zoek ze op, leider {naam}!", nl:"Go and find them, leader {naam}!" } ] },
-  { id:"tabulae",   lvl:5,  la:"Tabulae",      nl:"kaarten met blijvende bonussen (menu: Tabulae)",
+  { id:"tabulae",   lvl:5,  la:"Kaarten",      nl:"cards with permanent bonuses (menu: Cards)",
     lines:[ { la:"Je krijgt kaarten! Ze geven bonussen.", nl:"You get cards! They give bonuses." },
             { la:"Vandaag trek je er gratis één. Ook quests geven trekkingen.", nl:"Today you draw one for free. Quests also give draws." },
             { la:"Open het menu ☰ en kies Tabulae. Trek je een kaart dubbel, dan krijgt hij sterren; in de handleiding staan de kansen.", nl:"Open the menu ☰ and choose Tabulae. If you draw a card twice, it gets stars; the odds are in the guide." } ] },
-  { id:"dona",      lvl:6,  la:"Dona",         nl:"een gunst kiezen tussen de golven (tower defence)",
+  { id:"dona",      lvl:6,  la:"Geschenken",         nl:"choose a favour between the waves (tower defence)",
     lines:[ { la:"Na elke golf kun je een gunst kiezen.", nl:"After every wave you can choose a favour." },
             { la:"Kies verstandig!", nl:"Choose wisely!" } ] },
-  { id:"contubernium", lvl:7, la:"Contubernium", nl:"rustende soldaten krijgen een deel van de ervaring (Exp. Share)",
+  { id:"contubernium", lvl:7, la:"Groep", nl:"resting soldiers get a share of the experience (Exp. Share)",
     lines:[ { la:"Soldaten die in de tent rusten, leren toch mee.", nl:"Soldiers resting in the tent still learn along." },
             { la:"Je krijgt het Contubernium! Soldaten die niet meevechten, krijgen een deel van de ervaring (menu: Milites).", nl:"You get the Contubernium! Soldiers who do not fight get a share of the experience (menu: Milites)." } ] },
-  { id:"artes",     lvl:8,  la:"Artes",        nl:"artes kiezen (maximaal 4 per soldaat of held)",
+  { id:"artes",     lvl:8,  la:"Vaardigheden",        nl:"choose abilities (maximum 4 per soldier or hero)",
     lines:[ { la:"Je kunt nu artes kiezen!", nl:"You can now choose artes!" },
             { la:"Je hebt er maar vier. Kies verstandig! (menu: Milites of Heroes)", nl:"You only have four. Choose wisely! (menu: Milites or Heroes)" } ] },
-  { id:"bouwen",    lvl:10, la:"Aedificia",    nl:"samen met de Faber gebouwen neerzetten in de wereld",
+  { id:"bouwen",    lvl:10, la:"Bouwen",    nl:"place buildings in the world together with the Faber",
     lines:[ { la:"De bouwer zoekt hout en brons.", nl:"The builder is looking for wood and bronze." },
             { la:"Bouw samen met hem! Gebouwen geven dagelijks iets.", nl:"Build together with him! Buildings give something every day." } ] },
-  { id:"puzzels",   lvl:13, la:"Ludi",         nl:"Latijnse puzzels bij de Magistra",
+  { id:"puzzels",   lvl:13, la:"Spelletjes",         nl:"puzzles with the Magistra",
     lines:[ { la:"De lerares wil met je spelen.", nl:"The teacher wants to play with you." },
             { la:"De puzzels geven beloningen.", nl:"The puzzles give rewards." } ] },
-  { id:"vergelijk", lvl:16, la:"Compara",      nl:"soldaten en helden en hun artes vergelijken (menu: Compara)",
+  { id:"vergelijk", lvl:16, la:"Vergelijk",      nl:"compare soldiers and heroes and their abilities (menu: Compare)",
     lines:[ { la:"Je kunt soldaten met elkaar vergelijken.", nl:"You can compare soldiers with each other." },
             { la:"Zo kies je de beste.", nl:"That is how you choose the best." } ] },
 ];
@@ -95,7 +95,7 @@ function castraUnlockShow(){
   if(CASTRA_DLG || !CASTRA || !CASTRA.unlQ || !CASTRA.unlQ.length) return;
   if(!CASTRA.tut || CASTRA.tut.step<99) return;          // tijdens het tutorial niets aankondigen
   const id = CASTRA.unlQ.shift(), u = castraUnlockDef(id); castraSave(); if(!u) return castraUnlockShow();
-  const head = { la:`Gradus ${u.lvl}! ${u.la} aperitur.`, nl:`Niveau ${u.lvl}! Nieuw: ${u.nl}.` };
+  const head = { la:`Niveau ${u.lvl}! ${u.la} aperitur.`, nl:`Niveau ${u.lvl}! Nieuw: ${u.nl}.` };
   castraDlgOpen("aeneas", [head].concat(u.lines), ()=>{ if(typeof castraRenderRes==="function") castraRenderRes(); castraUnlockShow(); });
 }
 function castraLockedToast(id){ const u = castraUnlockDef(id); if(u && typeof toast==="function") toast("🔒 Niveau "+u.lvl, "Dit ontgrendel je op Castra-niveau "+u.lvl+" ("+u.nl+")."); }

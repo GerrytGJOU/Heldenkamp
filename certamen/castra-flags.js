@@ -70,7 +70,7 @@ function castraEvRun(cmds, i){
   if(c.say){ if(typeof castraLatSay==="function" && !CASTRA_DLG){ const who = c.who || { nm:"", look:null }; castraLatSay(who.nm, who.look, c.say, next); return; } }
   else if(c.toast){ if(typeof toast==="function") toast(c.toast[0], c.toast[1]); }
   else if(c.give){ const t = castraWGive(c.give); if(typeof toast==="function") toast("🎁", t); }
-  else if(c.good){ castraBagAdd(c.good, c.n||1); const g = CASTRA_GOODS[c.good]; if(g && typeof toast==="function") toast(g.icon+" "+g.la, "Je saccus is gevuld."); }
+  else if(c.good){ castraBagAdd(c.good, c.n||1); const g = CASTRA_GOODS[c.good]; if(g && typeof toast==="function") toast(g.icon+" "+g.la, "Je rugzak is gevuld."); }
   else if(c.flag){ castraSetFlag(c.flag, c.set!==false); }
   else if(c.xp){ if(typeof castraPxpAdd==="function") castraPxpAdd(c.xp); }
   next();

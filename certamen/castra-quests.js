@@ -80,7 +80,7 @@ function castraNpcTalk(id){
     buttons = `<button class="btn btn-gold" onclick="castraNpcNext('${id}')">${castraLaText("gratias")}</button>`;
   } else {
     text = s.kind==="kill"
-      ? castraLaHTML(`Quot hostes vicisti? ${q.n}. ${s.hud.la}`, `Hoeveel vijanden heb je verslagen? ${q.n}. ${s.hud.nl}`, "wait_"+id+q.step)
+      ? castraLaHTML(`Hoeveel vijanden heb je verslagen? ${q.n}. ${s.hud.la}`, `How many enemies have you defeated? ${q.n}. ${s.hud.nl}`, "wait_"+id+q.step)
       : castraLaHTML(s.hud.la, s.hud.nl, "wait_"+id+q.step);
     buttons = `<button class="btn" onclick="castraNpcClose()">${castraLaText("claude")}</button>`;
   }
@@ -107,7 +107,7 @@ function castraNpcPersuade(id, k){
   if(!s.opts[k].ok){ q.fails = (q.fails||0)+1; castraSave(); castraToastLa("non_convenit"); return; }
   castraHeroRecruit(id); q.step++;
   const reward = 5; CASTRA.res.gloria = (CASTRA.res.gloria||0) + reward; castraSave();
-  toast("Heros novus!", d.nm+" · "+CASTRA_LA.aen_joined.nl);
+  toast("Nieuwe held!", d.nm+" · "+CASTRA_LA.aen_joined.nl);
   el("cwPanel").innerHTML = `<div class="panel"><div style="display:flex;gap:12px"><div>${castraAvatarHTML(d.look,"down",1,64)}</div>
     <div style="flex:1;font-size:17px">${castraLaHTML(castraSay(s.join.la), castraSay(s.join.nl), "join_"+id)}<div class="note" style="margin-top:6px">🏆 +${reward} · ${castraLa("heroum_novum")}</div>
     <button class="btn" onclick="castraNpcClose();castraWorldNpcs()">${castraLaText("claude")}</button></div></div></div>`;

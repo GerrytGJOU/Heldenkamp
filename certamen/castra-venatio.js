@@ -97,7 +97,7 @@ function castraVRender(stage){
       <div style="font-size:19px;margin:6px 0 10px">${castraLaHTML(la, nl, "scout")}</div>
       <div style="font-size:17px;margin-bottom:6px">${castraLa("quem_mittis")}</div>
       ${cards || `<div class="note" style="font-size:15px">${castraLa("nullus_miles")}</div>`}
-      <button class="btn btn-gold" style="margin-top:8px" onclick="castraVFight('dux')">${healthy.length?"Dux ipse":"Pugna!"}</button>
+      <button class="btn btn-gold" style="margin-top:8px" onclick="castraVFight('dux')">${healthy.length?"De leider zelf":"Vecht!"}</button>
       ${hurt}</div>`;
   } else if(stage==="battle"){
     body = castraVBattleHTML();
@@ -123,7 +123,7 @@ function castraVFight(sid){
   const V = CASTRA_V; if(!V) return;
   let mine;
   if(sid==="dux"){
-    mine = { id:"dux", dux:true, line:"rom_hastatus", lvl:1, xp:0, indoles:{}, ingenium:"fortis", name:"Dux", hurtUntil:0 };
+    mine = { id:"dux", dux:true, line:"rom_hastatus", lvl:1, xp:0, indoles:{}, ingenium:"fortis", name:"Leider", hurtUntil:0 };
     V.myStats = { ...CASTRA_V_BAL.dux };
     V.myType = "inf";
   } else {

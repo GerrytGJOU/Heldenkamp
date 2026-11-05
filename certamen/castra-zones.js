@@ -10,10 +10,10 @@
    Laadt NA castra-stage.js (de chip hoort bij het speelscherm) en castra-interiors.js.
    ============================================================================ */
 const CASTRA_ZONE_INFO = {
-  silva:["🌲","Silva","het bos"], via:["🛤️","Via","de weg"], campus:["🌾","Campus","het veld"], tiberis:["🌊","Tiberis","de Tiber"],
-  olea:["🫒","Olea","de olijfgaard"], litus:["🏖️","Litus","de kust"], muros:["🏰","Muri","bij de muren"], scamander:["🌊","Scamander","de rivier"],
-  nilus:["🌴","Nilus","de Nijl"], arena:["🏟️","Arena","de arena"], urbs:["🏛️","Urbs","de stad"], vicus:["🏘️","Vicus","het dorp"],
-  cuniculus:["🕳️","Cuniculus","de tunnel"], catacumbae:["💀","Catacumbae","de catacomben"], sepulcretum:["⚰️","Sepulcretum","het kerkhof"], mons:["⛰️","Mons","de bergen"], castra:["⛺","Castra","bij het kamp"],
+  silva:["🌲","Bos","the forest"], via:["🛤️","Weg","the road"], campus:["🌾","Veld","the field"], tiberis:["🌊","Tiber","the Tiber"],
+  olea:["🫒","Olijfgaard","the olive grove"], litus:["🏖️","Kust","the coast"], muros:["🏰","Muren","by the walls"], scamander:["🌊","Scamander","the river"],
+  nilus:["🌴","Nijl","the Nile"], arena:["🏟️","Arena","the arena"], urbs:["🏛️","Stad","the city"], vicus:["🏘️","Dorp","the village"],
+  cuniculus:["🕳️","Tunnel","the tunnel"], catacumbae:["💀","Catacomben","the catacombs"], sepulcretum:["⚰️","Kerkhof","the cemetery"], mons:["⛰️","Bergen","the mountains"], castra:["⛺","Kamp","at the camp"],
 };
 function castraZoneInfo(t){ return CASTRA_ZONE_INFO[t] || ["📍", String(t||"").charAt(0).toUpperCase()+String(t||"").slice(1), ""]; }
 function castraZoneAt(W, x, y){ return (W.zones||[]).find(z=>x>=z.x && x<z.x+z.w && y>=z.y && y<z.y+z.h) || null; }

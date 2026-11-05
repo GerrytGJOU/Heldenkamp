@@ -220,7 +220,7 @@ Object.assign(CASTRA_HERO_DATA, {
       _T(["In het hardlopen versla ik alle mannen.","In running I beat all the men."], ["Wie is de snelste?","Who is the fastest?"], ["Atalanta.","Atalanta."], ["Hercules.","Hercules."], ["Jason.","Jason."]),
       _T(["Gouden appels houden mij op.","Golden apples hold me up."], ["Wat houdt Atalanta op?","What holds Atalanta up?"], ["Gouden appels.","Golden apples."], ["Water.","Water."], ["Sneeuw.","Snow."]),
     ] },
-  iason: { nm:"Iason", region:"graecia", type:"inf", affinity:"lignatio", world:{ x:23, y:19, dir:"up" },
+  iason: { nm:"Jason", region:"graecia", type:"inf", affinity:"lignatio", world:{ x:23, y:19, dir:"up" },
     base:{ vita:66, impetus:15, tutela:11, celeritas:8, ambitus:3 },
     look:_look({ huid:"getint", haar:"kort", haarkleur:"blond", baard:"geen", armor:"middel", cape:"kort", capekleur:"goud", helm:"open" }),
     chain:[
@@ -302,7 +302,7 @@ Object.assign(CASTRA_HERO_DATA, {
       _T(["Andromache is mijn vrouw.","Andromache is my wife."], ["Wie is de vrouw van Hector?","Who is Hector's wife?"], ["Andromache.","Andromache."], ["Helena.","Helen."], ["Cassandra.","Cassandra."]),
       _T(["Voor de muren vecht ik met Achilles.","In front of the walls I fight Achilles."], ["Met wie vecht Hector?","Who does Hector fight?"], ["Met Achilles.","Achilles."], ["Met Paris.","Paris."], ["Met een paard.","A horse."]),
     ] },
-  ulixes: { nm:"Ulixes", region:"troia", type:"sup", affinity:"metallum", world:{ x:26, y:10, dir:"left" },
+  ulixes: { nm:"Odysseus", region:"troia", type:"sup", affinity:"metallum", world:{ x:26, y:10, dir:"left" },
     base:{ vita:60, impetus:11, tutela:10, celeritas:9, ambitus:6 },
     look:_look({ huid:"olijf", haar:"kort", haarkleur:"bruin", baard:"baard", armor:"robe", cape:"kort", capekleur:"groen", helm:"standard" }),
     chain:[

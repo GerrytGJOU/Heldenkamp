@@ -57,12 +57,12 @@ castraTradeTradable = function(s){ return _castraTradeTradableOp0(s) && !s.job; 
 
 /* ---------- ontgrendeling, menu ---------- */
 if(typeof CASTRA_UNLOCKS!=="undefined" && !CASTRA_UNLOCKS.some(u=>u.id==="labor")){
-  CASTRA_UNLOCKS.push({ id:"labor", lvl:CASTRA_OPUS.unlockLvl, la:"Labor", nl:"soldaten aan het werk zetten in het kamp (menu: Labor)" });
+  CASTRA_UNLOCKS.push({ id:"labor", lvl:CASTRA_OPUS.unlockLvl, la:"Werk", nl:"put soldiers to work in the camp (menu: Work)" });
   CASTRA_UNLOCKS.sort((a,b)=>a.lvl-b.lvl);
 }
 (function(){
   const i = CASTRA_MENU_ITEMS.findIndex(x=>x.id==="milites");
-  CASTRA_MENU_ITEMS.splice(i+1, 0, { id:"labor", la:"Labor", nl:"soldaten aan het werk", unl:"labor" });
+  CASTRA_MENU_ITEMS.splice(i+1, 0, { id:"labor", la:"Werk", nl:"soldiers at work", unl:"labor" });
 })();
 const _castraMenuViewOp0 = castraMenuView;
 castraMenuView = function(id){ return id==="labor" ? castraMenuLabor() : _castraMenuViewOp0(id); };
@@ -71,7 +71,7 @@ const _OP_ICON = { praetorium:"🏛️", lignatio:"🪓", metallum:"⛏️" }, _
 function castraOpusAct(sid, bid){
   const err = castraOpusSet(sid, bid || null);
   if(err){ if(typeof castraToastLa==="function") castraToastLa(err); }
-  else if(bid) toast("⚒️ Labor", "De soldaat gaat aan het werk.");
+  else if(bid) toast("⚒️ Werk", "De soldaat gaat aan het werk.");
   castraMenuRender();
 }
 function castraMenuLabor(){
@@ -79,7 +79,7 @@ function castraMenuLabor(){
   const blds = O.buildings.map(bid=>{
     const b = castraBuilding(bid), lv = castraLvl(bid), ws = castraOpusWorkers(bid), hb = typeof castraHeroBonus==="function" ? castraHeroBonus(bid) : 0;
     const rows = ws.map(s=>`<div style="${CASTRA_MV_ROW}"><div style="flex:1;min-width:0"><b>${esc(castraSoldierName(s))}</b> <small>Lv ${s.lvl} · tier ${castraLine(s.line).tier}${castraOpusFits(s,bid)?" · ⭐ geschikt":""}</small></div>
-      <b>+${castraOpusValue(s,bid)}%</b><button style="${btn}" onclick="castraOpusAct('${s.id}',null)">Terug</button></div>`).join("") || `<div class="note" style="margin:2px 0">Nemo laborat.</div>`;
+      <b>+${castraOpusValue(s,bid)}%</b><button style="${btn}" onclick="castraOpusAct('${s.id}',null)">Terug</button></div>`).join("") || `<div class="note" style="margin:2px 0">Niemand werkt.</div>`;
     return `<div style="margin-top:10px"><b>${_OP_ICON[bid]} ${esc(b.nm)}</b> <small>${esc(_OP_RES[bid])} · werkplekken ${ws.length} / ${lv}</small>
       <div style="font-size:12px;opacity:.8">Bonus op de productie: werkers +${castraOpusBonus(bid)}%${hb?` · held +${hb}%`:""}</div>${rows}</div>`;
   }).join("");
@@ -90,8 +90,8 @@ function castraMenuLabor(){
       return `<button style="${btn}${full?";opacity:.4":""}" ${full?"disabled":""} onclick="castraOpusAct('${s.id}','${bid}')">${_OP_ICON[bid]} +${castraOpusValue(s,bid)}%${castraOpusFits(s,bid)?" ⭐":""}</button>`; }).join("");
     return `<div style="${CASTRA_MV_ROW};flex-wrap:wrap"><div style="flex:1;min-width:140px"><b>${esc(castraSoldierName(s))}</b> <small>Lv ${s.lvl} · tier ${castraLine(s.line).tier}</small></div><div>${acts}</div></div>`;
   }).join("") || `<div class="note">Alle soldaten werken al, of je hebt er nog geen.</div>`;
-  return `<h3 style="margin:0 0 6px">Labor <small>soldaten aan het werk</small></h3>
-    <div class="note" style="margin-bottom:6px">${castraLaHTML("Hic milites laborant.", "Hier werken soldaten. Een werkende soldaat levert grondstoffen op, maar doet niet mee aan gevechten en jacht tot je hem terugroept.", "opus_intro")}
+  return `<h3 style="margin:0 0 6px">Werk <small>soldiers at work</small></h3>
+    <div class="note" style="margin-bottom:6px">${castraLaHTML("Hier werken soldaten.", "Soldiers work here. A working soldier produces resources, but does not take part in battles or hunting until you call him back.", "opus_intro")}
       <br><small>⭐ = geschikt voor dat gebouw (anderhalf keer zoveel). Meer werkplekken met een hoger gebouwlevel.</small></div>
     ${blds}<h4 style="margin:14px 0 2px">Beschikbare soldaten</h4>${idle}`;
 }

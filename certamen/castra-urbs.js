@@ -130,13 +130,13 @@ castraDrawMapLayers = function(built, cvBelow, cvAbove){
 
 /* ---------- binnenruimtes: de tempel van Iuppiter (Pontifex: eens per dag een offer) ---------- */
 CASTRA_ROMA_LOOKS.pontifex = Object.assign({}, CASTRA_ROMA_LOOKS.consul, { baard:"baard", haarkleur:"grijs" });
-CASTRA_WORLDS.roma.doors.push({ x:61, y:13, to:"templum_roma", label:"🏛️ Templum Iovis", spawn:{ x:10, y:13, dir:"up" } });
+CASTRA_WORLDS.roma.doors.push({ x:61, y:13, to:"templum_roma", label:"🏛️ Tempel van Jupiter", spawn:{ x:10, y:13, dir:"up" } });
 CASTRA_INTERIORS.templum_roma = {
-  parent:"roma", kind:"house", nm:"Templum Iovis", nl:"De tempel van Iuppiter", icon:"🏛️", cols:22, rows:16, start:{ x:10, y:13 }, floor:"stoneb",
+  parent:"roma", kind:"house", nm:"Tempel van Jupiter", nl:"The temple of Jupiter", icon:"🏛️", cols:22, rows:16, start:{ x:10, y:13 }, floor:"stoneb",
   doors:[ { x:10, y:15, to:"roma", spawn:{ x:61, y:14, dir:"down" } }, { x:11, y:15, to:"roma", spawn:{ x:61, y:14, dir:"down" } } ],
   furniture:[ ["pillar_fl",3,3],["pillar_fl",3,7],["pillar_fl",18,3],["pillar_fl",18,7],["pillar_rd",6,3],["pillar_rd",15,3],["angel_b",10,2],["angel_c",11,2],["barrel",1,13],["barrel",20,13] ],
   chests:[ [19,12,"kist_templum1"] ],
-  npcs:[ { id:"pontifex", role:"pontifex", nm:"Pontifex", x:10, y:5, dir:"down", look:CASTRA_ROMA_LOOKS.pontifex } ],
+  npcs:[ { id:"pontifex", role:"pontifex", nm:"Priester", x:10, y:5, dir:"down", look:CASTRA_ROMA_LOOKS.pontifex } ],
 };
 castraInteriorRegister("templum_roma");
 const _castraNpcTalkUrbs0 = castraNpcTalk;
@@ -144,14 +144,14 @@ castraNpcTalk = function(id){ if(String(id)==="w:pontifex"){ castraPontifexTalk(
 function castraPontifexTalk(){
   if(CASTRA_DLG) return;
   const w = CASTRA.wday || (CASTRA.wday = {}), done = w.templum===castraWDay();
-  castraLatSay("Pontifex", CASTRA_ROMA_LOOKS.pontifex, [ { la:"Gegroet, gast {naam}! De tempel van Iuppiter staat open.", nl:"Greetings, guest {naam}! The temple of Jupiter is open." },
+  castraLatSay("Priester", CASTRA_ROMA_LOOKS.pontifex, [ { la:"Gegroet, gast {naam}! De tempel van Iuppiter staat open.", nl:"Greetings, guest {naam}! The temple of Jupiter is open." },
     done ? { la:"Je hebt vandaag al geofferd. Kom morgen terug!", nl:"You have already made an offering today. Come back tomorrow!" }
-         : { la:"Wil je een offer brengen aan Iuppiter?", nl:"Do you want to make an offering to Jupiter?", opts:[ { la:"Sacrifico", nl:"offeren" }, { la:"Vale", nl:"tot ziens" } ] } ],
+         : { la:"Wil je een offer brengen aan Iuppiter?", nl:"Do you want to make an offering to Jupiter?", opts:[ { la:"Offeren", nl:"sacrifice" }, { la:"Tot ziens", nl:"goodbye" } ] } ],
     k=>{
       if(done || k!==0) return;
       const hurt = castraHealAll();
       w.templum = castraWDay(); castraSave(); if(typeof castraPxpAdd==="function") castraPxpAdd(10, "Geofferd");
-      toast("🏛️ Templum Iovis", (hurt.length ? hurt.length+" soldaat/soldaten zijn weer gezond. " : "Je soldaten waren al gezond. ")+"+10 ervaring.");
+      toast("🏛️ Tempel van Jupiter", (hurt.length ? hurt.length+" soldaat/soldaten zijn weer gezond. " : "Je soldaten waren al gezond. ")+"+10 ervaring.");
     });
 }
 Object.assign(CASTRA_GLOSS, { "templum":"tempel", "patet":"staat open", "sacrificare":"offeren", "sacrifico":"ik offer", "sacrificasti":"je hebt geofferd", "Iovi":"aan Iuppiter" });

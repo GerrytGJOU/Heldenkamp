@@ -63,7 +63,7 @@ function castraEncLeadLvl(){ const l = (typeof castraPartyList==="function") ? c
 function castraEncStep(terrainId){
   const W = castraWorldCfg(), U = CASTRA_W_UI, rid = W.parent || CASTRA_W_REGION;
   const repelling = (CASTRA.repel||0)>0;
-  if(repelling){ CASTRA.repel--; if(CASTRA.repel===0 && typeof toast==="function") toast("🌿 Suffimentum", "De rook is uitgewaaid."); }
+  if(repelling){ CASTRA.repel--; if(CASTRA.repel===0 && typeof toast==="function") toast("🌿 Rookwerk", "De rook is uitgewaaid."); }
   if((U.encSafe||0)>0){ U.encSafe--; return; }
   if(castraEncRand() >= W.encounterChance) return;
   const before = { ...(CASTRA.codex||{}) }, V = castraMakeEncounter(rid, terrainId);
@@ -84,13 +84,13 @@ function castraWaterTerrain(rid){
 }
 function castraFish(x, y){
   const U = CASTRA_W_UI; if(U.fishing || CASTRA_DLG || !el("cwMap")) return;
-  if(castraBagN("hamus")<1){ toast("🎣 Hamus", "Met een hamus (vishaak) kun je hier vissen. Koop er een bij de mercator in het kamp (☰ → Sacculus)."); return; }
+  if(castraBagN("hamus")<1){ toast("🎣 Vishaak", "Met een vishaak kun je hier vissen. Koop er een bij de koopman in het kamp (☰ → Rugzak)."); return; }
   const t = castraWaterTerrain(CASTRA_W_REGION);
   if(!t){ toast("🎣", "Hier valt niets te vangen."); return; }
-  U.fishing = true; toast("🎣 Piscari…", "Je gooit je lijn uit.");
+  U.fishing = true; toast("🎣 Vissen…", "Je gooit je lijn uit.");
   setTimeout(()=>{
     U.fishing = false; if(!el("cwMap")) return;
-    if(castraEncRand() < CASTRA_ENC.fishBite){ toast("🎣 Mordet!", "Er bijt iets!"); const rid = CASTRA_WORLDS[CASTRA_W_REGION].parent || CASTRA_W_REGION; castraWorldEncounter(t.id, castraMakeEncounter(rid, t.id)); }
+    if(castraEncRand() < CASTRA_ENC.fishBite){ toast("🎣 Beet!", "Er bijt iets!"); const rid = CASTRA_WORLDS[CASTRA_W_REGION].parent || CASTRA_W_REGION; castraWorldEncounter(t.id, castraMakeEncounter(rid, t.id)); }
     else toast("🎣", "Niets beet. Probeer het nog eens.");
   }, CASTRA_ENC.fishMs);
 }

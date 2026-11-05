@@ -167,10 +167,10 @@ function castraGeoHubOpen(rid){
     return `<button class="btn ${can?"btn-gold":""}" ${can?"":"disabled"} style="display:block;width:100%;margin:4px 0;min-height:48px;text-align:left" onclick="castraGeoTravel('${d}')">${castraGeoIcon(d)} <b>${esc(castraGeoName(d))}</b> <small>${how} · ${cost?"🪙 "+cost:"gratis"}</small></button>`;
   }).join("");
   const panel = el("cwPanel"); if(!panel) return;
-  panel.innerHTML = `<div class="panel"><h3 style="margin:0 0 6px">${G.hubType==="port"?"⚓ Portus":"🐪 Statio caravanarum"} <small>${esc(castraGeoName(here))}</small></h3>
-    <div style="font-size:15px;margin-bottom:6px">${castraLaHTML(G.hubType==="port"?"Quo navigas, dux {naam}?":"Quo vehis, dux {naam}?", G.hubType==="port"?"Waarheen vaar je, leider {naam}?":"Waarheen reis je, leider {naam}?", "hub_"+G.hubType)}</div>
+  panel.innerHTML = `<div class="panel"><h3 style="margin:0 0 6px">${G.hubType==="port"?"⚓ Haven":"🐪 Caravanstation"} <small>${esc(castraGeoName(here))}</small></h3>
+    <div style="font-size:15px;margin-bottom:6px">${castraLaHTML(G.hubType==="port"?"Waarheen vaar je, leider {naam}?":"Waarheen reis je, leider {naam}?", G.hubType==="port"?"Where are you sailing, leader {naam}?":"Where are you travelling, leader {naam}?", "hub_"+G.hubType)}</div>
     ${rows||"<div class='note'>Je kent nog geen andere plekken. Ontdek eerst een buurregio te voet.</div>"}
-    <div class="note" style="margin-top:6px">Alleen bezochte, open regio's. 🪙 ${CASTRA_GEO_COST} per etappe; het kamp is gratis. Zie ook de wereldkaart (menu → Tabula).</div>
+    <div class="note" style="margin-top:6px">Alleen bezochte, open regio's. 🪙 ${CASTRA_GEO_COST} per etappe; het kamp is gratis. Zie ook de wereldkaart (menu → Kaart).</div>
     <button class="btn" style="margin-top:6px;min-height:44px" onclick="castraNpcClose()">Sluiten</button></div>`;
   panel.scrollIntoView({ behavior:"smooth", block:"nearest" });
 }

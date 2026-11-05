@@ -32,7 +32,7 @@ function castraMountToggle(){
   if(!castraMountOwned()) return;
   if(castraWorldCfg().interior){ toast("🐎", "Binnen loop je altijd te voet."); return; }
   CASTRA.mount.on = CASTRA.mount.on ? 0 : 1; castraSave(); castraWorldAvatar();
-  toast(CASTRA.mount.on ? "🐎 Equus" : "🚶 Pedes", CASTRA.mount.on ? "Je rijdt: je gaat twee keer zo snel." : "Je loopt weer te voet.");
+  toast(CASTRA.mount.on ? "🐎 Paard" : "🚶 Te voet", CASTRA.mount.on ? "Je rijdt: je gaat twee keer zo snel." : "Je loopt weer te voet.");
 }
 // De avatar te paard: het paard eronder (zelfde richting en looptakt), de ruiter iets kleiner en hoger.
 const _castraWorldAvatarMt0 = castraWorldAvatar;

@@ -127,7 +127,7 @@ function castraStageBuild(kind){
   if(kind!=="world" && typeof castraDecorBuild==="function") castraDecorBuild(main);
   if(kind!=="world" && typeof castraPlanBuild==="function") castraPlanBuild(main);
   if(back) st.querySelector("#cgBackSlot").appendChild(back);
-  st.querySelector("#cgTitle").textContent = h2 ? h2.textContent : "Castra Heroum";
+  st.querySelector("#cgTitle").textContent = h2 ? h2.textContent : "Heldenkamp";
   ["castraRes","castraBuilders","castraTutBar","cwHud"].forEach(id=>{ const n = el(id); if(n) top.appendChild(n); });
   ["cwPanel","castraPanel"].forEach(id=>{ const n = el(id); if(n) bottom.appendChild(n); });
   if(hodie && (hodie.id==="castraHodie" || /castraHodieToggle/.test(hodie.innerHTML))) info.appendChild(hodie);

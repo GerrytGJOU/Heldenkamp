@@ -78,7 +78,7 @@ function castraContubernium(ctx){
 }
 function castraContHTML(c){
   if(!c || !c.lines.length) return "";
-  return `<div class="note" style="margin-top:8px">🏕️ ${castraLaHTML("Contubernium quiescit, sed discit.", "Contubernium: rustende soldaten leren mee ("+c.share+"% van de ervaring).", "cont_h")}<br>${c.lines.map(l=>esc(l.nm)+" +"+l.gain+" XP"+(l.up?" ⭐ gradus "+l.lvl:"")).join(" · ")}</div>`;
+  return `<div class="note" style="margin-top:8px">🏕️ ${castraLaHTML("Wie rust, leert toch.", "Group: resting soldiers learn along ("+c.share+"% of the experience).", "cont_h")}<br>${c.lines.map(l=>esc(l.nm)+" +"+l.gain+" XP"+(l.up?" ⭐ level "+l.lvl:"")).join(" · ")}</div>`;
 }
 if(typeof CASTRA_LA!=="undefined") Object.assign(CASTRA_GLOSS, { "contubernium":"tentgroep (rustende soldaten leren mee)", "tabernaculo":"tent", "quiescunt":"rusten", "quiescit":"rust", "discunt":"leren", "discit":"leert", "dedit":"gaf", "datur":"is given" });
 

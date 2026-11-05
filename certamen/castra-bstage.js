@@ -57,7 +57,7 @@ function castraBStageBuild(){
   const main = st.querySelector("#cgMain"), top = st.querySelector("#cgTop"), dock = st.querySelector("#cgDock");
   main.insertBefore(wrap, main.firstChild);
   if(back) st.querySelector("#cgBackSlot").appendChild(back);
-  st.querySelector("#cgTitle").textContent = h2 ? h2.textContent.replace(/\s*ⓘ\s*/g," · ").replace(/[ ·]+$/,"") : "Castra Heroum";
+  st.querySelector("#cgTitle").textContent = h2 ? h2.textContent.replace(/\s*ⓘ\s*/g," · ").replace(/[ ·]+$/,"") : "Heldenkamp";
   ["cbHud","cbSynChips","cbCmd"].forEach(id=>{ const n = el(id); if(n) top.appendChild(n); });
   ["cbCtl","cbCards"].forEach(id=>{ const n = el(id); if(n) dock.appendChild(n); });
   const res = el("cbResult"); if(res) main.appendChild(res);

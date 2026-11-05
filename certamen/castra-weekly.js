@@ -26,15 +26,15 @@ const CASTRA_WK_TYPES = [
   { id:"def", kind:"Verdediging", icon:"🏃", la:"De snelle weg", nl:"The fast road", roles:["velox","velox","gravis"],
     edicta:[ ["ventus"], ["ventus"] ], bonus:{ k:"hp", v:8 }, bonusNl:"Houd minstens 8 van de 10 levens van het kamp over.",
     task:"Houd het kamp intact tegen snelle vijanden.", words:[["celer","snel"],["hostis","vijand"],["castra","kamp"]] },
-  { id:"pri", kind:"Prioriteit", icon:"⚕️", la:"Medicus primus", nl:"Eerst de genezer", roles:["medicus","scutarius","medicus"],
+  { id:"pri", kind:"Prioriteit", icon:"⚕️", la:"Eerst de genezer", nl:"Healer first", roles:["medicus","scutarius","medicus"],
     edicta:[ ["nox"], ["nox"] ], bonus:{ k:"cmd", v:2 }, bonusNl:"Win met maximaal 2 bevelen.",
-    task:"Schakel de genezers en schilddragers uit voor ze hun werk doen.", words:[["medicus","genezer"],["sagitta","pijl"],["petit","valt aan"]] },
-  { id:"eff", kind:"Efficiëntie", icon:"⚔️", la:"Acies angusta", nl:"Een kleine verdediging", roles:["gravis","velox","gravis"],
+    task:"Schakel de genezers en schilddragers uit voor ze hun werk doen.", words:[["medicus","genezer"],["sagitta","pijl"],["petit","attacks"]] },
+  { id:"eff", kind:"Efficiëntie", icon:"⚔️", la:"Een kleine verdediging", nl:"A small defence", roles:["gravis","velox","gravis"],
     edicta:[ ["acies","sine_h"], ["acies"] ], bonus:{ k:"hp", v:8 }, bonusNl:"Win met minstens 8 levens over.",
     task:"Kies je vijf beste soldaten en win met weinig verlies.", words:[["miles","soldaat"],["via","weg"],["defendit","verdedigt"]] },
   { id:"beh", kind:"Beheersing", icon:"⚡", la:"Zuinig met bevelen", nl:"Sparing with commands", roles:["medicus","gravis","velox","scutarius"],
     edicta:[ ["frigus","pluvia"], ["frigus"] ], cmdMax:1, bonus:{ k:"leaks", v:0 }, bonusNl:"Win zonder dat één vijand het kamp bereikt.",
-    task:"Je mag maar één bevel geven: kies het moment goed.", words:[["impete","val aan"],["state","houd stand"],["imperator","bevelhebber"]] },
+    task:"Je mag maar één bevel geven: kies het moment goed.", words:[["impete","attack"],["state","hold the line"],["imperator","bevelhebber"]] },
 ];
 
 /* ---------- week-ID en seed ---------- */
@@ -145,9 +145,9 @@ function castraWkStatusText(){
 }
 function castraWeeklyCardHTML(){
   const info = castraWkInfoAt(castraNow()), T = info.type;
-  if(!castraWeeklyAvailable()) return `<div class="panel" style="opacity:.6"><h3>📅 Hebdomada <small>wekelijkse uitdaging</small></h3><div class="note">Win eerst de eerste drie missies om de wekelijkse uitdaging te ontgrendelen.</div></div>`;
+  if(!castraWeeklyAvailable()) return `<div class="panel" style="opacity:.6"><h3>📅 Weekuitdaging <small>weekly challenge</small></h3><div class="note">Win eerst de eerste drie missies om de wekelijkse uitdaging te ontgrendelen.</div></div>`;
   const ed = T.edicta[castraWkHash(info.id+"|ed") % T.edicta.length].map(id=>CASTRA_EDICTA[id]).filter(Boolean);
-  return `<div class="panel" style="border:2px solid var(--hi,#d4af37)"><h3>📅 Hebdomada: ${T.icon} ${castraLaHTML(T.la, T.nl, "wk_"+T.id)} <small>week ${info.iso.w} · ${esc(T.kind)}</small></h3>
+  return `<div class="panel" style="border:2px solid var(--hi,#d4af37)"><h3>📅 Weekuitdaging: ${T.icon} ${castraLaHTML(T.la, T.nl, "wk_"+T.id)} <small>week ${info.iso.w} · ${esc(T.kind)}</small></h3>
     <div style="font-size:15px;margin:4px 0">${esc(T.task)}</div>
     <div style="font-size:13px;margin:2px 0">${ed.map(E=>`<span title="${esc(E.ex.nl)}" style="display:inline-block;margin:2px 6px 2px 0;padding:1px 8px;border:1px solid var(--hi-dim,#8a6d2f);border-radius:10px;background:rgba(212,175,55,.12)">${E.icon} ${esc(E.la)}</span>`).join("")}${T.cmdMax!=null?`<span style="display:inline-block;margin:2px 6px 2px 0;padding:1px 8px;border:1px solid var(--hi-dim,#8a6d2f);border-radius:10px;background:rgba(212,175,55,.12)">⚡ max. ${T.cmdMax} bevel</span>`:""}</div>
     <div style="font-size:13px;opacity:.9">★ Bonusdoel: ${esc(T.bonusNl)}</div>
@@ -185,7 +185,7 @@ function castraWeeklyResult(B){
       if(typeof castraPxpAdd==="function") castraPxpAdd(30, "Wekelijkse uitdaging");
       extra.push(`Beloning: ${Object.keys(m.reward).map(r=>castraRes(r).icon+" +"+m.reward[r]).join(" · ")} · 🎟️ +1 kaarttrekking`);
     } else if(typeof castraPxpAdd==="function") castraPxpAdd(6);
-    if(bonus && !W.bonusPaid){ W.bonusPaid = true; CASTRA.res.gloria = (CASTRA.res.gloria||0)+3; if(typeof castraCardToken==="function") castraCardToken(1, "bonusdoel"); extra.push("★ Bonusdoel gehaald: 🏛️ +3 gloria · 🎟️ +1 kaarttrekking"); }
+    if(bonus && !W.bonusPaid){ W.bonusPaid = true; CASTRA.res.gloria = (CASTRA.res.gloria||0)+3; if(typeof castraCardToken==="function") castraCardToken(1, "bonusdoel"); extra.push("★ Bonusdoel gehaald: 🏛️ +3 roem · 🎟️ +1 kaarttrekking"); }
     s.towers.forEach(t=>{ const sol = (CASTRA.soldiers||[]).find(x=>x.id===t.sid); if(sol){ sol.xp += castraCardXp(castraXpTd(m, sol.lvl)); castraLevelUp(sol); } });
     if(typeof castraContubernium==="function") B._cont = castraContubernium({ m, ids:s.towers.map(t=>t.sid) });
     castraSave();

@@ -24,7 +24,7 @@ function castraHodieItems(){
     let info; try{ info = castraEvoInfo(s); }catch(e){ return; }
     if(!info || info.max) return;
     if(info.lvlOk) ev.push({ pr:0, t:`${castraSoldierName(s)} kan evolueren (in de campus).` });
-    else if(s.lvl >= info.need-3 && s.lvl < info.need) ev.push({ pr:1, t:`${castraSoldierName(s)} staat op gradus ${s.lvl} en evolueert op gradus ${info.need}.` });
+    else if(s.lvl >= info.need-3 && s.lvl < info.need) ev.push({ pr:1, t:`${castraSoldierName(s)} staat op level ${s.lvl} en evolueert op level ${info.need}.` });
   });
   ev.sort((a,b)=>a.pr-b.pr).slice(0,1).forEach(e=>out.push({ icon:"📈", t:e.t }));
   // 3. volgende missie
@@ -49,9 +49,9 @@ function castraHodieHTML(){
   const opts = CASTRA.opts || (CASTRA.opts = {});
   const items = castraHodieItems();
   if(!items.length) return "";
-  if(opts.hodieOff) return `<div style="text-align:center;margin:4px 0"><button class="btn" style="min-height:36px;font-size:13px" onclick="castraHodieToggle()">🌅 Hodie tonen</button></div>`;
+  if(opts.hodieOff) return `<div style="text-align:center;margin:4px 0"><button class="btn" style="min-height:36px;font-size:13px" onclick="castraHodieToggle()">🌅 Toon vandaag</button></div>`;
   return `<div id="castraHodie" class="panel" style="margin:4px 0 8px;padding:8px 12px">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b>🌅 ${castraLaHTML("Hodie haec facere potes.", "Vandaag kun je dit doen. Niets hoeft.", "hodie_h")}</b><button class="btn" style="min-height:32px;font-size:12px;padding:2px 10px" onclick="castraHodieToggle()">verberg</button></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b>🌅 ${castraLaHTML("Vandaag kun je dit doen.", "Today you can do this. Nothing is required.", "hodie_h")}</b><button class="btn" style="min-height:32px;font-size:12px;padding:2px 10px" onclick="castraHodieToggle()">verberg</button></div>
     <ul style="margin:6px 0 0;padding-left:0;list-style:none">${items.map(i=>`<li style="margin:3px 0;font-size:14px">${i.icon} ${esc(i.t)}${i.go==="proelium"?` <a href="#" onclick="go('castraProelium');return false" style="color:var(--hi,#d4af37)">→ missies</a>`:""}</li>`).join("")}</ul></div>`;
 }
 function castraHodieToggle(){

@@ -16,7 +16,7 @@ function castraRepName(t){
   if(sid.indexOf("hero_")===0){ const h = CASTRA_HERO_DATA[sid.slice(5)]; return h ? h.nm : "Held"; }
   const s = (CASTRA.soldiers||[]).find(x=>x.id===t.sid);
   if(s) return castraSoldierName(s);
-  return t.line==="rom_hastatus" && sid==="dux" ? "Dux" : (castraLine(t.line).nm || "Soldaat");
+  return t.line==="rom_hastatus" && sid==="dux" ? "Leider" : (castraLine(t.line).nm || "Soldaat");
 }
 function castraBReportData(B){
   const s = B.sim, st = s.stat, towers = s.towers, total = towers.reduce((a,t)=>a+(st.dmg[t.id]||0),0) || 1;
@@ -44,8 +44,8 @@ function castraBReportData(B){
   if(rows.length>=4){ const low = rows[rows.length-1]; if(low.d/total < 0.05) obs.push(`${low.nm} deed bijna geen schade (${Math.round(100*low.d/total)}%). Mogelijk staat hij te ver van het pad.`); }
   if(st.heal > total*0.15) obs.push(`Genezers herstelden ${st.heal} levenspunten, een flink deel van je schade. Boogschutters mikken eerst op genezers: zorg dat die binnen bereik van de genezer staan.`);
   const L = castraSynLinks(towers), synNone = !L.muri.length && towers.some(t=>t.type==="inf") && towers.some(t=>t.type==="rng");
-  if(synNone) obs.push("Je infanterie en boogschutters stonden niet binnen 3 tegels van elkaar, dus Murus et sagittae was niet actief.");
-  if(B.sim.cmdOn && !B.cmdUsed && !win) obs.push(`Je gebruikte geen bevelen (${s.energy} ⚡ over). Impete! of State! kan een dreigende golf nog keren.`);
+  if(synNone) obs.push("Je infanterie en boogschutters stonden niet binnen 3 tegels van elkaar, dus Muur en pijlen was niet actief.");
+  if(B.sim.cmdOn && !B.cmdUsed && !win) obs.push(`Je gebruikte geen bevelen (${s.energy} ⚡ over). Val aan! of Houd stand! kan een dreigende golf nog keren.`);
   return { rows, total, obs:obs.slice(0,3), st, leak };
 }
 // Zelfde stijl als het resultaatscherm van Battle Mode (bm-gain, bm-xpbar): getallen die oplopen en balkjes die vollopen.
@@ -60,9 +60,9 @@ function castraBReportHTML(B){
     return `<div style="margin-top:10px"><div class="bm-gain-row" style="justify-content:space-between;max-width:320px;margin:0 auto"><span style="font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%">${esc(r.nm)}</span><span><b class="bm-gain-plus" id="crD${i}" style="font-size:18px">+0</b> <span class="bm-gain-lbl">schade · ${pct}%</span></span></div>${bar("crB"+i, pct)}</div>`.replace('<b class="bm-gain-plus"','<b class="bm-gain-plus"'); }).join("");
   D.rows.forEach((r,i)=>anim.push({ id:"crD"+i, val:r.d }));
   const eff = [];
-  if(st.muri) eff.push(row("🧱","crE0",st.muri,"keer vertraagde Murus et sagittae een vijand"));
-  if(st.pers) eff.push(row("🐎","crE1",st.pers,"extra schade door Persecutio"));
-  if(st.imp)  eff.push(row("⚔️","crE2",st.imp,"extra schade door Impete!"));
+  if(st.muri) eff.push(row("🧱","crE0",st.muri,"keer vertraagde Muur en pijlen een vijand"));
+  if(st.pers) eff.push(row("🐎","crE1",st.pers,"extra schade door Achtervolging"));
+  if(st.imp)  eff.push(row("⚔️","crE2",st.imp,"extra schade door Val aan!"));
   if(st.prev) eff.push(row("🛡️","crE3",st.prev,"schade voorkomen door pantser en schilden"));
   if(st.heal) eff.push(row("⚕️","crE4",st.heal,"levenspunten hersteld door genezers"));
   const xpRows = (B._xp||[]).map((e,i)=>{ const id = "crX"+i; anim.push({ id:id+"n", val:e.gain }); anim.push({ xbar:id, from:e.pct0, to:e.pct1, up:e.up, lbl:id+"l", lvl1:e.lvl1 });
@@ -71,7 +71,7 @@ function castraBReportHTML(B){
       <div class="note" id="${id}l" style="text-align:center;margin:0">${castraLaText("gradus")} ${e.lvl0}${e.capped?" · maximaal voor je campus: bouw de campus uit om verder te groeien":""}</div>
       ${e.up?`<div class="bm-gain-lvup" id="${id}u" style="display:none;text-align:center">🎉 Niveau omhoog! ${esc(e.nm)} is nu ${castraLaText("gradus")} ${e.lvl1}</div>`:""}</div>`; }).join("");
   anim.push({ delayUps:(B._xp||[]).some(e=>e.up) });
-  const why = !win ? `<div id="cbWhy" style="margin-top:12px;padding-top:8px;border-top:1px solid rgba(138,109,47,.4)"><div style="font-size:15px">${castraLaHTML("Quid difficile erat?", "Wat was moeilijk? (optioneel)", "why_q")}</div>
+  const why = !win ? `<div id="cbWhy" style="margin-top:12px;padding-top:8px;border-top:1px solid rgba(138,109,47,.4)"><div style="font-size:15px">${castraLaHTML("Wat was moeilijk?", "What was difficult? (optional)", "why_q")}</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${[["hard","te moeilijk"],["unclear","onduidelijk"],["setup","verkeerde opstelling"],["long","te lang"],["other","anders"]].map(([k,t])=>`<button class="btn" style="min-height:40px" onclick="castraBFeedback('${k}')">${t}</button>`).join("")}</div></div>` : "";
   B._rep = anim;
   return `<div class="panel" style="margin-top:10px"><h3>📊 Gevechtsrapport</h3><div class="bm-gain" style="max-width:340px;margin:0 auto;align-items:stretch">${hp}
@@ -105,7 +105,7 @@ function castraBReportAnimate(B){
 function castraBFeedback(k){
   const B = CASTRA_B, box = el("cbWhy"); if(!B || !box || B.fbDone) return; B.fbDone = true;
   castraTDSync({ ["m_"+B.mission.id+"/fb_"+k]:1 });
-  box.innerHTML = `<div style="font-size:15px">${castraLaHTML("Gratias tibi ago!", "Bedankt! Je antwoord helpt het spel beter te maken.", "why_thx")}</div>`;
+  box.innerHTML = `<div style="font-size:15px">${castraLaHTML("Dank je wel!", "Thanks! Your answer helps make the game better.", "why_thx")}</div>`;
 }
 // ervaring: stand vóór en ná het gevecht (de eigenlijke uitkering gebeurt in castraBFinish / castraWeeklyResult)
 function castraRepUnit(t){

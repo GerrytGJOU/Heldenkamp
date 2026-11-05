@@ -15,23 +15,23 @@
 // Per verbinding (regio waar het obstakel staat | richting): soort, wie het zegt, Latijn + vertaling.
 // kind: guard (wachters) | tree | rocks | sand. Doelnaam en vereiste missie komen uit CASTRA_GEO en CASTRA_REGION_NEEDS.
 const CASTRA_GATEKEEP = {
-  "latium|N":  { kind:"guard", nm:"Custodes urbis", pre:{ la:"Rome is gesloten! Vijanden belegeren Ardea. De stadswachten laten niemand binnen zolang het leger bij Ardea in nood is.", nl:"Rome is closed! Enemies are besieging Ardea. The city guards let nobody in while the army at Ardea is in trouble." },
+  "latium|N":  { kind:"guard", nm:"Stadswachten", pre:{ la:"Rome is gesloten! Vijanden belegeren Ardea. De stadswachten laten niemand binnen zolang het leger bij Ardea in nood is.", nl:"Rome is closed! Enemies are besieging Ardea. The city guards let nobody in while the army at Ardea is in trouble." },
                  done:{ la:"Ardea is verdedigd! De wachters stappen opzij: Rome staat voor je open.", nl:"Ardea is defended! The guards step aside: Rome is open to you." } },
-  "latium|W":  { kind:"tree",  nm:"Viator", pre:{ la:"Een enorme eik is tijdens de storm op de weg naar Gallië gevallen. Alleen sterke mannen, zoals de gladiatoren uit de arena van Rome, kunnen hem wegslepen.", nl:"A huge oak has fallen across the road to Gaul during the storm. Only strong men, like the gladiators from the arena of Rome, can drag it away." },
+  "latium|W":  { kind:"tree",  nm:"Reiziger", pre:{ la:"Een enorme eik is tijdens de storm op de weg naar Gallië gevallen. Alleen sterke mannen, zoals de gladiatoren uit de arena van Rome, kunnen hem wegslepen.", nl:"A huge oak has fallen across the road to Gaul during the storm. Only strong men, like the gladiators from the arena of Rome, can drag it away." },
                  done:{ la:"De gladiatoren hebben de boom weggesleept. De weg naar Gallië is vrij!", nl:"The gladiators have dragged the tree away. The road to Gaul is clear!" } },
-  "gallia|N":  { kind:"guard", nm:"Custodes limitis", pre:{ la:"De grens met Germanië is gesloten. De Germanen zijn woest; de wachters houden de grens dicht tot Gallië veilig is.", nl:"The border with Germania is closed. The Germans are fierce; the guards keep the border shut until Gaul is safe." },
+  "gallia|N":  { kind:"guard", nm:"Grenswachten", pre:{ la:"De grens met Germanië is gesloten. De Germanen zijn woest; de wachters houden de grens dicht tot Gallië veilig is.", nl:"The border with Germania is closed. The Germans are fierce; the guards keep the border shut until Gaul is safe." },
                  done:{ la:"Alesia is gevallen en Gallië is veilig. De wachters openen de grens naar Germanië.", nl:"Alesia has fallen and Gaul is safe. The guards open the border to Germania." } },
-  "graecia|S": { kind:"rocks", nm:"Viator", pre:{ la:"Na een aardbeving ligt de weg naar Laconië vol rotsblokken. Pas als het monster van het labyrint verslagen is, durven de steenhouwers eraan te beginnen.", nl:"After an earthquake the road to Laconia is full of boulders. Only when the monster of the labyrinth is defeated will the stonemasons dare to start." },
+  "graecia|S": { kind:"rocks", nm:"Reiziger", pre:{ la:"Na een aardbeving ligt de weg naar Laconië vol rotsblokken. Pas als het monster van het labyrint verslagen is, durven de steenhouwers eraan te beginnen.", nl:"After an earthquake the road to Laconia is full of boulders. Only when the monster of the labyrinth is defeated will the stonemasons dare to start." },
                  done:{ la:"De steenhouwers hebben de rotsblokken weggehaald. De weg naar Laconië is vrij!", nl:"The stonemasons have cleared the boulders. The road to Laconia is clear!" } },
-  "graecia|E": { kind:"guard", nm:"Custodes pontis", pre:{ la:"De brug naar Troje is dicht. De wachters zeggen: hulp eerst bij Sparta, daarna mag je door.", nl:"The bridge to Troy is closed. The guards say: help at Sparta first, then you may pass." },
+  "graecia|E": { kind:"guard", nm:"Brugwachters", pre:{ la:"De brug naar Troje is dicht. De wachters zeggen: hulp eerst bij Sparta, daarna mag je door.", nl:"The bridge to Troy is closed. The guards say: help at Sparta first, then you may pass." },
                  done:{ la:"Sparta is gered. De wachters laten de brug zakken: de weg naar Troje is open.", nl:"Sparta is saved. The guards lower the bridge: the road to Troy is open." } },
   "troia|N":   { kind:"guard", nm:"Amazones", pre:{ la:"De Amazones bewaken de bosweg naar Themiscyra. Zolang Troje door het houten paard bedreigd wordt, laten ze niemand door.", nl:"The Amazons guard the forest road to Themiscyra. As long as Troy is threatened by the wooden horse, they let nobody through." },
                  done:{ la:"Troje is gered. De Amazones laten hun speren zakken: Themiscyra staat voor je open.", nl:"Troy is saved. The Amazons lower their spears: Themiscyra is open to you." } },
-  "troia|E":   { kind:"guard", nm:"Custodes Persae", pre:{ la:"De Perzische wachters sluiten de oostelijke weg. Eerst moet de koningin van de Amazones geholpen zijn.", nl:"The Persian guards close the eastern road. First the queen of the Amazons must be helped." },
+  "troia|E":   { kind:"guard", nm:"Perzische wachters", pre:{ la:"De Perzische wachters sluiten de oostelijke weg. Eerst moet de koningin van de Amazones geholpen zijn.", nl:"The Persian guards close the eastern road. First the queen of the Amazons must be helped." },
                  done:{ la:"De koningin van de Amazones is geholpen. De Perzische wachters laten je door.", nl:"The queen of the Amazons has been helped. The Persian guards let you through." } },
-  "troia|S":   { kind:"sand",  nm:"Viator", pre:{ la:"Een zandstorm blokkeert de kustweg naar Egypte. Ze gaat pas liggen als het Perzische hart verslagen is.", nl:"A sandstorm blocks the coastal road to Egypt. It will only die down when the Persian heart is defeated." },
+  "troia|S":   { kind:"sand",  nm:"Reiziger", pre:{ la:"Een zandstorm blokkeert de kustweg naar Egypte. Ze gaat pas liggen als het Perzische hart verslagen is.", nl:"A sandstorm blocks the coastal road to Egypt. It will only die down when the Persian heart is defeated." },
                  done:{ la:"De zandstorm is gaan liggen. De weg naar Egypte is vrij!", nl:"The sandstorm has died down. The road to Egypt is clear!" } },
-  "aegyptus|W":{ kind:"guard", nm:"Custodes Aegyptii", pre:{ la:"De Egyptische wachters houden de kustweg naar Afrika dicht tot de piramiden veilig zijn.", nl:"The Egyptian guards keep the coastal road to Africa closed until the pyramids are safe." },
+  "aegyptus|W":{ kind:"guard", nm:"Egyptische wachters", pre:{ la:"De Egyptische wachters houden de kustweg naar Afrika dicht tot de piramiden veilig zijn.", nl:"The Egyptian guards keep the coastal road to Africa closed until the pyramids are safe." },
                  done:{ la:"De piramiden zijn veilig. De wachters openen de kustweg naar Afrika.", nl:"The pyramids are safe. The guards open the coastal road to Africa." } },
 };
 const CASTRA_GATEKEEP_PIECES = { tree:["logs","stump"], rocks:["rock_grey","rock_brown"], sand:["rock_brown","stones"] };
@@ -93,7 +93,7 @@ function castraGateTalk(e){
   const G = CASTRA_GATEKEEP[e.key], need = CASTRA_P_MISSIONS.find(m=>m.id===CASTRA_REGION_NEEDS[e.to]), nm = castraGeoName(e.to);
   const speaker = { nm:G.nm, look: G.kind==="guard" ? castraGateFolkLook(e.to) : { huid:"licht", haar:"kort", haarkleur:"bruin", baard:"baard", cape:"geen", helm:"geen", schild:"geen", wapen:"geen", armor:"vodden" } };
   const lines = [ G.pre,
-    { la:`Prius ${need?need.nm:"…"} vince, dux {naam}!`, nl:`Win eerst de missie "${need?need.nm+" — "+need.nl:"…"}" om ${nm} te openen, leider {naam}.` } ];
+    { la:`Win eerst de missie ${need?need.nm:"…"} om verder te gaan, leider {naam}!`, nl:`First win the mission "${need?need.nm+" — "+need.nl:"…"}" to open ${nm} now, leader {naam}.` } ];
   castraDlgOpen(speaker, lines, null);
 }
 // Slotscène: de eerste keer dat je een regio bezoekt waarvan een doorgang net vrij is gekomen.

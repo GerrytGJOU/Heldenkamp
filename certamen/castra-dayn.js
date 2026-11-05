@@ -12,10 +12,10 @@
    ============================================================================ */
 let CASTRA_PHASE_FORCE = null;
 const CASTRA_PHASES = {
-  aurora: { id:"aurora", la:"Aurora", nl:"dageraad", icon:"🌅", tint:"rgba(255,205,160,.30)", myth:0.05, lvl:0 },
-  dies:   { id:"dies",   la:"Dies",   nl:"dag",      icon:"☀️", tint:null,                    myth:0,    lvl:0 },
-  vesper: { id:"vesper", la:"Vesper", nl:"avond",    icon:"🌇", tint:"rgba(255,160,90,.42)",  myth:0.12, lvl:1 },
-  nox:    { id:"nox",    la:"Nox",    nl:"nacht",    icon:"🌙", tint:"rgba(55,75,150,.62)",   myth:0.38, lvl:2 },
+  aurora: { id:"aurora", la:"Ochtend", nl:"dawn", icon:"🌅", tint:"rgba(255,205,160,.30)", myth:0.05, lvl:0 },
+  dies:   { id:"dies",   la:"Dag",   nl:"day",      icon:"☀️", tint:null,                    myth:0,    lvl:0 },
+  vesper: { id:"vesper", la:"Avond", nl:"evening",    icon:"🌇", tint:"rgba(255,160,90,.42)",  myth:0.12, lvl:1 },
+  nox:    { id:"nox",    la:"Nacht",    nl:"night",    icon:"🌙", tint:"rgba(55,75,150,.62)",   myth:0.38, lvl:2 },
 };
 function castraDayPhase(){
   if(CASTRA_PHASE_FORCE && CASTRA_PHASES[CASTRA_PHASE_FORCE]) return CASTRA_PHASES[CASTRA_PHASE_FORCE];

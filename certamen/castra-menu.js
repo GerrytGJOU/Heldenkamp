@@ -25,8 +25,8 @@ const CASTRA_MENU_ITEMS = [
   { id:"opus",   la:"Opdracht",     nl:"task" },
   { id:"profiel",la:"",         nl:"your card" },          // la = naam van de speler
   { id:"servare",la:"Opslaan",  nl:"save" },
-  { id:"restart",la:"Restart",  nl:"start over" },          // bewust Nederlands/Engels, geen Latijn
-  { id:"exeo",   la:"Exeo",     nl:"terug naar het portaal" },
+  { id:"restart",la:"Opnieuw beginnen",  nl:"start over" },          // bewust Nederlands/Engels, geen Latijn
+  { id:"exeo",   la:"Afsluiten",     nl:"back to the menu" },
 ];
 /* Indeling (2026-11-04): vijf vaste knoppen in de onderbalk (castraNavHTML), de rest onder ☰ ("meer"), en
    opslaan, geluid, uitleg, opnieuw beginnen en afsluiten in het submenu Systema. Andere bestanden voegen nog steeds
@@ -79,7 +79,7 @@ function castraMenuOpen(){
 // Menuvak (rechts) en, als er een onderdeel open is, het detailvak ernaast.
 function castraMenuRender(){
   const m = document.getElementById("castraMenu"); if(!m) return;
-  const name = castraPlayerName() || "Dux";
+  const name = castraPlayerName() || "Leider";
   const box = "background:linear-gradient(var(--parch,#efe1b9),var(--parch2,#e4d2a1));color:var(--parch-ink,#2b1d0e);border:4px solid var(--parch-edge,#4a3416);border-radius:10px;box-shadow:0 0 0 2px var(--parch-gold,#c9a24a),0 6px 20px rgba(0,0,0,.5);font-family:inherit";
   const list = castraMenuList();
   const items = list.map(it=>{
@@ -170,7 +170,7 @@ function castraMenuHeroes(){
         <div style="display:flex;align-items:center;gap:6px;margin-top:3px"><small style="width:30px">Fides</small><div style="flex:1">${castraMenuBar(h.fides||0,100,"#d4a017")}</div><b style="font-size:12px;width:40px;text-align:right">${h.fides||0}</b></div>
         <div style="display:flex;align-items:center;gap:6px"><small style="width:30px">XP</small><div style="flex:1">${castraMenuBar(h.xp,need,"#38c")}</div><b style="font-size:12px;width:40px;text-align:right">${h.xp}/${need}</b></div>
         <div style="font-size:12px;opacity:.8">${typeof castraMvXpLine==="function"?castraMvXpLine({ lvl:h.lvl, xp:h.xp }, cap):""}</div>
-        <div style="font-size:12px;margin-top:2px">${CASTRA_STATS.map(x=>`${esc(x.nm.slice(0,3))} ${st[x.id]}`).join(" · ")}</div>${hsel?castraSkillsHTML({ hero:true, h },"h",h.id)+(typeof castraHeroEvoMenuHTML==="function"?castraHeroEvoMenuHTML(h):"")+(typeof castraMvMenuHTML==="function"?castraMvMenuHTML(castraHeroAsUnit(h)):"")+(typeof cxCompBtn==="function"?cxCompBtn("h",h.id):""):"<div style=\"font-size:12px;opacity:.6;margin-top:2px\">🎓 "+castraSkillIds({ hero:true, h }).length+" / 4 artes — tik voor details</div>"}</div></div>`;
+        <div style="font-size:12px;margin-top:2px">${CASTRA_STATS.map(x=>`${esc(x.nm.slice(0,3))} ${st[x.id]}`).join(" · ")}</div>${hsel?castraSkillsHTML({ hero:true, h },"h",h.id)+(typeof castraHeroEvoMenuHTML==="function"?castraHeroEvoMenuHTML(h):"")+(typeof castraMvMenuHTML==="function"?castraMvMenuHTML(castraHeroAsUnit(h)):"")+(typeof cxCompBtn==="function"?cxCompBtn("h",h.id):""):"<div style=\"font-size:12px;opacity:.6;margin-top:2px\">🎓 "+castraSkillIds({ hero:true, h }).length+" / 4 vaardigheden — tik voor details</div>"}</div></div>`;
   }).join("") || `<div class="note">Nog geen helden. <small>No heroes yet: look for traces during the hunt and talk to them.</small></div>`;
   return `<h3 style="margin:0 0 6px">Helden <small>${have.length} / ${Object.keys(CASTRA_HERO_DATA).length}</small></h3>${rows}`;
 }
@@ -195,7 +195,7 @@ function castraMenuQuest(){
   return `<h3 style="margin:0 0 6px">Opdracht <small>task</small></h3>${html || `<div class="note">Geen opdracht. <small>No active task: talk to a hero in the regions.</small></div>`}`;
 }
 function castraMenuProfile(){
-  const name = castraPlayerName() || "Dux";
+  const name = castraPlayerName() || "Leider";
   const seen = Object.keys(CASTRA.codex||{}).length, tot = CASTRA_FORM_LIST.length;
   const open = Object.keys(CASTRA_WORLDS).filter(id=>castraRegionOpen(id)).length;
   const done = CASTRA_P_MISSIONS.filter(m=>castraPMissionDone(m.id)).length;
@@ -258,8 +258,7 @@ function castraMenuRestart(){
       <button class="btn btn-gold" style="min-height:44px" onclick="castraMenuPick('systema')">Nee, terug</button>
       <button class="btn" style="min-height:44px" onclick="CASTRA_MENU.rs=1;castraMenuRender()">Ja, opnieuw beginnen…</button></div>`;
   return `<h3 style="margin:0 0 6px;color:#8a1c10">Weet je het zeker?</h3>
-    <p style="font-size:15px"><b>Dit kan niet ongedaan worden gemaakt.</b> Alles wat je met ${esc(castraPlayerName()||"je profiel")} in Castra Heroum hebt opgebouwd wordt gewist, ook in de cloud-opslag van je profiel.</p>
-    <p style="font-size:13px;opacity:.8">Je Battle Mode-profiel, avatar en munten blijven gewoon bestaan.</p>
+    <p style="font-size:15px"><b>Dit kan niet ongedaan worden gemaakt.</b> Alles wat je met ${esc(castraPlayerName()||"je profiel")} in Heldenkamp hebt opgebouwd wordt gewist.</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
       <button class="btn btn-gold" style="min-height:44px" onclick="castraMenuPick('systema')">Annuleren</button>
       <button class="btn" style="min-height:44px;border-color:#8a1c10;color:#8a1c10" onclick="castraRestartNow()">Ja, alles wissen</button></div>`;
@@ -278,8 +277,8 @@ function castraMenuSkill(kind, id, skillId){
   const unit = kind==="h" ? { hero:true, h:(CASTRA.heroes||[]).find(x=>x.id===id) } : (CASTRA.soldiers||[]).find(x=>x.id===id);
   if(!unit || (kind==="h" && !unit.h)) return;
   const err = castraSkillToggle(unit, skillId);
-  if(err==="vol") toast("Maximaal 4 artes", "Zet eerst een andere arte uit om deze te kiezen.");
-  else if(err==="gevecht") toast("Niet tijdens een gevecht", "Kies je artes in het kamp.");
+  if(err==="vol") toast("Maximaal 4 vaardigheden", "Zet eerst een andere vaardigheid uit om deze te kiezen.");
+  else if(err==="gevecht") toast("Niet tijdens een gevecht", "Kies je vaardigheden in het kamp.");
   else if(err==="vergrendeld") castraLockedToast("artes");
   castraMenuRender();
 }
@@ -335,8 +334,8 @@ function castraMenuCompare(){
         <div style="font-size:12px;opacity:.7;margin-top:4px">Gemarkeerd = beste waarde. "Schade per s" is een richtwaarde (tegen een vijand met tutela 8) om opstellingen te vergelijken; teambonussen zitten er niet in.</div>`;
     }
   }
-  return `<h3 style="margin:0 0 4px">Compara <small>vergelijken</small></h3>
-    <div style="font-size:13px;opacity:.85;margin-bottom:4px">Kies twee soldaten of helden (${sel.length} / 2) en vergelijk hun stats en artes. Wijzig je artes onder Milites of Heroes en kom terug om het effect te zien.</div>
+  return `<h3 style="margin:0 0 4px">Vergelijk <small>compare</small></h3>
+    <div style="font-size:13px;opacity:.85;margin-bottom:4px">Kies twee soldaten of helden (${sel.length} / 2) en vergelijk hun stats en artes. Wijzig je vaardigheden onder Soldaten of Helden en kom terug om het effect te zien.</div>
     <div>${chips||"<small>Nog geen soldaten.</small>"}</div>${table}`;
 }
 function castraMenuCmpPick(id){

@@ -20,8 +20,8 @@ const CASTRA_TRAIN_KINDS = [
   { nm:"Ik bewaak hier de weg. Vecht je met mij?", la:"Ik bewaak hier de weg. Vecht je met mij?",               nl:"I guard the road here. Will you fight me?",            armor:"middel",  wapen:"zwaard" },
   { nm:"Explorator", la:"Ik wil je kracht op de proef stellen. Kom op!",                  nl:"I want to test your strength. Come on!",        armor:"licht",   wapen:"boog" },
 ];
-const CASTRA_TRAIN_TITLES = { latium:"Latinus", graecia:"Graecus", troia:"Troianus", gallia:"Gallus", aegyptus:"Aegyptius", persis:"Persa", africa:"Poenus", roma:"Romanus", laconia:"Spartiates", germania:"Germanus", themiscyra:"Amazone" };
-const CASTRA_INSIGNIA_NAMES = { latium:"Latium", graecia:"Greece", troia:"Troia", gallia:"Gallia", aegyptus:"Aegyptus", persis:"Persis", africa:"Africa", roma:"Roma", laconia:"Laconia", germania:"Germania", themiscyra:"Themiscyra" };
+const CASTRA_TRAIN_TITLES = { latium:"Latijner", graecia:"Griek", troia:"Trojaan", gallia:"Galliër", aegyptus:"Egyptenaar", persis:"Pers", africa:"Carthager", roma:"Romein", laconia:"Spartiates", germania:"Germaan", themiscyra:"Amazone" };
+const CASTRA_INSIGNIA_NAMES = { latium:"Latium", graecia:"Griekenland", troia:"Troje", gallia:"Gallië", aegyptus:"Egypte", persis:"Perzië", africa:"Afrika", roma:"Rome", laconia:"Laconië", germania:"Germanië", themiscyra:"Themiscyra" };
 
 (function(){
   Object.keys(CASTRA_TRAIN_POS).forEach(rid=>{
@@ -122,7 +122,7 @@ function castraTrainerBalls(tr, size){
     h += `<span title="${gone?"verslagen":cur?"in het veld":"nog in reserve"}" style="display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;margin:0 4px;border-radius:50%;border:2px solid ${gone?"#6b5630":"#d4af37"};background:${gone?"rgba(0,0,0,.35)":cur?"linear-gradient(#e8c96a,#d4af37)":"rgba(212,175,55,.18)"};font-size:${Math.round(size*0.55)}px;opacity:${gone?.55:1}">${gone?"✖":"🛡️"}</span>`; }
   return h;
 }
-function castraTrainerNumLa(n){ return n===1 ? { la:"unum militem", nl:"één soldaat" } : n===2 ? { la:"duos milites", nl:"twee soldaten" } : n===3 ? { la:"tres milites", nl:"drie soldaten" } : { la:n+" milites", nl:n+" soldaten" }; }
+function castraTrainerNumLa(n){ return n===1 ? { la:"één soldaat", nl:"one soldier" } : n===2 ? { la:"twee soldaten", nl:"two soldiers" } : n===3 ? { la:"drie soldaten", nl:"three soldiers" } : { la:n+" milites", nl:n+" soldaten" }; }
 function castraTrainerScreen(kind){
   const V = CASTRA_V, tr = castraTrainerOf(V), K = CASTRA_TRAIN_KINDS[tr.tk] || CASTRA_TRAIN_KINDS[0];
   const head = `<div class="scrhead"><button class="back" onclick="castraVLeave()">${iconSVG("shield",20,"currentColor")}</button><h2>🏹 ${castraLa("venatio_titel")}</h2></div>`;
@@ -131,7 +131,7 @@ function castraTrainerScreen(kind){
   if(kind==="intro"){
     const left = tr.party.length, c = castraTrainerNumLa(left); castraTrnPreload(V, tr);
     const meLook = (CASTRA_V.mine && CASTRA_V.mine.look) || (typeof CASTRA_ROMA_LOOKS!=="undefined" ? CASTRA_ROMA_LOOKS.consul : tr.look);
-    body = `<div class="panel">${castraVsHTML("Dux", meLook, tr.nm, tr.look)}<div style="display:flex;gap:14px;align-items:center">${avatar}
+    body = `<div class="panel">${castraVsHTML("Leider", meLook, tr.nm, tr.look)}<div style="display:flex;gap:14px;align-items:center">${avatar}
       <div style="min-width:0"><div style="font-size:21px"><b>${esc(tr.nm)}</b></div>
         <div style="font-size:17px;margin:6px 0">${castraLaHTML(K.la, K.nl, "trn_q"+tr.tk)}</div></div></div>
       <div style="font-size:18px;margin:14px 0 6px">${castraLaHTML(esc(tr.nm)+" "+c.la+" habet.", esc(tr.nm)+" heeft "+c.nl+".", "trn_habet")}</div>
@@ -142,7 +142,7 @@ function castraTrainerScreen(kind){
     let res = castraVResultHTML().replace(/castraVBack\(\)/g, "castraTrainerNext()");
     body = `<div class="panel" style="margin-bottom:8px"><div style="display:flex;gap:14px;align-items:center">${avatar}
       <div><div style="font-size:19px"><b>${esc(tr.nm)}</b></div>
-        <div style="font-size:16px;margin:4px 0">${castraLaHTML(left===1 ? "Adhuc unum militem habet." : "Adhuc "+c.la+" habet.", left===1 ? "Hij heeft nog één soldaat." : "Hij heeft nog "+c.nl+".", "trn_adhuc")}</div>
+        <div style="font-size:16px;margin:4px 0">${castraLaHTML(left===1 ? "Hij heeft nog één soldaat." : "Hij heeft nog "+c.la+" habet.", left===1 ? "He still has one soldier." : "He still has "+c.nl+".", "trn_adhuc")}</div>
         <div>${castraTrainerBalls({ ...tr, idx:tr.idx+1 }, 28)}</div></div></div></div>${res}`;
   }
   H(brand(true)+head+`<div id="castraVBody">${body}</div>${foot()}`);
@@ -256,7 +256,7 @@ castraBossWon = function(V){
     (CASTRA.insignia || (CASTRA.insignia = {}))[V.region] = castraWDay();
     const n = Object.keys(CASTRA.insignia).length, tot = Object.keys(CASTRA_INSIGNIA_NAMES).length;
     let extra = "";
-    if(n>=tot){ castraWGive({ aes:500, frumentum:250, gloria:25 }); CASTRA.imperator = 1; extra = " Alle insignia verzameld: Imperator! (+500 aes, +250 frumentum, +25 gloria)"; if(typeof castraPxpAdd==="function") castraPxpAdd(150, "Alle insignia"); }
+    if(n>=tot){ castraWGive({ aes:500, frumentum:250, gloria:25 }); CASTRA.imperator = 1; extra = " Alle insignes verzameld: Keizer! (+500 brons, +250 graan, +25 roem)"; if(typeof castraPxpAdd==="function") castraPxpAdd(150, "Alle insignia"); }
     castraSave();
     setTimeout(()=>toast("🏅 Insigne van "+(CASTRA_INSIGNIA_NAMES[V.region]||V.region), n+" / "+tot+" insignia."+extra), 1300);
   }
@@ -276,7 +276,7 @@ castraMenuView = function(id){
   const cells = ids.map(r=>{ const ok = !!have[r]; return `<div style="flex:0 0 31%;min-width:90px;text-align:center;padding:8px 4px;border:2px solid ${ok?"#c9a24a":"#8a7a55"};border-radius:10px;${ok?"background:rgba(212,175,55,.2)":"opacity:.55"}">
     <div style="font-size:30px;filter:${ok?"none":"grayscale(1)"}">🏅</div><div style="font-size:13px;font-weight:bold">${esc(CASTRA_INSIGNIA_NAMES[r])}</div><div style="font-size:11px">${ok?"verzameld":"versla de kampioen"}</div></div>`; }).join("");
   return `<h3 style="margin:0 0 6px">Insignia <small>${castraInsigniaCount()} / ${ids.length}</small></h3>
-    <div style="font-size:14px;margin-bottom:8px">Elk land heeft een kampioen in een huis. Win het gevecht voor het eerst en je krijgt de insigne van dat land. ${CASTRA.imperator?"<b>Imperator!</b> Alle insignia verzameld.":"Alle elf geven je de titel Imperator en een grote beloning."}</div>
+    <div style="font-size:14px;margin-bottom:8px">Elk land heeft een kampioen in een huis. Win het gevecht voor het eerst en je krijgt de insigne van dat land. ${CASTRA.imperator?"<b>Keizer!</b> Alle insignes verzameld.":"Alle elf geven je de titel Keizer en een grote beloning."}</div>
     <div style="display:flex;flex-wrap:wrap;gap:8px">${cells}</div>`;
 };
 
@@ -289,7 +289,7 @@ if(typeof castraHodieItems==="function"){
       const day = castraWDay(), open = Object.keys(CASTRA_TRAIN_POS).filter(r=>castraRegionOpen(r)), w = CASTRA.wday || {};
       const waiting = CASTRA_WENT.filter(e=>e.kind==="trainer" && open.indexOf(e.region)>=0 && w["trainer_"+e.id]!==day);
       if(waiting.length){ const names = [...new Set(waiting.map(e=>CASTRA_INSIGNIA_NAMES[e.region]||e.region))].slice(0,4).join(", ");
-        out.push({ icon:"📨", t:`Tabellarius nuntiat: ${waiting.length} jager${waiting.length>1?"s":""} wacht${waiting.length>1?"en":""} op een gevecht (${names}).` }); }
+        out.push({ icon:"📨", t:`De bode meldt: ${waiting.length} jager${waiting.length>1?"s":""} wacht${waiting.length>1?"en":""} op een gevecht (${names}).` }); }
     }catch(_){}
     return out;
   };

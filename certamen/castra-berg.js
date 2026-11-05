@@ -184,7 +184,7 @@ function castraBoulderCanMove(x, y){
 }
 function castraBoulderPush(dir, bx, by){
   const d = CASTRA_DELTA[dir], tx = bx+d[0], ty = by+d[1];
-  if(typeof castraFieldPick==="function" && !castraFieldPick("saxum")){ toast("🪨 "+castraLaHTML("Saxum grave est.", "De rots is te zwaar.", "berg_saxum"), "Een hopliet of spartaan in je leger kan hem duwen."); return false; }
+  if(typeof castraFieldPick==="function" && !castraFieldPick("saxum")){ toast("🪨 "+castraLaHTML("De rots is te zwaar.", "The rock is too heavy.", "berg_saxum"), "Een hopliet of spartaan in je leger kan hem duwen."); return false; }
   if(!castraBoulderCanMove(tx, ty)){ toast("🪨", "De rots zit vast."); return false; }
   const bou = castraBoulders(), i = bou.indexOf(bx+","+by); bou[i] = tx+","+ty; castraBoulderDraw();
   if(typeof castraFxDust==="function") castraFxDust(tx, ty, dir);

@@ -15,9 +15,9 @@
 const CASTRA_ELEMS = {
   ignis: { la:"Vuur", nl:"fire",    icon:"🔥", beats:"terra", fx:{ st:"ustio", p:20 } },
   aqua:  { la:"Water",  nl:"water",   icon:"💧", beats:"ignis", fx:{ stage:["cel",-1], p:25 } },
-  terra: { la:"Terra", nl:"aarde",   icon:"🪨", beats:"aer",   fx:{ stage:["tut",-1], p:20 } },
+  terra: { la:"Aarde", nl:"earth",   icon:"🪨", beats:"aer",   fx:{ stage:["tut",-1], p:20 } },
   aer:   { la:"Lucht",   nl:"air",   icon:"🌬️", beats:"aqua",  fx:{ stage:["acc",-1], p:20 } },
-  umbra: { la:"Umbra", nl:"schaduw", icon:"🌑", beats:"lux",   fx:{ st:"pavor", p:20 } },
+  umbra: { la:"Umbra", nl:"shadow", icon:"🌑", beats:"lux",   fx:{ st:"pavor", p:20 } },
   lux:   { la:"Licht",   nl:"light",   icon:"☀️", beats:"umbra", fx:{ st:"somnus", p:12 } },
 };
 const CASTRA_ELEM_BAL = { adv:1.5, dis:0.75, stab:1.25 };
@@ -55,8 +55,8 @@ function castraUnitElems(unit){
 
 /* ---- statusaandoeningen ---- */
 const CASTRA_STATUS = {
-  vulnus: { la:"Vulnus", nl:"wond",      icon:"🩸", dot:1/16 },
-  ustio:  { la:"Ustio",  nl:"brandwond", icon:"🔥", dot:1/16, impMult:0.5 },
+  vulnus: { la:"Wond", nl:"wound",      icon:"🩸", dot:1/16 },
+  ustio:  { la:"Brandwond",  nl:"burn", icon:"🔥", dot:1/16, impMult:0.5 },
   somnus: { la:"Slaap", nl:"sleep",     icon:"💤", turns:[1,3] },
   pavor:  { la:"Schrik",  nl:"fear",    icon:"😨", skipP:0.25, celMult:0.5 },
 };

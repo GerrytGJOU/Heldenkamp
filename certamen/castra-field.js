@@ -138,12 +138,12 @@ function castraFieldUse(e){
   const lines = [ { la:T.la, nl:T.nl } ];
   const canHire = e.gate && castraCanPay(cost);
   if(unit){
-    lines.push({ la:unit.nm+" adest. Opus incipit?", nl:unit.nm+" is aanwezig ("+T.needNl+"). Beginnen?", opts:[ CASTRA_DQ_YES, CASTRA_DQ_NO ] });
+    lines.push({ la:unit.nm+" is er. Beginnen?", nl:unit.nm+" is here ("+T.needNl+"). Shall we start?", opts:[ CASTRA_DQ_YES, CASTRA_DQ_NO ] });
     castraLatSay(T.nm+" "+T.icon, look, lines, k=>{ if(k===0) castraFieldClear(e, unit, false); });
   } else {
     const costTxt = Object.keys(cost).map(r=>cost[r]+" "+r).join(" + ");
-    const opts = canHire ? [ { la:"Operarios conduco", nl:"Huur arbeiders ("+costTxt+")" }, CASTRA_DQ_NO ] : null;
-    lines.push({ la:"Nemo adest.", nl:"Je hebt nu geen "+T.needNl+" in je leger"+(e.gate ? (canHire ? ", maar je kunt arbeiders inhuren." : ". Werf er een, of verzamel "+costTxt+" om arbeiders in te huren.") : "."), opts });
+    const opts = canHire ? [ { la:"Arbeiders inhuren", nl:"Hire workers ("+costTxt+")" }, CASTRA_DQ_NO ] : null;
+    lines.push({ la:"Niemand is er.", nl:"You have no "+T.needNl+" in your army"+(e.gate ? (canHire ? ", but you can hire workers." : ". Recruit one, or collect "+costTxt+" to hire workers.") : "."), opts });
     castraLatSay(T.nm+" "+T.icon, look, lines, k=>{ if(opts && k===0){ castraPay(cost); castraFieldClear(e, { nm:"Arbeiders" }, true); } });
   }
 }

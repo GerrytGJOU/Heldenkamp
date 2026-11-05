@@ -20,12 +20,12 @@ const CASTRA_CODEX_LORE = {
    Per volk waarvan je alle vormen kent: een ster + beloning. Totaal-mijlpalen geven een titel.
    Opslag: CASTRA.coll = { <sleutel>: 1 } voor reeds uitgekeerde beloningen. */
 const CASTRA_COLL_TOTAL = [
-  { n:10,  title:"Tiro",     nl:"rekruut",             reward:{ aes:60,  frumentum:40 } },
-  { n:25,  title:"Jager",  nl:"jager",               reward:{ aes:120, frumentum:80, gloria:2 } },
-  { n:50,  title:"Peritus",  nl:"kenner",              reward:{ aes:200, frumentum:140, gloria:4 } },
-  { n:80,  title:"Magister", nl:"meester",             reward:{ aes:320, frumentum:220, gloria:6 } },
-  { n:120, title:"Doctus",   nl:"geleerde",            reward:{ aes:500, frumentum:350, gloria:10 } },
-  { n:151, title:"Imperator",nl:"keizer van de codex", reward:{ aes:800, frumentum:500, gloria:20 } },
+  { n:10,  title:"Tiro",     nl:"recruit",             reward:{ aes:60,  frumentum:40 } },
+  { n:25,  title:"Jager",  nl:"hunter",               reward:{ aes:120, frumentum:80, gloria:2 } },
+  { n:50,  title:"Kenner",  nl:"expert",              reward:{ aes:200, frumentum:140, gloria:4 } },
+  { n:80,  title:"Meester", nl:"master",             reward:{ aes:320, frumentum:220, gloria:6 } },
+  { n:120, title:"Geleerde",   nl:"scholar",            reward:{ aes:500, frumentum:350, gloria:10 } },
+  { n:151, title:"Keizer",nl:"emperor of the codex", reward:{ aes:800, frumentum:500, gloria:20 } },
 ];
 const CASTRA_COLL_FOLK = { aes:100, frumentum:60, gloria:3 };
 function castraCollSeen(){ return Object.keys(CASTRA.codex||{}).length; }
@@ -39,10 +39,10 @@ function castraCollPay(res){
 /* Prestaties als achievements in het Certamen-profiel (categorie "Castra Heroum", zichtbaar in Mijn profiel). */
 const CASTRA_ICONS_TOTAL = { 10:"helmet", 25:"torch", 50:"owl", 80:"column", 120:"crown", 151:"eagle" };
 const CASTRA_ICONS_FOLK = { rom:"eagle", gra:"owl", spa:"shield", tro:"column", gla:"trident", gal:"torch", ger:"helmet", aeg:"amphora", per:"crown", car:"horse", ama:"laurel" };
-if(typeof ACH_CATEGORIES!=="undefined" && !ACH_CATEGORIES.castra) ACH_CATEGORIES.castra = "Castra Heroum";
+if(typeof ACH_CATEGORIES!=="undefined" && !ACH_CATEGORIES.castra) ACH_CATEGORIES.castra = "Heldenkamp";
 (function(){
   if(typeof ACHIEVEMENTS_DEF==="undefined" || ACHIEVEMENTS_DEF.some(a=>a.id==="castra_t10")) return;
-  CASTRA_COLL_TOTAL.forEach(m=>ACHIEVEMENTS_DEF.push({ id:"castra_t"+m.n, nm:"Castra: "+m.title, ds:m.n+" soldaten ontmoet in de Castra Heroum-codex ("+m.nl+")", icon:CASTRA_ICONS_TOTAL[m.n]||"star", cat:"castra", mode:"battle" }));
+  CASTRA_COLL_TOTAL.forEach(m=>ACHIEVEMENTS_DEF.push({ id:"castra_t"+m.n, nm:"Castra: "+m.title, ds:m.n+" soldaten ontmoet in de Heldenkamp-codex ("+m.nl+")", icon:CASTRA_ICONS_TOTAL[m.n]||"star", cat:"castra", mode:"battle" }));
   Object.keys(CASTRA_FOLKS).filter(v=>v!=="myt").forEach(v=>ACHIEVEMENTS_DEF.push({ id:"castra_v"+v, nm:"Castra: "+CASTRA_FOLKS[v].nm, ds:"Alle soldaten van de "+CASTRA_FOLKS[v].nm+" ontmoet", icon:CASTRA_ICONS_FOLK[v]||"star", cat:"castra", mode:"battle" }));
   ACHIEVEMENTS_DEF.push({ id:"castra_alle", nm:"Castra: Alle volken", ds:"Van elk volk alle soldaten ontmoet", icon:"crown", cat:"castra", mode:"battle" });
 })();

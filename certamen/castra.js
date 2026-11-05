@@ -176,7 +176,7 @@ function castraUpgradeUI(id, cost, costTxt, lvl){
   if(st.up) return `<div class="note">🔨 ${castraLaText("aedifica")}: <b>${castraLaText("gradus")} ${st.up.to}</b> — nog <span class="cLeft" data-id="${id}" data-end="${st.up.end}">${castraFmtLeftLive(castraBuildLeftMs(id))}</span></div>`;
   const busy = castraBuildActive().length >= castraBuilders(), mins = castraBuildMinutes(lvl+1), time = castraFmtLeft(castraBuildMs(lvl+1));
   return `<button class="btn" ${castraCanPay(cost) && !busy ? "" : "disabled"} onclick="castraDoUpgrade('${id}')">${lvl===0?castraLaText("aedifica"):castraLaText("meliora")+" → "+castraLaText("gradus")+" "+(lvl+1)} — ${costTxt} · ⏱ ${time}</button>`
-    + (busy ? `<div class="note">Alle bouwers zijn bezig (${castraBuildActive().length}/${castraBuilders()}). Een tweede bouwer krijg je met Praetorium 4, een derde met 8.</div>` : "");
+    + (busy ? `<div class="note">Alle bouwers zijn bezig (${castraBuildActive().length}/${castraBuilders()}). Een tweede bouwer krijg je met Hoofdgebouw 4, een derde met 8.</div>` : "");
 }
 function castraWalletCap(){ return CASTRA_BAL.walletBase + CASTRA_BAL.walletPerHorreum*castraLvl("horreum"); }
 function castraBarracksCap(){ return CASTRA_BAL.barracksBase + CASTRA_BAL.barracksPerLvl*castraLvl("contubernia"); }
@@ -299,7 +299,7 @@ SCREENS.castraHome = function(){
   CASTRA_UI.px = CASTRA.pos.x; CASTRA_UI.py = CASTRA.pos.y; CASTRA_UI.dir = "up"; CASTRA_UI.frame = 1;
   const T = CASTRA_MAP;
   H(brand(true)+`
-  <div class="scrhead"><button class="back" onclick="castraLeave()">${iconSVG("shield",20,"currentColor")}</button><h2>🏕️ Castra Heroum</h2></div>
+  <div class="scrhead"><button class="back" onclick="castraLeave()">${iconSVG("shield",20,"currentColor")}</button><h2>🏕️ Heldenkamp</h2></div>
   <div id="castraRes" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:4px 0 8px"></div>
   <div id="castraBuilders"></div>
   <div id="castraTutBar"></div>
@@ -312,7 +312,7 @@ SCREENS.castraHome = function(){
     <button class="btn" onclick="castraStep('left')">◀</button><button class="btn" onclick="castraStep('down')">▼</button><button class="btn" onclick="castraStep('right')">▶</button>
   </div>
   <div id="castraPanel"></div>
-  ${BM_IDENT?"":`<div class="panel"><div class="note">Je speelt als gast: voortgang blijft alleen op dit apparaat. Meld je aan via Battle Mode of Meedoen om je eigen avatar en cloud-opslag te gebruiken.</div></div>`}
+  ${BM_IDENT?"":`<div class="panel"><div class="note">Je speelt als gast: je voortgang blijft alleen op dit apparaat.</div></div>`}
   ${foot()}`);
   castraRenderMap();
   castraRenderRes();
@@ -506,7 +506,7 @@ function castraOpen(id){
   let extra = "";
   if(b.prod){
     const pend = castraPending(id), r = castraRes(b.prod.res);
-    extra += `<div class="note">${castraLaText("proventus")}: ${b.prod.perHour*lvl} ${r.icon} / hora · ${castraLaText("paratum")}: <b>${pend}</b> ${r.icon}</div>
+    extra += `<div class="note">${castraLaText("proventus")}: ${b.prod.perHour*lvl} ${r.icon} / uur · ${castraLaText("paratum")}: <b>${pend}</b> ${r.icon}</div>
       <button class="btn btn-gold" ${pend>0?"":"disabled"} onclick="castraDoCollect('${id}')">${castraLaText("collige")}</button> `;
   }
   if(id==="stabula" || id==="navalia"){
@@ -522,7 +522,7 @@ function castraOpen(id){
         <button class="btn" style="float:right;margin-top:-26px" onclick="castraDoRelease('${s.id}')">${castraLaText("missio_honesta")}</button></div>`;
     }).join("") || `<div class="note">${castraLa("nullus_exercitus")}</div>`;
     const hs = (CASTRA.heroes||[]).map(h=>{ const d = CASTRA_HEROES.find(x=>x.id===h.id); return d?d.nm:h.id; });
-    extra += (hs.length?`<div class="note">⭐ Heroes: <b>${esc(hs.join(", "))}</b></div>`:"") + `<div class="note">${castraLaText("milites")}: ${CASTRA.soldiers.length} / ${castraBarracksCap()}</div>${list}
+    extra += (hs.length?`<div class="note">⭐ Helden: <b>${esc(hs.join(", "))}</b></div>`:"") + `<div class="note">${castraLaText("milites")}: ${CASTRA.soldiers.length} / ${castraBarracksCap()}</div>${list}
       <div class="note">${castraLa("dilectus_hint")}</div> `;
   }
   if(b.fixed) extra += `<div class="note">${castraLa("legio_mox")}</div>`;

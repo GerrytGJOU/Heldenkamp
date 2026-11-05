@@ -19,7 +19,7 @@
 
 const CASTRA_INTERIORS = {
   specus_latium: {
-    parent:"latium", kind:"cave", nm:"Specus Lupae", nl:"De grot van de wolvin", icon:"🕳️", cols:26, rows:20,
+    parent:"latium", kind:"cave", nm:"Wolvengrot", nl:"The cave of the she-wolf", icon:"🕳️", cols:26, rows:20,
     start:{ x:12, y:17 },
     // uitgesneden ruimtes [x, y, breedte, hoogte]; alles daarbuiten is rots
     carve:[ [11,15,4,5], [4,8,18,7], [3,3,6,5], [17,3,6,5], [11,2,4,6] ],
@@ -30,7 +30,7 @@ const CASTRA_INTERIORS = {
     npcs:[ { id:"eremita", role:"eremita", nm:"Kluizenaar", x:14, y:5, dir:"left", look:{ huid:"getint", haar:"lang", haarkleur:"grijs", baard:"baard", cape:"geen", helm:"geen", schild:"geen", wapen:"geen", armor:"vodden" } } ],
   },
   specus_altus: {
-    parent:"latium", kind:"cave", nm:"Specus altus", nl:"De diepe grot", icon:"🕳️", cols:26, rows:20, start:{ x:12, y:4 },
+    parent:"latium", kind:"cave", nm:"Diepe grot", nl:"The deep cave", icon:"🕳️", cols:26, rows:20, start:{ x:12, y:4 },
     carve:[ [11,2,4,6], [3,8,20,7], [3,3,6,5], [17,3,6,5], [3,15,6,4], [10,15,6,4], [17,15,6,4] ],
     zone:{ t:"specus", x:5, y:9, w:16, h:5 },
     doors:[ { x:12, y:2, to:"specus_latium", icon:"🪜", spawn:{ x:12, y:4, dir:"up" } }, { x:13, y:2, to:"specus_latium", icon:"🪜", spawn:{ x:13, y:4, dir:"up" } } ],
@@ -48,7 +48,7 @@ const CASTRA_INTERIORS = {
     book:{ x:3, y:3, id:"boek_villa" },
   },
   solarium_latium: {
-    parent:"latium", kind:"house", nm:"Solarium", nl:"De zolder van de herberg", icon:"🏠", cols:16, rows:12, start:{ x:2, y:6 },
+    parent:"latium", kind:"house", nm:"Zolder", nl:"The attic of the inn", icon:"🏠", cols:16, rows:12, start:{ x:2, y:6 },
     doors:[ { x:0, y:6, to:"villa_latium", icon:"🪜", spawn:{ x:18, y:6, dir:"left" } } ],
     furniture:[ ["barrel",1,1],["pot",14,1],["crate_d",1,10],["flower_w",14,10],["plant_a",7,10],["plant_c",8,10] ],
     chests:[ [13,8,"kist_solarium1"] ],
@@ -76,7 +76,7 @@ function castraInteriorRegister(id){
     CASTRA_WORLDS[id] = { ...CASTRA_WORLD_BASE, id, nm:I.nm, icon:I.icon, interior:true, parent:I.parent, cols:I.cols, rows:I.rows, view:{ cols:16, rows:11 },
       start:I.start, exit:[], roads:[], water:[], zones:[], seed:7000+id.length, base: I.floor || (I.kind==="cave"?"stoneb":"plank"), doors:I.doors, encounterChance:0.2, trees:["tree_a","tree_b"], big:"tree_big", sparse:0, dense:0, denseZone:"" };
     (I.chests||[]).forEach(c=>CASTRA_WENT.push({ id:c[2], region:id, kind:"chest", x:c[0], y:c[1] }));
-    if(I.host) CASTRA_WENT.push({ id:I.host.id, region:id, kind:"npc", role:"host", nm:"Matrona", x:I.host.x, y:I.host.y, dir:"down", look:CASTRA_MATRONA_LOOK });
+    if(I.host) CASTRA_WENT.push({ id:I.host.id, region:id, kind:"npc", role:"host", nm:"Waardin", x:I.host.x, y:I.host.y, dir:"down", look:CASTRA_MATRONA_LOOK });
     if(I.book) CASTRA_WENT.push({ id:I.book.id, region:id, kind:"book", x:I.book.x, y:I.book.y, off:0 });
     (I.books||[]).forEach(b=>CASTRA_WENT.push({ id:b.id, region:id, kind:"book", x:b.x, y:b.y, off:b.off||0 }));
     (I.npcs||[]).forEach(n=>CASTRA_WENT.push(Object.assign({ dir:"down" }, n, { region:id, kind:"npc" })));
@@ -183,10 +183,10 @@ function castraMatronaTalk(){
   const lines = [ { la:"Gegroet, gast {naam}! Hier kun je uitrusten.", nl:"Greetings, guest {naam}! Here you can rest." },
     done ? { la:"Je hebt vandaag al gerust. Kom morgen terug!", nl:"You have already rested today. Come back tomorrow!" }
          : { la:"Wil je uitrusten?", nl:"Do you want to rest?", opts:[ { la:"Uitrusten", nl:"rest" }, { la:"Tot ziens", nl:"goodbye" } ] } ];
-  castraDlgOpen({ nm:"Matrona", look:CASTRA_MATRONA_LOOK }, lines, k=>{
+  castraDlgOpen({ nm:"Waardin", look:CASTRA_MATRONA_LOOK }, lines, k=>{
     if(k===0){
       const hurt = castraHealAll(); w.hospitium = castraWDay(); castraSave();
-      toast("🏠 Hospitium", hurt.length ? hurt.length+" soldaat/soldaten zijn weer gezond." : "Je soldaten waren al gezond.");
+      toast("🏠 Herberg", hurt.length ? hurt.length+" soldaat/soldaten zijn weer gezond." : "Je soldaten waren al gezond.");
     }
   });
 }

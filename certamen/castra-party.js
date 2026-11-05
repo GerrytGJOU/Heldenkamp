@@ -25,7 +25,7 @@ function castraPartyHealthy(){ return castraPartyList().filter(s=>!castraIsHurt(
 function castraPartyToggle(id){
   const p = castraPartySync(), i = p.indexOf(id), out = CASTRA.partyOut;
   if(i>=0){ p.splice(i,1); out[id] = 1; }
-  else { if(p.length>=CASTRA_PARTY_MAX){ toast("🎖️", "Je contubernium zit vol (acht soldaten). Haal er eerst een uit."); return; } p.push(id); delete out[id]; }
+  else { if(p.length>=CASTRA_PARTY_MAX){ toast("🎖️", "Je groep zit vol (acht soldaten). Haal er eerst een uit."); return; } p.push(id); delete out[id]; }
   CASTRA.party = p; castraSave(); castraMenuRender();
 }
 function castraPartyLead(id){ const p = castraPartySync(), i = p.indexOf(id); if(i>0){ p.splice(i,1); p.unshift(id); CASTRA.party = p; castraSave(); castraMenuRender(); } }
@@ -41,11 +41,11 @@ castraMenuView = function(id){
   const p = castraPartySync(), btn = "min-height:36px;padding:2px 10px;margin-left:6px;font-size:13px;font-family:inherit;cursor:pointer;border:2px solid var(--parch-edge,#4a3416);border-radius:8px;background:#e8c96a;color:var(--parch-ink,#2b1d0e)";
   const row = s=>{ const f = castraLine(s.line), inP = p.indexOf(s.id)>=0, hurt = castraIsHurt(s);
     return `<div style="${CASTRA_MV_ROW};flex-wrap:wrap">${castraMenuSprite(s.line, castraFormLook(f))}<div style="flex:1;min-width:130px"><b>${s.insignis?"✨ ":""}${esc(castraSoldierName(s))}</b> <small>Lv ${s.lvl} · tier ${f.tier} · ${esc((CASTRA_TYPE_LA[f.type]||{sg:f.type}).sg)}${hurt?" · 🩹":""}${s.job?" · ⚒️":""}</small><div>${castraHpHTML(s, 70)}</div></div>
-      <div>${inP && p.indexOf(s.id)>0 ? `<button style="${btn}" onclick="castraPartyLead('${s.id}')" title="Zet vooraan">↑ vooraan</button>` : ""}<button style="${btn};${inP?"background:#cfd8c0":""}" onclick="castraPartyToggle('${s.id}')">${inP?"✔ in contubernium":"+ toevoegen"}</button></div></div>`; };
+      <div>${inP && p.indexOf(s.id)>0 ? `<button style="${btn}" onclick="castraPartyLead('${s.id}')" title="Zet vooraan">↑ vooraan</button>` : ""}<button style="${btn};${inP?"background:#cfd8c0":""}" onclick="castraPartyToggle('${s.id}')">${inP?"✔ in je groep":"+ toevoegen"}</button></div></div>`; };
   const inList = p.map(id=>(CASTRA.soldiers||[]).find(s=>s.id===id)).filter(Boolean), rest = (CASTRA.soldiers||[]).filter(s=>p.indexOf(s.id)<0);
-  return `<h3 style="margin:0 0 6px">Contubernium <small>${p.length} / ${CASTRA_PARTY_MAX}</small></h3>
-    <div style="font-size:14px;margin-bottom:6px">Een contubernium waren acht legionairs die één tent deelden. Alleen deze acht kunnen op jacht mee; wissel in het gevecht met de knop Wissel. De eerste staat vooraan.</div>
-    ${inList.map(row).join("") || `<div class="note">Nog niemand in je contubernium.</div>`}
+  return `<h3 style="margin:0 0 6px">Groep <small>${p.length} / ${CASTRA_PARTY_MAX}</small></h3>
+    <div style="font-size:14px;margin-bottom:6px">Je groep van maximaal acht soldaten gaat mee op jacht. Wissel in het gevecht met de knop Wissel. De eerste staat vooraan.</div>
+    ${inList.map(row).join("") || `<div class="note">Nog niemand in je groep.</div>`}
     ${rest.length ? `<h4 style="margin:12px 0 2px">In de barakken</h4>${rest.map(row).join("")}` : ""}`;
 };
 /* ---------- reserve en wisselen in het gevecht ---------- */

@@ -28,7 +28,7 @@ function castraClueBlock(id){
   const expl = `<div style="font-size:15px;margin-top:6px">${esc(D.ex.nl)}</div>${D.ex.tip?`<div style="font-size:14px;margin-top:6px;opacity:.9">${esc(D.ex.tip)}</div>`:""}`;
   if(S.picked!==null){
     const ok = S.picked===C.ans;
-    return `<div style="font-size:15px;margin-top:6px;font-weight:bold">${ok?"Recte! Je las het goed."+(S.bonus?" ⚡ +1 energie voor bevelen.":""):"Bijna. Zo zit het:"}</div>${expl}`;
+    return `<div style="font-size:15px;margin-top:6px;font-weight:bold">${ok?"Goed zo! Je las het goed."+(S.bonus?" ⚡ +1 energie voor bevelen.":""):"Bijna. Zo zit het:"}</div>${expl}`;
   }
   if(S.shown) return expl;
   const btn = "display:block;width:100%;margin:4px 0;min-height:44px;font-size:15px;text-align:left;font-family:inherit;cursor:pointer;background:var(--parch2,#e9d9ac);color:var(--parch-ink,#2b1d0e);border:2px solid var(--parch-edge,#4a3416);border-radius:8px;padding:6px 10px";

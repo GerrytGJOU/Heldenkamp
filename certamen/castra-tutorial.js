@@ -17,9 +17,9 @@
 
 const CASTRA_TUT_GUIDE = "aeneas";
 const CASTRA_TUT_STARTERS = [
-  { form:"rom_hastatus", la:"Hastatus", nl:"voetsoldaat (Romein) — stevig" },
-  { form:"rom_veles",    la:"Veles",    nl:"lichte schutter (Romein) — schiet van afstand" },
-  { form:"gla_murmillo", la:"Murmillo", nl:"gladiator — sterke aanvaller" },
+  { form:"rom_hastatus", la:"Hastatus", nl:"foot soldier (Roman) — sturdy" },
+  { form:"rom_veles",    la:"Veles",    nl:"light skirmisher (Roman) — shoots from a distance" },
+  { form:"gla_murmillo", la:"Murmillo", nl:"gladiator — strong attacker" },
 ];
 const CASTRA_TUT_STARTER_LVL = 10;
 const CASTRA_TUT_REWARD = { aes:80, frumentum:60, gloria:2 };
@@ -182,7 +182,7 @@ function castraTutPlaced(id){
 function castraTutBar(){
   const bar = document.getElementById("castraTutBar"); if(!bar) return;
   const T = CASTRA.tut, left = (typeof CASTRA_TUT_BUILDINGS!=="undefined") ? CASTRA_TUT_BUILDINGS.filter(id=>!castraSlot(castraBuilding(id))) : [];
-  const t = T && (T.step===-2 ? CASTRA_TUT_TEXT.bar_m2 : T.step===-1 ? { la:"Plura aedifica!", nl:"Opdracht 2: zet de gebouwen uit de bouwlijst 🔨 neer ("+((typeof CASTRA_TUT_BUILDINGS!=="undefined"?CASTRA_TUT_BUILDINGS.length:4)-left.length)+" van "+(typeof CASTRA_TUT_BUILDINGS!=="undefined"?CASTRA_TUT_BUILDINGS.length:4)+")." } : T.step===1 ? CASTRA_TUT_TEXT.bar1 : T.step===2 ? CASTRA_TUT_TEXT.bar2 : null);
+  const t = T && (T.step===-2 ? CASTRA_TUT_TEXT.bar_m2 : T.step===-1 ? { la:"Bouw meer!", nl:"Task 2: place the buildings from the build list 🔨 ("+((typeof CASTRA_TUT_BUILDINGS!=="undefined"?CASTRA_TUT_BUILDINGS.length:4)-left.length)+" van "+(typeof CASTRA_TUT_BUILDINGS!=="undefined"?CASTRA_TUT_BUILDINGS.length:4)+")." } : T.step===1 ? CASTRA_TUT_TEXT.bar1 : T.step===2 ? CASTRA_TUT_TEXT.bar2 : null);
   bar.innerHTML = t ? `<div style="margin:6px auto 10px;max-width:860px;padding:8px 12px;border:2px solid var(--hi,#d4af37);border-radius:10px;background:rgba(212,175,55,.12)">
       <div style="font-size:17px">🎯 ${castraLaHTML(t.la, t.nl, "tutbar"+T.step)}</div>
       <div style="font-size:13px;opacity:.85;margin-top:2px">${esc(t.nl)}</div></div>` : "";

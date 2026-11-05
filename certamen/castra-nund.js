@@ -22,9 +22,9 @@ const CASTRA_MARKET_POS = {
 (function(){
   Object.keys(CASTRA_MARKET_POS).forEach(rid=>{
     const W = CASTRA_WORLDS[rid]; if(!W) return; const p = CASTRA_MARKET_POS[rid], folk = (typeof CASTRA_WREG!=="undefined" && CASTRA_WREG[rid] && CASTRA_WREG[rid].folk) || "rom";
-    CASTRA_WENT.push({ id:"mercatus_"+rid, region:rid, kind:"npc", role:"mercator", nm:"Mercator nundinarum", x:p[0], y:p[1], dir:"down", when:"nundinae",
+    CASTRA_WENT.push({ id:"mercatus_"+rid, region:rid, kind:"npc", role:"mercator", nm:"Marktkoopman", x:p[0], y:p[1], dir:"down", when:"nundinae",
       look:castraRegLook(folk, { armor:"middel", baard:"snor", cape:"kort", capekleur:"oranje", helm:"geen", schild:"geen", wapen:"geen" }) });
-    CASTRA_EVENTS.push({ id:"nund_enter_"+rid, map:rid, on:"enter", if:"nundinae", once:"day", do:[ { toast:["🏺 Nundinae", "Hodie nundinae sunt! Bij de reisplek staat een marktkraam."] } ] });
+    CASTRA_EVENTS.push({ id:"nund_enter_"+rid, map:rid, on:"enter", if:"nundinae", once:"day", do:[ { toast:["🏺 Marktdag", "Het is marktdag! Bij de reisplek staat een marktkraam."] } ] });
   });
 })();
 function castraMarketOpen(){ CASTRA_BAGUI.market = true; CASTRA_BAGUI.pick = null; castraMenuOpen(); castraMenuPick("sacculus"); }
@@ -48,6 +48,6 @@ castraDaynApply = function(){
   let c = document.getElementById("cgNund"); const n = castraNundinae();
   if(!n.on){ if(c) c.remove(); return; }
   if(!c){ c = document.createElement("span"); c.id = "cgNund"; c.style.cssText = "flex:0 0 auto;font-size:13px;padding:2px 8px;border-radius:12px;background:rgba(232,201,106,.25);color:var(--hi-bright,#e8c96a);white-space:nowrap"; ph.insertAdjacentElement("afterend", c); }
-  c.textContent = "🏺 Nundinae"; c.title = "Marktdag: alles 20% goedkoper, een kraam bij de reisplek, extra verborgen vondsten";
+  c.textContent = "🏺 Marktdag"; c.title = "Marktdag: alles 20% goedkoper, een kraam bij de reisplek, extra verborgen vondsten";
 };
 Object.assign(CASTRA_GLOSS, { "nundinae":"marktdag", "hodie":"vandaag", "sunt":"zijn", "eme":"koop!", "hospes":"gast", "terras":"landen", "aperi":"open!" });
