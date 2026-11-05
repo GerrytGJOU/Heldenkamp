@@ -21,7 +21,7 @@ const CASTRA_CODEX_LORE = {
    Opslag: CASTRA.coll = { <sleutel>: 1 } voor reeds uitgekeerde beloningen. */
 const CASTRA_COLL_TOTAL = [
   { n:10,  title:"Tiro",     nl:"rekruut",             reward:{ aes:60,  frumentum:40 } },
-  { n:25,  title:"Venator",  nl:"jager",               reward:{ aes:120, frumentum:80, gloria:2 } },
+  { n:25,  title:"Jager",  nl:"jager",               reward:{ aes:120, frumentum:80, gloria:2 } },
   { n:50,  title:"Peritus",  nl:"kenner",              reward:{ aes:200, frumentum:140, gloria:4 } },
   { n:80,  title:"Magister", nl:"meester",             reward:{ aes:320, frumentum:220, gloria:6 } },
   { n:120, title:"Doctus",   nl:"geleerde",            reward:{ aes:500, frumentum:350, gloria:10 } },

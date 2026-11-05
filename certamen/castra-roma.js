@@ -22,7 +22,7 @@ Object.assign(CASTRA_GLOSS, {
 });
 
 /* ---------- terrein, voorwerpen ---------- */
-CASTRA_VENATIO.roma.terrains.push({ id:"catacumbae", hidden:true, la:"In catacumbis", nl:"In de catacomben", folk:{ rom:50, gla:10, gal:3, ger:3, gra:3, aeg:3 }, prefs:{ inf:2, sup:3, rng:1 }, myth:{ p:0.40, taks:["Schimmen"] } });
+CASTRA_VENATIO.roma.terrains.push({ id:"catacumbae", hidden:true, la:"In de catacomben", nl:"In the catacombs", folk:{ rom:50, gla:10, gal:3, ger:3, gra:3, aeg:3 }, prefs:{ inf:2, sup:3, rng:1 }, myth:{ p:0.40, taks:["Schimmen"] } });
 /* Het kerkhof (sepulcretum) ten zuiden van de catacombentrap: de enige plek buiten de catacomben waar Schimmen (Umbra, Lemur, Larva) leven. */
 CASTRA_VENATIO.roma.terrains.push({ id:"sepulcretum", la:"Op het kerkhof", nl:"In the graveyard", folk:{ rom:90, gla:6, gra:2, aeg:2 }, prefs:{ inf:2, sup:3, rng:1 }, myth:{ p:0.35, taks:["Schimmen"] } });
 CASTRA_WORLDS.roma.zones.push({ t:"sepulcretum", x:40, y:41, w:16, h:8 });
@@ -33,11 +33,11 @@ CASTRA_ITEMS.lucerna = { nm:"Olielamp", icon:"🪔", nl:"oil lamp" };
 const CASTRA_ROMA_TENTS = [ ["tent_white",8,10], ["tent_beige",28,10], ["tent_beige",44,10], ["tent_white",52,10] ];
 const CASTRA_ROMA_ROCKS = [ ["rock_grey",49,39],["rock_brown",50,39],["rock_grey",51,39],["rock_brown",49,40],["rock_grey",51,40] ];
 CASTRA_WORLDS.roma.doors = [
-  { x:9,  y:13, to:"ludus_roma",       label:"⚔️ Ludus gladiatorius", spawn:{ x:11, y:14, dir:"up" } },
-  { x:29, y:13, to:"tabularium_roma",  label:"📚 Tabularium",         spawn:{ x:10, y:12, dir:"up" } },
-  { x:45, y:13, to:"curia_roma",       label:"🏛️ Curia",              spawn:{ x:10, y:12, dir:"up" } },
-  { x:53, y:13, to:"thermae_roma",     label:"♨️ Thermae",            spawn:{ x:9,  y:12, dir:"up" } },
-  { x:50, y:40, to:"catacumbae_i",     label:"💀 Catacumbae",         icon:"🪦", spawn:{ x:14, y:18, dir:"up" } },
+  { x:9,  y:13, to:"ludus_roma",       label:"⚔️ Gladiatorenschool", spawn:{ x:11, y:14, dir:"up" } },
+  { x:29, y:13, to:"tabularium_roma",  label:"📚 Archief",         spawn:{ x:10, y:12, dir:"up" } },
+  { x:45, y:13, to:"curia_roma",       label:"🏛️ Senaatsgebouw",              spawn:{ x:10, y:12, dir:"up" } },
+  { x:53, y:13, to:"thermae_roma",     label:"♨️ Badhuis",            spawn:{ x:9,  y:12, dir:"up" } },
+  { x:50, y:40, to:"catacumbae_i",     label:"💀 Catacomben",         icon:"🪦", spawn:{ x:14, y:18, dir:"up" } },
 ];
 /* de graven: een rooster met gangen ertussen (alleen de steen is solide), een paar zuilen, een engel en botten; vaste volgorde door een eigen seed */
 const CASTRA_ROMA_GRAVES = (function(){
@@ -87,12 +87,12 @@ Object.assign(CASTRA_INTERIORS, {
     books:[ { id:"boek_curia", x:2, y:2, off:3 } ],
   },
   thermae_roma: {
-    parent:"roma", kind:"house", nm:"Thermae", nl:"De Romeinse badhuizen", icon:"♨️", cols:20, rows:14, start:{ x:9, y:11 }, floor:"stone",
+    parent:"roma", kind:"house", nm:"Badhuis", nl:"The Roman bathhouses", icon:"♨️", cols:20, rows:14, start:{ x:9, y:11 }, floor:"stone",
     doors:[ { x:9, y:13, to:"roma", spawn:{ x:53, y:14, dir:"down" } }, { x:10, y:13, to:"roma", spawn:{ x:53, y:14, dir:"down" } } ],
     pool:[6,3,8,5],
     furniture:[ ["flower_w",2,2],["flower_p",17,2],["barrel",1,12],["barrel",18,12],["plant_a",2,8],["plant_c",17,8],["bucket",16,10] ],
     chests:[ [17,10,"kist_thermae1"] ],
-    npcs:[ { id:"balneator", role:"balneator", nm:"Balneator", x:4, y:10, dir:"right", look:CASTRA_ROMA_LOOKS.balneator } ],
+    npcs:[ { id:"balneator", role:"balneator", nm:"Badmeester", x:4, y:10, dir:"right", look:CASTRA_ROMA_LOOKS.balneator } ],
   },
   tabularium_roma: {
     parent:"roma", kind:"house", nm:"Het archief", nl:"The archive", icon:"📚", cols:22, rows:14, start:{ x:10, y:11 }, floor:"stone",
@@ -102,11 +102,11 @@ Object.assign(CASTRA_INTERIORS, {
     books:[ { id:"boek_tab1", x:3, y:2, off:4 }, { id:"boek_tab2", x:8, y:2, off:5 }, { id:"boek_tab3", x:13, y:2, off:6 }, { id:"boek_tab4", x:18, y:2, off:7 } ],
   },
   ludus_roma: {
-    parent:"roma", kind:"house", nm:"Ludus gladiatorius", nl:"De gladiatorenschool", icon:"⚔️", cols:24, rows:16, start:{ x:11, y:13 }, floor:"stoneb",
+    parent:"roma", kind:"house", nm:"Gladiatorenschool", nl:"The gladiator school", icon:"⚔️", cols:24, rows:16, start:{ x:11, y:13 }, floor:"stoneb",
     doors:[ { x:11, y:15, to:"roma", spawn:{ x:9, y:14, dir:"down" } }, { x:12, y:15, to:"roma", spawn:{ x:9, y:14, dir:"down" } } ],
     furniture:[ ["barrel",3,2],["barrel",4,2],["barrel",19,2],["barrel",20,2],["crate_a",8,8],["crate_b",15,8],["stump",6,6],["stump",17,6],["stump",6,10],["stump",17,10] ],
     chests:[ [2,13,"kist_ludus1"], [21,13,"kist_ludus2"] ],
-    npcs:[ { id:"lanista", role:"lanista", nm:"Lanista", x:12, y:4, dir:"down", look:CASTRA_ROMA_LOOKS.lanista } ],
+    npcs:[ { id:"lanista", role:"lanista", nm:"Trainer", x:12, y:4, dir:"down", look:CASTRA_ROMA_LOOKS.lanista } ],
   },
   catacumbae_i: {
     parent:"roma", kind:"cave", nm:"De catacomben", nl:"The catacombs", icon:"💀", cols:30, rows:22, start:{ x:14, y:18 },
@@ -115,10 +115,10 @@ Object.assign(CASTRA_INTERIORS, {
     doors:[ { x:14, y:20, to:"roma", spawn:{ x:50, y:41, dir:"down" } }, { x:15, y:20, to:"roma", spawn:{ x:50, y:41, dir:"down" } },
             { x:14, y:2, to:"catacumbae_ii", icon:"🪜", spawn:{ x:14, y:4, dir:"down" } }, { x:15, y:2, to:"catacumbae_ii", icon:"🪜", spawn:{ x:15, y:4, dir:"down" } } ],
     chests:[ [5,5,"kist_cat1a"], [24,5,"kist_cat1b"] ],
-    npcs:[ { id:"custos", role:"custos", nm:"Custos", x:16, y:17, dir:"left", look:CASTRA_ROMA_LOOKS.custos } ],
+    npcs:[ { id:"custos", role:"custos", nm:"Wachter", x:16, y:17, dir:"left", look:CASTRA_ROMA_LOOKS.custos } ],
   },
   catacumbae_ii: {
-    parent:"roma", kind:"cave", nm:"Catacumbae II", nl:"De diepe catacomben", icon:"💀", cols:30, rows:22, start:{ x:14, y:4 },
+    parent:"roma", kind:"cave", nm:"Catacomben II", nl:"The deep catacombs", icon:"💀", cols:30, rows:22, start:{ x:14, y:4 },
     carve:[ [12,2,6,8], [4,10,22,6], [4,3,6,7], [20,3,6,7], [4,16,6,4], [12,16,6,4], [20,16,6,4] ],
     zone:{ t:"catacumbae", x:5, y:11, w:20, h:4 },
     doors:[ { x:14, y:2, to:"catacumbae_i", icon:"🪜", spawn:{ x:14, y:4, dir:"up" } }, { x:15, y:2, to:"catacumbae_i", icon:"🪜", spawn:{ x:15, y:4, dir:"up" } } ],
@@ -130,7 +130,7 @@ Object.assign(CASTRA_INTERIORS, {
 Object.keys(CASTRA_INTERIORS).filter(id=>!CASTRA_WORLDS[id]).forEach(castraInteriorRegister);
 
 // Venator in Roma (dagelijkse jachtopdracht)
-CASTRA_WENT.push({ id:"venator_roma", region:"roma", kind:"npc", role:"bounty", nm:"Venator", x:33, y:50, dir:"right", look:CASTRA_ROMA_LOOKS.venator });
+CASTRA_WENT.push({ id:"venator_roma", region:"roma", kind:"npc", role:"bounty", nm:"Jager", x:33, y:50, dir:"right", look:CASTRA_ROMA_LOOKS.venator });
 
 /* ---------- gedwongen gevechten (baas, kampioen) ---------- */
 const _castraWFeatRoma0 = castraWFeat;
@@ -177,35 +177,35 @@ const romaSay = (who, look, lines, done)=>castraLatSay(who, look, lines, done);
 
 /* Consul: vertaalquiz met hele zinnen */
 const CASTRA_QUIZ_SENT = [
-  ["De Romeinse senaat kiest een consul.","The Roman senate elects a consul."],["Miles fortiter pugnat.","De soldaat vecht dapper."],
+  ["De Romeinse senaat kiest een consul.","The Roman senate elects a consul."],["De soldaat vecht dapper.","The soldier fights bravely."],
   ["De consul houdt een toespraak op het Forum.","The consul gives a speech in the Forum."],["De vijanden vallen de stad aan.","The enemies attack the city."],
-  ["Pueri in schola discunt.","De jongens leren op school."],["De leider voert de soldaten naar het kamp.","The leader leads the soldiers to the camp."],
-  ["Romani deos colunt.","De Romeinen vereren de goden."],["Gladiator in arena pugnat.","De gladiator vecht in de arena."],
+  ["De jongens leren op school.","The boys learn at school."],["De leider voert de soldaten naar het kamp.","The leader leads the soldiers to the camp."],
+  ["De Romeinen vereren de goden.","The Romans worship the gods."],["De gladiator vecht in de arena.","The gladiator fights in the arena."],
   ["De burgers houden van vrede.","The citizens love peace."],["De koning bestuurt het volk.","The king rules the people."],
-  ["Het schip komt bij de haven aan.","The ship arrives at the harbour."],["Equites hostes fugant.","De ruiters jagen de vijanden op de vlucht."],
+  ["Het schip komt bij de haven aan.","The ship arrives at the harbour."],["De ruiters jagen de vijanden op de vlucht.","The horsemen chase the enemies away."],
   ["De moeder roept haar zonen.","The mother calls her sons."],["Het water stroomt in de rivier.","The water flows in the river."],
-  ["Legati pacem petunt.","De gezanten vragen om vrede."],["De slaaf vreest zijn meester.","The slave fears his master."],
-  ["Vir sapiens libros legit.","De wijze man leest boeken."],["Caesar Galliam vincit.","Caesar overwint Gallië."],
+  ["De gezanten vragen om vrede.","The envoys ask for peace."],["De slaaf vreest zijn meester.","The slave fears his master."],
+  ["De wijze man leest boeken.","The wise man reads books."],["Caesar overwint Gallië.","Caesar conquers Gaul."],
 ];
 function castraConsulTalk(){
   if(CASTRA_DLG) return;
   romaSay("Consul", CASTRA_ROMA_LOOKS.consul, [ { la:"Gegroet, leider {naam}! De senaat roept je.", nl:"Greetings, leader {naam}! The senate is calling you." },
     { la:"Vertaal Latijnse zinnen! Vijf vragen.", nl:"Translate Latin sentences! Five questions.", opts:[ { la:"Beginnen", nl:"begin" }, { la:"Nu niet", nl:"not now" } ] } ],
-    k=>{ if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_consul", rid:"roma", words:CASTRA_QUIZ_SENT, title:"Senatus consultum" }; castraQuizStart(); } });
+    k=>{ if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_consul", rid:"roma", words:CASTRA_QUIZ_SENT, title:"Besluit van de senaat" }; castraQuizStart(); } });
 }
 
 /* Balneator: eenmaal per dag baden */
 function castraBadTalk(){
   if(CASTRA_DLG) return;
   const w = CASTRA.wday || (CASTRA.wday = {}), done = w.thermae===castraWDay();
-  romaSay("Balneator", CASTRA_ROMA_LOOKS.balneator, [ { la:"Gegroet, gast {naam}! De thermen staan voor je open.", nl:"Greetings, guest {naam}! The baths are open to you." },
+  romaSay("Badmeester", CASTRA_ROMA_LOOKS.balneator, [ { la:"Gegroet, gast {naam}! De thermen staan voor je open.", nl:"Greetings, guest {naam}! The baths are open to you." },
     done ? { la:"Je hebt vandaag al gebaad. Kom morgen terug!", nl:"You have already bathed today. Come back tomorrow!" }
-         : { la:"Wil je een bad nemen?", nl:"Do you want to take a bath?", opts:[ { la:"Lavo", nl:"baden" }, { la:"Tot ziens", nl:"goodbye" } ] } ],
+         : { la:"Wil je een bad nemen?", nl:"Do you want to take a bath?", opts:[ { la:"Baden", nl:"bathe" }, { la:"Tot ziens", nl:"goodbye" } ] } ],
     k=>{
       if(done || k!==0) return;
       const hurt = castraHealAll();
       w.thermae = castraWDay(); castraSave(); if(typeof castraPxpAdd==="function") castraPxpAdd(12, "Gebaad");
-      toast("♨️ Thermae", (hurt.length ? hurt.length+" soldaat/soldaten zijn weer gezond. " : "Je soldaten waren al gezond. ")+"+12 ervaring.");
+      toast("♨️ Badhuis", (hurt.length ? hurt.length+" soldaat/soldaten zijn weer gezond. " : "Je soldaten waren al gezond. ")+"+12 ervaring.");
     });
 }
 
@@ -214,7 +214,7 @@ function castraLanistaTalk(){
   if(CASTRA_DLG) return;
   castraFsprProbe([["trn_kampioen_roma", "battle_front"]]);
   const done = (CASTRA.wday||{}).kampioen===castraWDay();
-  romaSay("Lanista", CASTRA_ROMA_LOOKS.lanista, [ { la:"Gegroet, leider {naam}! Ik heb een sterke gladiator.", nl:"Greetings, leader {naam}! I have a strong gladiator." },
+  romaSay("Trainer", CASTRA_ROMA_LOOKS.lanista, [ { la:"Gegroet, leider {naam}! Ik heb een sterke gladiator.", nl:"Greetings, leader {naam}! I have a strong gladiator." },
     done ? { la:"Vandaag heb je hem verslagen. Kom morgen terug!", nl:"Today you have defeated him. Come back tomorrow!" }
          : { la:"Durf je tegen hem te vechten? Wie wint, krijgt een beloning.", nl:"Do you dare to fight him? The winner gets a reward.", opts:[ { la:"Vechten", nl:"fight" }, { la:"Nu niet", nl:"not now" } ] } ],
     k=>{ if(!done && k===0) castraRomaFight("arena", "gla_primuspalus", 20, { key:"kampioen", reward:{ aes:90, frumentum:40 }, gloria:2, pxp:25, token:true, why:"kampioen verslagen", pose:"trn_kampioen_roma" }); });
@@ -225,12 +225,12 @@ function castraCustosTalk(){
   if(CASTRA_DLG) return;
   const q = castraWQ("custos");
   if(q.step===0){
-    romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Gegroet, gast {naam}! Het is hier donker. Ik zoek mijn olielamp.", nl:"Greetings, guest {naam}! It is dark here. I am looking for my oil lamp." },
+    romaSay("Wachter", CASTRA_ROMA_LOOKS.custos, [ { la:"Gegroet, gast {naam}! Het is hier donker. Ik zoek mijn olielamp.", nl:"Greetings, guest {naam}! It is dark here. I am looking for my oil lamp." },
       { la:"Daal af in de diepe catacomben (trap bovenin) en breng mijn lamp terug.", nl:"Descend into the deep catacombs (stairs at the top) and bring my lamp back." } ],
       ()=>{ q.step = 1; castraSave(); castraWobjDraw(); castraWRefreshHud && castraWRefreshHud(); });
   } else if(q.step===1){
     if(castraWItems().lucerna){
-      romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Mijn lamp! Dank je wel, leider {naam}!", nl:"My lamp! Thank you, leader {naam}!" } ],
+      romaSay("Wachter", CASTRA_ROMA_LOOKS.custos, [ { la:"Mijn lamp! Dank je wel, leider {naam}!", nl:"My lamp! Thank you, leader {naam}!" } ],
         ()=>{
           delete castraWItems().lucerna; q.step = 2;
           const t = castraWGive(Object.assign(castraWScaled({ aes:150, frumentum:75 }, castraWScale("roma")), { gloria:2 }));
@@ -239,8 +239,8 @@ function castraCustosTalk(){
           if(typeof castraCardToken==="function") castraCardToken(1, "opdracht voltooid");
           if(typeof castraWRefreshHud==="function") castraWRefreshHud();
         });
-    } else romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Waar is mijn lamp?", nl:"Where is my lamp?" } ], null);
-  } else romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Tot ziens, leider {naam}! Het ga je goed!", nl:"Goodbye, leader {naam}! Farewell!" } ], null);
+    } else romaSay("Wachter", CASTRA_ROMA_LOOKS.custos, [ { la:"Waar is mijn lamp?", nl:"Where is my lamp?" } ], null);
+  } else romaSay("Wachter", CASTRA_ROMA_LOOKS.custos, [ { la:"Tot ziens, leider {naam}! Het ga je goed!", nl:"Goodbye, leader {naam}! Farewell!" } ], null);
 }
 
 /* Larva: de baas van de diepe catacomben */
@@ -256,12 +256,12 @@ const _castraQuestHudRoma0 = castraQuestHud;
 castraQuestHud = function(){
   let extra = "";
   if((CASTRA_W_REGION==="catacumbae_i" || CASTRA_W_REGION==="catacumbae_ii") && castraWQ("custos").step===1)
-    extra += `<div class="note" style="text-align:center">📜 ${castraLaHTML("Lucernam refer!", "Haal de lamp van de Custos uit de diepe catacomben (trap bovenin de eerste grot).", "custos_hud")}</div>`;
+    extra += `<div class="note" style="text-align:center">📜 ${castraLaHTML("Haal de lamp!", "Get the guard's lamp from the deep catacombs (stairs at the top of the first cave).", "custos_hud")}</div>`;
   return _castraQuestHudRoma0() + extra;
 };
 const _castraWobjOpusRoma0 = castraWobjOpus;
 castraWobjOpus = function(){
   const out = _castraWobjOpusRoma0();
-  if(castraWQ("custos").step===1) out.push({ la:"Roma: haal de lamp van de Custos uit de diepe catacomben (trap bovenin de eerste grot).", nl:"Roma: fetch the Custos' lamp from the deep catacombs (stairs at the top of the first cave)." });
+  if(castraWQ("custos").step===1) out.push({ la:"Haal de lamp!", nl:"Roma: fetch the Custos' lamp from the deep catacombs (stairs at the top of the first cave)." });
   return out;
 };

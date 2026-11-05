@@ -14,30 +14,30 @@
    ============================================================================ */
 // [regio, ouderzone, id, x, y, b, h, icon, Latijn, Nederlands, taken, vormen (of null), kans, dagdelen (of null)]
 const CASTRA_MYTH_SPOTS = [
-  ["graecia",   "olea",      "bacchus",       6,30, 7,6, "🍇", "Locus Bacchi",        "Een lichting van Bacchus",           ["Saters"], null, 0.30, null],
-  ["themiscyra","silva",     "quercus",      10, 9, 6,5, "🌳", "Quercus sacra",       "De heilige eik",                     ["Nimfen"], ["myt_nympha","myt_dryas"], 0.30, null],
-  ["troia",     "scamander", "fons",          6,32, 8,6, "💧", "Fons",                "Een verborgen bron",                 ["Nimfen"], ["myt_nympha","myt_naias"], 0.30, null],
-  ["themiscyra","mons",      "oreades",      40,10, 7,5, "⛰️", "Oreades",             "Waar de bergnimfen dansen",          ["Nimfen"], ["myt_nympha","myt_oreas"], 0.30, null],
-  ["troia",     "litus",     "nereides",     58,12, 3,7, "🐚", "Nereides",            "Waar de zeenimfen spelen",           ["Nimfen"], ["myt_nympha","myt_nereis"], 0.30, null],
-  ["themiscyra","campus",    "pratum",        6,31, 8,6, "🌾", "Pratum centaurorum",  "De weide van de centauren",          ["Centauren"], null, 0.30, null],
-  ["graecia",   "litus",     "phineus",      58,33, 3,6, "🪶", "Litus Phinei",        "De kust van Phineus",                ["Harpijen"], null, 0.30, null],
-  ["themiscyra","mons",      "scopuli",      50, 3, 6,5, "🪨", "Scopuli",             "De kliffen van de Amazones",         ["Harpijen"], null, 0.30, null],
-  ["persis",    "mons",      "griffones",     6,12, 8,3, "🦅", "Nidus gryphorum",     "Het nest van de grijpvogels",        ["Grijpvogels"], null, 0.30, null],
-  ["graecia",   "litus",     "anthemoessa",  58,26, 3,5, "🎶", "Anthemoessa",         "Het eiland van de Sirenen",          ["Sirenen"], null, 0.28, ["vesper","nox"]],
-  ["africa",    "litus",     "scopulus",     57,20, 4,8, "🎶", "Scopulus Sirenum",    "De klip van de Sirenen",             ["Sirenen"], null, 0.28, ["vesper","nox"]],
-  ["troia",     "muros",     "cyclopes",     40, 6, 7,5, "👁️", "Murus Cyclopum",      "De muur van de Cyclopen",            ["Cyclopen"], null, 0.30, null],
-  ["graecia",   "litus",     "neptuni",      56, 3, 4,5, "🌊", "Sinus Neptuni",       "De baai van Poseidon",               ["Zeepaarden"], null, 0.30, null],
-  ["troia",     "scamander", "ostium",        6,10, 8,5, "🌊", "Ostium Scamandri",    "De monding van de Scamander",        ["Zeepaarden"], null, 0.25, null],
-  ["graecia",   "urbs",      "formicae",     46,36, 6,5, "🐜", "Formicarum collis",   "De mierenheuvel van Aegina",         ["Myrmidonen"], null, 0.30, null],
-  ["graecia",   "urbs",      "arvum",        38,28, 6,5, "🦷", "Arvum draconis",      "De akker met de drakentanden",       ["Gezaaide mannen"], null, 0.25, null],
-  ["laconia",   "urbs",      "spartoi",      48,12, 6,3, "🦷", "Campus Spartorum",    "Het veld van de gezaaide mannen",    ["Gezaaide mannen"], null, 0.25, null],
-  ["persis",    "urbs",      "fissura",      44,12, 6,3, "🐍", "Fissura",             "Een spleet in de zandsteen",         ["Draken"], ["myt_anguis","myt_serpens"], 0.30, null],
-  ["graecia",   "olea",      "hippocrene",   16,38, 6,5, "🐴", "Hippocrene",          "De bron van Pegasus",                ["Gevleugelde paarden"], null, 0.25, null],
-  ["themiscyra","campus",    "pratum_alatum",14,38, 7,5, "🐴", "Pratum alatum",       "De weide van de gevleugelde paarden",["Gevleugelde paarden"], null, 0.25, null],
-  ["aegyptus",  "urbs",      "heliopolis",   44,12, 6,3, "🔥", "Heliopolis",          "De zonnetempel van Heliopolis",      ["Feniks"], null, 0.22, ["aurora","dies"]],
-  ["roma",      "castra",    "campus_martius",8,44, 8,5, "🐺", "Campus Martius",      "Het Marsveld",                       ["Wolven van Mars"], null, 0.30, null],
-  ["roma",      "forum",     "capitolium",   46,19, 7,4, "🦅", "Capitolium",          "Het Capitool van Iuppiter",          ["Adelaars van Jupiter"], null, 0.30, ["aurora","dies"]],
-  ["roma",      "via",       "via_aquilae",  58,40, 8,6, "🦅", "Via Appia, hoog boven de weg","Boven de Via Appia",          ["Adelaars van Jupiter"], null, 0.25, ["aurora","dies"]],
+  ["graecia",   "olea",      "bacchus",       6,30, 7,6, "🍇", "Plek van Bacchus",        "A clearing of Bacchus",           ["Saters"], null, 0.30, null],
+  ["themiscyra","silva",     "quercus",      10, 9, 6,5, "🌳", "Heilige eik",       "The sacred oak",                     ["Nimfen"], ["myt_nympha","myt_dryas"], 0.30, null],
+  ["troia",     "scamander", "fons",          6,32, 8,6, "💧", "Bron",                "A hidden spring",                 ["Nimfen"], ["myt_nympha","myt_naias"], 0.30, null],
+  ["themiscyra","mons",      "oreades",      40,10, 7,5, "⛰️", "Oreaden",             "Where the mountain nymphs dance",          ["Nimfen"], ["myt_nympha","myt_oreas"], 0.30, null],
+  ["troia",     "litus",     "nereides",     58,12, 3,7, "🐚", "Nereïden",            "Where the sea nymphs play",           ["Nimfen"], ["myt_nympha","myt_nereis"], 0.30, null],
+  ["themiscyra","campus",    "pratum",        6,31, 8,6, "🌾", "Weide van de centauren",  "The meadow of the centaurs",          ["Centauren"], null, 0.30, null],
+  ["graecia",   "litus",     "phineus",      58,33, 3,6, "🪶", "Kust van Phineus",        "The coast of Phineus",                ["Harpijen"], null, 0.30, null],
+  ["themiscyra","mons",      "scopuli",      50, 3, 6,5, "🪨", "Kliffen",             "The cliffs of the Amazons",         ["Harpijen"], null, 0.30, null],
+  ["persis",    "mons",      "griffones",     6,12, 8,3, "🦅", "Nest van de grijpvogels",     "The nest of the griffins",        ["Grijpvogels"], null, 0.30, null],
+  ["graecia",   "litus",     "anthemoessa",  58,26, 3,5, "🎶", "Anthemoessa",         "The island of the Sirens",          ["Sirenen"], null, 0.28, ["vesper","nox"]],
+  ["africa",    "litus",     "scopulus",     57,20, 4,8, "🎶", "Klip van de Sirenen",    "The rock of the Sirens",             ["Sirenen"], null, 0.28, ["vesper","nox"]],
+  ["troia",     "muros",     "cyclopes",     40, 6, 7,5, "👁️", "Muur van de Cyclopen",      "The wall of the Cyclopes",            ["Cyclopen"], null, 0.30, null],
+  ["graecia",   "litus",     "neptuni",      56, 3, 4,5, "🌊", "Baai van Poseidon",       "The bay of Poseidon",               ["Zeepaarden"], null, 0.30, null],
+  ["troia",     "scamander", "ostium",        6,10, 8,5, "🌊", "Monding van de Scamander",    "The mouth of the Scamander",        ["Zeepaarden"], null, 0.25, null],
+  ["graecia",   "urbs",      "formicae",     46,36, 6,5, "🐜", "Mierenheuvel",   "The ant hill of Aegina",         ["Myrmidonen"], null, 0.30, null],
+  ["graecia",   "urbs",      "arvum",        38,28, 6,5, "🦷", "Drakenakker",      "The field with the dragon's teeth",       ["Gezaaide mannen"], null, 0.25, null],
+  ["laconia",   "urbs",      "spartoi",      48,12, 6,3, "🦷", "Veld van de gezaaide mannen",    "The field of the sown men",    ["Gezaaide mannen"], null, 0.25, null],
+  ["persis",    "urbs",      "fissura",      44,12, 6,3, "🐍", "Spleet",             "A crack in the sandstone",         ["Draken"], ["myt_anguis","myt_serpens"], 0.30, null],
+  ["graecia",   "olea",      "hippocrene",   16,38, 6,5, "🐴", "Hippocrene",          "The spring of Pegasus",                ["Gevleugelde paarden"], null, 0.25, null],
+  ["themiscyra","campus",    "pratum_alatum",14,38, 7,5, "🐴", "Weide van de gevleugelde paarden",       "The meadow of the winged horses",["Gevleugelde paarden"], null, 0.25, null],
+  ["aegyptus",  "urbs",      "heliopolis",   44,12, 6,3, "🔥", "Heliopolis",          "The sun temple of Heliopolis",      ["Feniks"], null, 0.22, ["aurora","dies"]],
+  ["roma",      "castra",    "campus_martius",8,44, 8,5, "🐺", "Marsveld",      "The Field of Mars",                       ["Wolven van Mars"], null, 0.30, null],
+  ["roma",      "forum",     "capitolium",   46,19, 7,4, "🦅", "Capitool",          "The Capitol of Jupiter",          ["Adelaars van Jupiter"], null, 0.30, ["aurora","dies"]],
+  ["roma",      "via",       "via_aquilae",  58,40, 8,6, "🦅", "Via Appia, hoog boven de weg","Above the Via Appia",          ["Adelaars van Jupiter"], null, 0.25, ["aurora","dies"]],
 ];
 const CASTRA_MYTH_CAVES = ["specus","labyrinthus","cuniculus","antrum","pyramis","sepulcrum","hannibalis","taygetus","hercynia","martis","catacumbae","sepulcretum"];
 const CASTRA_MYTH_SPOT_BY_ID = {}, CASTRA_MYTH_RECTS = {};
@@ -96,7 +96,7 @@ castraZoneChipUpdate = function(){
     const rid = CASTRA_W_REGION, s = castraMythSpotAt(rid, CASTRA_W_UI.px, CASTRA_W_UI.py); if(!s) return;
     const d = CASTRA.mythSpots || (CASTRA.mythSpots = {}); if(d[rid+"|"+s.id]) return;
     d[rid+"|"+s.id] = 1; castraSave();
-    if(typeof toast==="function") toast("✨ "+s.icon+" "+s.la, "Een verborgen plek: "+s.nl+". Hier voel je dat er iets leeft dat je niet overal ziet.");
+    if(typeof toast==="function") toast("✨ "+s.icon+" "+s.la, "A hidden spot: "+s.nl+". Here you feel that something lives that you do not see everywhere.");
     if(typeof castraPxpAdd==="function") castraPxpAdd(4, "Een verborgen plek ontdekt");
   }catch(e){ console.error(e); }
 };
@@ -105,41 +105,41 @@ castraZoneChipUpdate = function(){
 // Elke regio heeft er één, niet ver van de reisplek (op de weg naar het gewone veld); geen opdracht, alleen een hint. De richtingen: oriens (oost), occidens (west),
 // septentrio (noord), meridies (zuid).
 const CASTRA_MYTH_HINTS = {
-  latium: { nm:"Pastor Latinus", lines:[
+  latium: { nm:"Herder Latinus", lines:[
     { la:"Gegroet, gast! De wolvin voedde eens Romulus en Remus.", nl:"Greetings, guest! The she-wolf once fed Romulus and Remus." },
     { la:"In de grot in het westen wonen nog wolven en faunen. Ga niet zonder wapens naar binnen!", nl:"Wolves and fauns still live in the cave in the west. Do not go in without weapons!" } ] },
   roma: { nm:"Augur", lines:[
     { la:"Ik kijk naar de vogels. De adelaars van Iuppiter vliegen boven het Capitool, maar alleen overdag.", nl:"I watch the birds. Jupiter's eagles fly above the Capitol, but only by day." },
     { la:"De wolven van Mars wonen op het Marsveld, in het zuiden en westen.", nl:"The wolves of Mars live on the Field of Mars, in the south and west." },
     { la:"En bij de graven, ten zuiden van de muur, dwalen 's nachts de lemuren rond.", nl:"And near the graves, south of the wall, the lemures roam at night." } ] },
-  gallia: { nm:"Bardus senex", lines:[
+  gallia: { nm:"Oude barde", lines:[
     { la:"Ik zing oude liederen. De wolven van Mars liggen verscholen in de grot in het zuiden.", nl:"I sing old songs. The wolves of Mars lie hidden in the cave in the south." },
     { la:"Ga niet zonder wapens naar binnen!", nl:"Do not go in without weapons!" } ] },
-  germania: { nm:"Venator Hercynius", lines:[
+  germania: { nm:"Hercynische jager", lines:[
     { la:"Het Hercynische woud is oud en dicht.", nl:"The Hercynian Forest is old and dense." },
     { la:"In de grot in het oosten slaapt een draak. Maak hem niet wakker!", nl:"A dragon sleeps in the cave in the east. Do not wake it!" } ] },
-  graecia: { nm:"Rhapsodos", lines:[
+  graecia: { nm:"Rapsode", lines:[
     { la:"Aan de oostkust zingen 's nachts de Sirenen, en de Harpijen kwellen Phineus.", nl:"On the east coast the Sirens sing at night, and the Harpies torment Phineus." },
     { la:"In de olijfgaarden in het westen leidt Bacchus de satyrs; daar ligt de bron van Pegasus verborgen.", nl:"In the olive groves in the west Bacchus leads the satyrs; there the spring of Pegasus lies hidden." },
     { la:"In de stad in het oosten zijn mieren in mensen veranderd, en liggen drakentanden in een akker.", nl:"In the city in the east ants have been turned into people, and dragon's teeth lie in a field." } ] },
-  laconia: { nm:"Hilotes", lines:[
+  laconia: { nm:"Heloot", lines:[
     { la:"Sparta houdt van bergen. Op de berg Taygetos nestelen grijpvogels.", nl:"Sparta loves mountains. Griffins nest on Mount Taygetus." },
     { la:"In de stad in het oosten zwerven de Spartoi, geboren uit tanden.", nl:"In the city in the east the Spartoi roam, born from teeth." } ] },
-  troia: { nm:"Pastor Idaeus", lines:[
+  troia: { nm:"Herder van de Ida", lines:[
     { la:"Bij de Scamander, in het westen, ligt een bron van nimfen verborgen.", nl:"By the Scamander, in the west, a spring of nymphs lies hidden." },
     { la:"In het oosten bewaken de Cyclopen de oude muren.", nl:"In the east the Cyclopes guard the old walls." },
     { la:"Op het strand spelen de Nereïden, en bij de monding van de Scamander zwemmen zeepaarden.", nl:"On the beach the Nereids play, and sea horses swim at the mouth of the Scamander." } ] },
-  themiscyra: { nm:"Venatrix Amazon", lines:[
+  themiscyra: { nm:"Amazone-jageres", lines:[
     { la:"De Dryaden wonen in de heilige eik, in het noorden; de centauren in de weide, in het zuiden.", nl:"The Dryads live in the sacred oak, in the north; the centaurs in the meadow, in the south." },
     { la:"Gevleugelde paarden grazen in een andere weide, en de Oreaden dansen op de berg.", nl:"Winged horses graze in another meadow, and the Oreads dance on the mountain." },
     { la:"Harpijen nestelen op de oostelijke kliffen. Pas op!", nl:"Harpies nest on the eastern cliffs. Watch out!" } ] },
-  persis: { nm:"Senex Persa", lines:[
+  persis: { nm:"Oude Pers", lines:[
     { la:"In de bergen in het westen nestelen grijpvogels.", nl:"Griffins nest in the mountains in the west." },
     { la:"In de rode rots in het noorden is een spleet waar slangen schuilen.", nl:"In the red rock in the north there is a crevice where snakes hide." } ] },
-  aegyptus: { nm:"Augur Solis", lines:[
+  aegyptus: { nm:"Zonne-augur", lines:[
     { la:"Bij zonsopgang bezoekt de Feniks Heliopolis.", nl:"At sunrise the Phoenix visits Heliopolis." },
     { la:"Je ziet hem alleen overdag, in het noorden en oosten.", nl:"You only see him by day, in the north and east." } ] },
-  africa: { nm:"Nauta Poenus", lines:[
+  africa: { nm:"Carthaagse zeeman", lines:[
     { la:"Aan de oostkust zingen 's nachts de Sirenen.", nl:"On the east coast the Sirens sing at night." },
     { la:"Pas op! Zeelieden worden misleid door hun zang.", nl:"Watch out! Sailors are misled by their song." } ] },
 };

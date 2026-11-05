@@ -163,7 +163,7 @@ castraWobjDraw = function(){
 };
 const CASTRA_FIELD_CLASS_ICON = { hopliet:"🛡️", spartaan:"⚔️", genie:"🛠️", priester:"✨", myth:"🐉", centurio:"🚩", verkenner:"🔭", cavalerie:"🐎", boogschutter:"🏹" };
 
-Object.assign(CASTRA_GLOSS, { "saxum":"rots", "ingens":"enorm", "viam":"weg (4e naamval)", "claudit":"sluit af", "claudunt":"sluiten af", "miles":"soldaat", "fortis":"sterk", "frangere":"breken", "potest":"kan", "frangit":"breekt",
+Object.assign(CASTRA_GLOSS, { "saxum":"rots", "ingens":"enorm", "viam":"path (accusative)", "claudit":"sluit af", "claudunt":"sluiten af", "miles":"soldaat", "fortis":"sterk", "frangere":"breken", "potest":"kan", "frangit":"breekt",
   "aperta":"open", "arbor":"boom", "arborem":"boom (4e naamval)", "cecidit":"is gevallen", "faber":"bouwer", "removere":"wegruimen", "removet":"ruimt weg", "ara":"altaar", "aram":"altaar (4e naamval)", "maledicta":"vervloekt",
   "sacerdos":"priester", "purgare":"reinigen", "purgat":"reinigt", "deserta":"verlaten", "centurio":"commandant", "milites":"soldaten", "ducere":"aanvoeren", "ducit":"voert aan", "vestigia":"sporen", "hic":"hier", "sunt":"zijn",
   "explorator":"verkenner", "ea":"die", "sequi":"volgen", "sequitur":"volgt", "thesaurus":"schat", "inventus":"gevonden", "adest":"is aanwezig", "opus":"werk", "incipit":"begint", "nemo":"niemand", "operarios":"arbeiders (4e naamval)", "conduco":"ik huur" });

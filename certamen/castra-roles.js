@@ -27,7 +27,7 @@ const CASTRA_P_ROLES = {
   scutarius: { icon:"🔰", la:"Scutarius", nl:"Schilddrager",     hp:1.3,  spd:0.95, red:0,  leak:0, prio:1, frac:0.25, maxk:2, radius:1700, prot:35,
                ex:{ la:"Een schilddrager: vijanden in zijn buurt krijgen 35% minder schade.", nl:"A shield-bearer: enemies near him take 35% less damage.",
                     tip:"Tip: boogschutters schieten eerst op schilddragers en genezers. Ruim hem snel op." } },
-  medicus:   { icon:"⚕️", la:"Genezer",   nl:"Healer",          hp:0.8,  spd:0.95, red:0,  leak:0, prio:2, frac:0.2,  maxk:2, radius:1800, heal:6, every:40, cap:60,
+  medicus:   { icon:"⚕️", la:"Medicus",   nl:"Healer",          hp:0.8,  spd:0.95, red:0,  leak:0, prio:2, frac:0.2,  maxk:2, radius:1800, heal:6, every:40, cap:60,
                ex:{ la:"Een genezer: elke 2 seconden herstelt hij 6% van de levenspunten van vijanden in zijn buurt (een vijand kan zo in totaal maximaal 60% van zijn levenspunten terugkrijgen).", nl:"A healer: every 2 seconds he restores 6% of the life points of enemies near him (an enemy can regain at most 60% of its life points this way).",
                     tip:"Tip: boogschutters mikken eerst op genezers. Breng de genezer snel uit het spel, anders duurt het gevecht eindeloos." } },
 };

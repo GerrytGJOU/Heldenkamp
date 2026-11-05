@@ -22,8 +22,8 @@ const CASTRA_HEVO_LVL = [25, 40];
 const CASTRA_HERO_SIG = {};
 const CASTRA_HERO_EVO = {
   ulixes: {
-    items:[ { id:"evo_ulixes_1", icon:"🏹", nm:"Arcus Ulixis", nl:"De boog van Odysseus" }, { id:"evo_ulixes_2", icon:"🍯", nm:"Ambrosia", nl:"Voedsel van de goden" } ],
-    q1:{ nm:{ la:"Arcus Ulixis", nl:"De boog van Odysseus" },
+    items:[ { id:"evo_ulixes_1", icon:"🏹", nm:"De boog van Odysseus", nl:"The bow of Odysseus" }, { id:"evo_ulixes_2", icon:"🍯", nm:"Ambrosia", nl:"Food of the gods" } ],
+    q1:{ nm:{ la:"De boog van Odysseus", nl:"The bow of Odysseus" },
       ask:[ { la:"Leider {naam}, de tijd is gekomen. Ik zoek mijn boog.", nl:"Leader {naam}, the time has come. I am looking for my bow." },
             { la:"Versla acht vijanden aan de kust, zoek Cassandra op en versla de Cycloop.", nl:"Defeat eight enemies on the coast, find Cassandra and defeat the Cyclops.", opts:[CASTRA_DQ_YES, CASTRA_DQ_NO] } ],
       steps:[ { kind:"kill", n:8, region:"troia", terrain:"litus", hud:{ la:"Versla vijanden aan de kust van Troje.", nl:"Defeat enemies on the coast of Troy." } },
@@ -34,10 +34,10 @@ const CASTRA_HERO_EVO = {
              { la:"Nu kan ik mijn weg kiezen (menu: Heroes, Evolueer).", nl:"Now I can choose my path (menu: Heroes, Evolve)." } ],
       reward:{ item:"evo_ulixes_1", pxp:80, gloria:5 } },
     specs:[
-      { id:"sag", nm:"Boogschutter", nl:"Archer", desc:"Odysseus wordt een meesterschutter: veel meer bereik en aanvalskracht, iets minder levenspunten.",
+      { id:"sag", nm:"Sagittarius", nl:"Archer", desc:"Odysseus wordt een meesterschutter: veel meer bereik en aanvalskracht, iets minder levenspunten.",
         type:"rng", cls:"ulixes_sag", mult:{ vita:0.9, impetus:1.25, tutela:0.9, celeritas:1.1, ambitus:1.6 },
         look:{ armor:"middel", cape:"lang", capekleur:"groen", helm:"open" },
-        q2:{ nm:{ la:"De pijl van Apollo", nl:"The arrow of Apollo" },
+        q2:{ nm:{ la:"Pijl van Apollo", nl:"The arrow of Apollo" },
           ask:[ { la:"Leider {naam}, ik ben een boogschutter. Ik zoek de pijl van Apollo.", nl:"Leader {naam}, I am an archer. I am looking for the arrow of Apollo." },
                 { la:"Versla twaalf vijanden bij de Scamander, vang drie vijanden en versla de draak (de grot in Graecia).", nl:"Defeat twelve enemies at the Scamander, capture three enemies and defeat the dragon (the cave in Graecia).", opts:[CASTRA_DQ_YES, CASTRA_DQ_NO] } ],
           steps:[ { kind:"kill", n:12, region:"troia", terrain:"scamander", hud:{ la:"Versla vijanden bij de Scamander.", nl:"Defeat enemies at the Scamander." } },
@@ -46,12 +46,12 @@ const CASTRA_HERO_EVO = {
           done:[ { la:"De pijl van Apollo! Ik krijg ambrosia.", nl:"The arrow of Apollo! I receive ambrosia." } ],
           reward:{ item:"evo_ulixes_2", pxp:150, gloria:10 } },
         prestige:{ nm:"Pijlenmeester", nl:"Master of arrows", mult:{ vita:1.0, impetus:1.55, tutela:1.0, celeritas:1.2, ambitus:2.0 }, look:{ armor:"ceremonieel", capekleur:"goud" },
-          legendary:{ id:"sagitta_apollinis", la:"Sagitta Apollinis", nl:"De pijl van Apollo: schiet door pantser en doet 30% extra schade", lvl:40, fx:{ pierce:60, dmg:30 },
+          legendary:{ id:"sagitta_apollinis", la:"Pijl van Apollo", nl:"The arrow of Apollo: shoots through armor and does 30% extra damage", lvl:40, fx:{ pierce:60, dmg:30 },
                       mv:{ kind:"dmg", power:125, acc:95, pp:3, pierce:50, nl:"Pijl door het pantser (negeert de helft van de verdediging)" } } } },
-      { id:"ins", nm:"Sluipschutter", nl:"Sniper", desc:"Odysseus wordt de sluwe verkenner: veel sneller, vertraagt vijanden en schiet eerst. Blijft een ondersteuner.",
+      { id:"ins", nm:"Sluipmoordenaar", nl:"Sniper", desc:"Odysseus wordt de sluwe verkenner: veel sneller, vertraagt vijanden en schiet eerst. Blijft een ondersteuner.",
         type:"sup", cls:"ulixes_ins", mult:{ vita:0.95, impetus:1.1, tutela:0.95, celeritas:1.5, ambitus:1.3 },
         look:{ armor:"middel", cape:"lang", capekleur:"paars", helm:"bandana" },
-        q2:{ nm:{ la:"Insidiae Ulixis", nl:"De listen van Odysseus" },
+        q2:{ nm:{ la:"De listen van Odysseus", nl:"The tricks of Odysseus" },
           ask:[ { la:"Leider {naam}, ik ben een sluiper. Ik zoek nieuwe listen.", nl:"Leader {naam}, I am a sneak. I am looking for new tricks." },
                 { la:"Versla twaalf vijanden in de tunnel, vang drie vijanden en versla de draak (de grot in Graecia).", nl:"Defeat twelve enemies in the tunnel, capture three enemies and defeat the dragon (the cave in Graecia).", opts:[CASTRA_DQ_YES, CASTRA_DQ_NO] } ],
           steps:[ { kind:"kill", n:12, region:"troia", terrain:"cuniculus", hud:{ la:"Versla vijanden in de tunnel.", nl:"Defeat enemies in the tunnel." } },
@@ -60,7 +60,7 @@ const CASTRA_HERO_EVO = {
           done:[ { la:"Mijn listen hebben gewonnen! Ik krijg ambrosia.", nl:"My tricks have won! I receive ambrosia." } ],
           reward:{ item:"evo_ulixes_2", pxp:150, gloria:10 } },
         prestige:{ nm:"De sluwe", nl:"The cunning one", mult:{ vita:1.1, impetus:1.35, tutela:1.1, celeritas:1.9, ambitus:1.5 }, look:{ armor:"ceremonieel", capekleur:"paars" },
-          legendary:{ id:"insidiae_ulixis", la:"Insidiae Ulixis", nl:"De listen van Odysseus: elke tweede treffer vertraagt 40% en doet extra schade", lvl:40, fx:{ slow:{ pct:40, ticks:40, every:2 }, dmg:20 },
+          legendary:{ id:"insidiae_ulixis", la:"De listen van Odysseus", nl:"The tricks of Odysseus: every second hit slows by 40% and does extra damage", lvl:40, fx:{ slow:{ pct:40, ticks:40, every:2 }, dmg:20 },
                       mv:{ kind:"dmg", power:90, acc:100, pp:5, prio:1, slow:40, nl:"Snelle list die de vijand vertraagt (gaat eerst)" } } } },
     ],
   },
@@ -127,7 +127,7 @@ function castraHeroEvoMenuHTML(h){
   const S = castraHeroEvoState(h), btn = "margin-top:4px;min-height:40px;padding:4px 12px;font-size:14px;font-family:inherit;cursor:pointer;background:#e8c96a;color:var(--parch-ink,#2b1d0e);border:2px solid var(--parch-edge,#4a3416);border-radius:8px";
   let body = "";
   if(S.kind==="max") body = "Hoogste vorm bereikt.";
-  else if(S.kind==="low") body = `Op gradus ${S.need} vraagt ${esc(CASTRA_HERO_DATA[h.id].nm)} om een gesprek (persoonlijke quest). ${(h.fides||0) < (S.need===25?50:75) ? "Het levelplafond groeit met zijn fides." : ""}`;
+  else if(S.kind==="low") body = `Op niveau ${S.need} vraagt ${esc(CASTRA_HERO_DATA[h.id].nm)} om een gesprek (persoonlijke quest). ${(h.fides||0) < (S.need===25?50:75) ? "Het levelplafond groeit met zijn fides." : ""}`;
   else if(S.kind==="talk") body = `${esc(CASTRA_HERO_DATA[h.id].nm)} wil je spreken.<br><button style="${btn}" onclick="event.stopPropagation();castraDqTalk('hero_${h.id}')">💬 Praat met ${esc(CASTRA_HERO_DATA[h.id].nm)}</button>`;
   else if(S.kind==="quest") body = `📜 Persoonlijke quest bezig, zie het Diarium.<br><button style="${btn}" onclick="event.stopPropagation();castraDqTalk('hero_${h.id}')">💬 Praat met ${esc(CASTRA_HERO_DATA[h.id].nm)}</button>`;
   else if(S.kind==="ready"){ const it = castraWItems()[S.item] ? CASTRA_ITEMS[S.item] : null;
@@ -150,18 +150,18 @@ function castraHeroEvolve(id){
   };
   if((h.evo||0)===0){
     const n = E.specs.length;
-    castraLatSay(d.nm, look, [ { la:(n>2?"Tres vias video.":"Duas vias video.")+" Quam viam eligis?", nl:"Ik zie "+(n>2?"drie":"twee")+" wegen. Welke weg kies je? (Definitief!)" },
+    castraLatSay(d.nm, look, [ { la:(n>2?"Ik zie drie wegen.":"Ik zie twee wegen.")+" Welke weg kies je?", nl:"I see "+(n>2?"drie":"twee")+" paths. Which path do you choose? (Final!)" },
       { la:E.specs.map(x=>x.nm).join(" an ")+"?", nl:E.specs.map(x=>x.nm+" ("+x.nl+")").join(" of ")+"?", opts:E.specs.map(x=>({ la:x.nm, nl:x.nl })).concat([ CASTRA_DQ_NO ]) } ],
       k=>{ if(k<n) finish(E.specs[k]); });
   } else {
     const sp = castraHeroSpec(h);
-    castraLatSay(d.nm, look, [ { la:"Ambrosia! Nunc "+sp.prestige.nm+" fio.", nl:"Ambrosia! Nu word ik "+sp.prestige.nm+" ("+sp.prestige.nl+")." }, { la:"Ben je er klaar voor?", nl:"Are you ready?", opts:[ CASTRA_DQ_YES, CASTRA_DQ_NO ] } ], k=>{ if(k===0) finish(null); });
+    castraLatSay(d.nm, look, [ { la:"Ambrosia! Nu word ik "+sp.prestige.nm+" fio.", nl:"Ambrosia! Now I become "+sp.prestige.nm+" ("+sp.prestige.nl+")." }, { la:"Ben je er klaar voor?", nl:"Are you ready?", opts:[ CASTRA_DQ_YES, CASTRA_DQ_NO ] } ], k=>{ if(k===0) finish(null); });
   }
 }
-(function(add){ Object.keys(add).forEach(k=>{ if(!CASTRA_GLOSS[k]) CASTRA_GLOSS[k] = add[k]; }); })({ "tempus":"tijd", "advenit":"komt eraan", "arcum":"boog (4e naamval)", "arcus":"boog", "octo":"acht", "cassandram":"Cassandra (4e naamval)", "cyclopem":"de Cycloop (4e naamval)",
-  "cyclops":"de Cycloop", "ulixes":"Odysseus", "quaerit":"zoekt", "habet":"heeft", "viam":"weg (4e naamval)", "eligere":"kiezen", "possum":"ik kan", "duas":"twee", "vias":"wegen", "quam":"welke", "eligis":"kies je",
-  "an":"of", "paratus":"klaar", "fio":"ik word", "ambrosia":"ambrosia (voedsel van de goden)", "sagitta":"pijl", "sagittam":"pijl (4e naamval)", "apollinis":"van Apollo", "sagittarius":"boogschutter",
-  "sagittarii":"boogschutters", "duodecim":"twaalf", "scamandrum":"de Scamander (4e naamval)", "tres":"drie", "dracontem":"draak (4e naamval)", "mihi":"aan mij", "insidiator":"sluiper",
-  "insidias":"listen (4e naamval)", "insidiae":"listen", "novas":"nieuwe", "cuniculo":"in de tunnel", "vicerunt":"hebben gewonnen", "meae":"mijn", "meus":"mijn", "meum":"mijn", "ulixis":"van Odysseus",
-  "datur":"wordt gegeven", "sum":"ik ben", "nunc":"nu", "video":"ik zie", "arcitenens":"pijlenmeester", "callidus":"de sluwe", "dux":"leider", "et":"en", "quaere":"zoek", "vince":"versla", "cape":"vang",
-  "hostes":"vijanden", "ad":"naar, bij", "litus":"kust", "gratias":"dank", "tibi":"aan jou", "ago":"ik doe", "vinci":"overwint" });
+(function(add){ Object.keys(add).forEach(k=>{ if(!CASTRA_GLOSS[k]) CASTRA_GLOSS[k] = add[k]; }); })({ "tempus":"tijd", "advenit":"is coming", "arcum":"bow (accusative)", "arcus":"boog", "octo":"acht", "cassandram":"Cassandra (accusative)", "cyclopem":"the Cyclops (accusative)",
+  "cyclops":"the Cyclops", "ulixes":"Odysseus", "quaerit":"zoekt", "habet":"heeft", "viam":"path (accusative)", "eligere":"kiezen", "possum":"I can", "duas":"twee", "vias":"wegen", "quam":"welke", "eligis":"you choose",
+  "an":"of", "paratus":"klaar", "fio":"I become", "ambrosia":"ambrosia (food of the gods)", "sagitta":"pijl", "sagittam":"arrow (accusative)", "apollinis":"of Apollo", "sagittarius":"boogschutter",
+  "sagittarii":"boogschutters", "duodecim":"twaalf", "scamandrum":"the Scamander (accusative)", "tres":"drie", "dracontem":"dragon (accusative)", "mihi":"to me", "insidiator":"sluiper",
+  "insidias":"tricks (accusative)", "insidiae":"listen", "novas":"nieuwe", "cuniculo":"in the tunnel", "vicerunt":"have won", "meae":"mijn", "meus":"mijn", "meum":"mijn", "ulixis":"of Odysseus",
+  "datur":"is given", "sum":"I am", "nunc":"nu", "video":"I see", "arcitenens":"pijlenmeester", "callidus":"the cunning one", "dux":"leider", "et":"en", "quaere":"zoek", "vince":"versla", "cape":"vang",
+  "hostes":"vijanden", "ad":"to, at", "litus":"kust", "gratias":"dank", "tibi":"to you", "ago":"I do", "vinci":"overwint" });

@@ -218,6 +218,6 @@ function castraTutOnHome(){
 
 (function(){   // woorden van de nieuwe tutorialstappen (alleen toevoegen wat nog ontbreekt)
   const g = { "vacua":"leeg", "primum":"eerst", "aedifica":"bouw!", "ubi":"waar", "vis":"je wilt", "optime":"uitstekend", "nunc":"nu", "plura":"meer", "aedificia":"gebouwen", "pone":"zet neer!",
-    "ligna":"hout", "aes":"brons", "do":"ik geef", "vias":"wegen (4e naamval)", "liberas":"vrije", "serva":"houd!", "praetorium":"hoofdgebouw", "castra":"kamp", "tua":"jouw", "sunt":"zijn", "et":"en", "tibi":"aan jou" };
+    "ligna":"hout", "aes":"brons", "do":"ik geef", "vias":"wegen (4e naamval)", "liberas":"vrije", "serva":"houd!", "praetorium":"hoofdgebouw", "castra":"kamp", "tua":"jouw", "sunt":"zijn", "et":"en", "tibi":"to you" };
   Object.keys(g).forEach(k=>{ if(!(k in CASTRA_GLOSS)) CASTRA_GLOSS[k] = g[k]; });
 })();

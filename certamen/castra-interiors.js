@@ -27,7 +27,7 @@ const CASTRA_INTERIORS = {
     doors:[ { x:12, y:19, to:"latium", spawn:{ x:9, y:23, dir:"down" } }, { x:13, y:19, to:"latium", spawn:{ x:9, y:23, dir:"down" } },
             { x:12, y:2, to:"specus_altus", icon:"🪜", spawn:{ x:12, y:4, dir:"down" } }, { x:13, y:2, to:"specus_altus", icon:"🪜", spawn:{ x:13, y:4, dir:"down" } } ],   // trap naar beneden
     chests:[ [4,4,"kist_specus1"], [21,4,"kist_specus2"], [12,3,"kist_specus3"] ],
-    npcs:[ { id:"eremita", role:"eremita", nm:"Eremita", x:14, y:5, dir:"left", look:{ huid:"getint", haar:"lang", haarkleur:"grijs", baard:"baard", cape:"geen", helm:"geen", schild:"geen", wapen:"geen", armor:"vodden" } } ],
+    npcs:[ { id:"eremita", role:"eremita", nm:"Kluizenaar", x:14, y:5, dir:"left", look:{ huid:"getint", haar:"lang", haarkleur:"grijs", baard:"baard", cape:"geen", helm:"geen", schild:"geen", wapen:"geen", armor:"vodden" } } ],
   },
   specus_altus: {
     parent:"latium", kind:"cave", nm:"Specus altus", nl:"De diepe grot", icon:"🕳️", cols:26, rows:20, start:{ x:12, y:4 },

@@ -15,51 +15,51 @@
 // sheets: complete personages uit de RPG Maker MV-sheets in assets/npcs/ ([bestand, personage 0-7]); zonder die bestanden
 // (of als ze niet laden) wordt de bewoner uit de avatar-lagen gebouwd (look).
 const CASTRA_AMB_TYPES = [
-  { id:"agricola", nm:"Agricola",  w:3, sheets:[["People3.png",4],["People4.png",2]], look:{ armor:"vodden", baard:"baard", haarkleur:"bruin", cape:"geen" } },
-  { id:"mater",    nm:"Mater",     w:3, sheets:[["People1.png",5],["People4.png",3],["People4.png",5]], look:{ armor:"robe",   baard:"geen",  haar:"vlecht", cape:"geen" } },
-  { id:"puer",     nm:"Puer",      w:2, sheets:[["People1.png",0]], look:{ armor:"vodden", baard:"geen",  haar:"kort",   cape:"geen" } },
-  { id:"puella",   nm:"Puella",    w:2, sheets:[["People4.png",1]], look:{ armor:"robe",   baard:"geen",  haar:"vlecht", cape:"geen" } },
-  { id:"senex",    nm:"Senex",     w:2, sheets:[["People1.png",6],["People4.png",4]], look:{ armor:"robe",   baard:"baard", haarkleur:"grijs", cape:"kort", capekleur:"blauw" } },
-  { id:"anus",     nm:"Anus",      w:1, sheets:[["People1.png",7]], look:{ armor:"robe",   baard:"geen",  haar:"knot", haarkleur:"grijs", cape:"geen" } },
-  { id:"mercator", nm:"Mercator",  w:2, sheets:[["People1.png",4],["People4.png",6]], look:{ armor:"middel", baard:"snor",  cape:"kort",   capekleur:"oranje" } },
-  { id:"pastor",   nm:"Pastor",    w:2, sheets:[["People4.png",0]], look:{ armor:"vodden", baard:"geen",  cape:"kort",   capekleur:"groen" } },
-  { id:"miles",    nm:"Custos",    w:0, still:true, sheets:[["People3.png",6]], look:{ armor:"middel", baard:"baard", helm:"standard", cape:"kort", capekleur:"rood", wapen:"zwaard" } },
-  { id:"rex",      nm:"Rex",       w:0, still:true, sheets:[["People3.png",0]], look:{ armor:"ceremonieel", baard:"baard", haarkleur:"grijs", cape:"lang", capekleur:"goud", wapen:"geen" } },
-  { id:"sacerdos", nm:"Sacerdos",  w:1, sheets:[["People2.png",2],["People4.png",7]], look:{ armor:"robe",   baard:"geen",  haar:"kort", cape:"lang", capekleur:"paars" } },
+  { id:"agricola", nm:"Boer",  w:3, sheets:[["People3.png",4],["People4.png",2]], look:{ armor:"vodden", baard:"baard", haarkleur:"bruin", cape:"geen" } },
+  { id:"mater",    nm:"Moeder",     w:3, sheets:[["People1.png",5],["People4.png",3],["People4.png",5]], look:{ armor:"robe",   baard:"geen",  haar:"vlecht", cape:"geen" } },
+  { id:"puer",     nm:"Jongen",      w:2, sheets:[["People1.png",0]], look:{ armor:"vodden", baard:"geen",  haar:"kort",   cape:"geen" } },
+  { id:"puella",   nm:"Meisje",    w:2, sheets:[["People4.png",1]], look:{ armor:"robe",   baard:"geen",  haar:"vlecht", cape:"geen" } },
+  { id:"senex",    nm:"Oude man",     w:2, sheets:[["People1.png",6],["People4.png",4]], look:{ armor:"robe",   baard:"baard", haarkleur:"grijs", cape:"kort", capekleur:"blauw" } },
+  { id:"anus",     nm:"Oude vrouw",      w:1, sheets:[["People1.png",7]], look:{ armor:"robe",   baard:"geen",  haar:"knot", haarkleur:"grijs", cape:"geen" } },
+  { id:"mercator", nm:"Koopman",  w:2, sheets:[["People1.png",4],["People4.png",6]], look:{ armor:"middel", baard:"snor",  cape:"kort",   capekleur:"oranje" } },
+  { id:"pastor",   nm:"Herder",    w:2, sheets:[["People4.png",0]], look:{ armor:"vodden", baard:"geen",  cape:"kort",   capekleur:"groen" } },
+  { id:"miles",    nm:"Wachter",    w:0, still:true, sheets:[["People3.png",6]], look:{ armor:"middel", baard:"baard", helm:"standard", cape:"kort", capekleur:"rood", wapen:"zwaard" } },
+  { id:"rex",      nm:"Koning",       w:0, still:true, sheets:[["People3.png",0]], look:{ armor:"ceremonieel", baard:"baard", haarkleur:"grijs", cape:"lang", capekleur:"goud", wapen:"geen" } },
+  { id:"sacerdos", nm:"Priester",  w:1, sheets:[["People2.png",2],["People4.png",7]], look:{ armor:"robe",   baard:"geen",  haar:"kort", cape:"lang", capekleur:"paars" } },
 ];
 const CASTRA_AMB_LINES = {
-  agricola:[ [ "Het graan is dit jaar goed.", "The grain is good this year." ], [ "De grond is goed, maar het werk is zwaar.", "The soil is good, but the work is hard." ], [ "Pluvia agros iuvat.", "De regen helpt de akkers." ] ],
+  agricola:[ [ "Het graan is dit jaar goed.", "The grain is good this year." ], [ "De grond is goed, maar het werk is zwaar.", "The soil is good, but the work is hard." ], [ "De regen helpt de akkers.", "The rain helps the fields." ] ],
   mater:[ [ "Mijn kinderen spelen op het veld.", "My children are playing in the field." ], [ "Ik bak brood. Wil je brood, gast?", "I bake bread. Do you want bread, guest?" ], [ "Er is vrede. Ik ben blij.", "There is peace. I am happy." ] ],
   puer:[ [ "Hallo! Ben jij een soldaat?", "Hello! Are you a soldier?" ], [ "Ik wil ook soldaat worden!", "I want to become a soldier too!" ], [ "Ik speel met mijn vrienden.", "I am playing with my friends." ] ],
   senex:[ [ "Vroeger was ik soldaat, maar nu ben ik oud.", "I used to be a soldier, but now I am old." ], [ "Ik heb veel gezien in mijn leven.", "I have seen a lot in my life." ], [ "Luister, gast: wijsheid is beter dan goud.", "Listen, guest: wisdom is better than gold." ] ],
   mercator:[ [ "Ik ben koopman. Ik heb veel spullen.", "I am a merchant. I have many goods." ], [ "Ik breng wijn en brood naar de stad.", "I bring wine and bread to the city." ], [ "De weg is lang, maar het geld is goed.", "The road is long, but the money is good." ] ],
   puella:[ [ "Mijn moeder bakt brood.", "My mother bakes bread." ], [ "De bloemen zijn mooi!", "The flowers are beautiful!" ], [ "Ik werk met mijn moeder op het veld.", "I work with my mother in the field." ] ],
-  anus:[ [ "Ik hou van mijn kleinkinderen.", "I love my grandchildren." ], [ "Het leven is lang, maar goed.", "Life is long, but good." ], [ "Cave, hospes: via longa est.", "Pas op, gast: de weg is lang." ] ],
+  anus:[ [ "Ik hou van mijn kleinkinderen.", "I love my grandchildren." ], [ "Het leven is lang, maar goed.", "Life is long, but good." ], [ "Pas op, gast: de weg is lang.", "Be careful, guest: the road is long." ] ],
   sacerdos:[ [ "Ik vereer de goden en vraag om vrede.", "I worship the gods and ask for peace." ], [ "De goden helpen je, gast.", "The gods help you, guest." ], [ "Je moet in de tempel bidden.", "You must pray in the temple." ] ],
   miles:[ [ "Ik ben een wachter. Ik bewaar de vrede.", "I am a guard. I keep the peace." ], [ "Vijanden zijn dichtbij. Pas op!", "Enemies are close. Watch out!" ], [ "Ik zoek dappere soldaten.", "I am looking for brave soldiers." ] ],
   rex:[ [ "Ik ben de koning. Mijn rijk is groot.", "I am the king. My kingdom is great." ], [ "Ik zoek dappere soldaten.", "I am looking for brave soldiers." ], [ "De vrede van mijn rijk is mij dierbaar.", "The peace of my kingdom is dear to me." ] ],
   pastor:[ [ "Ik zorg voor mijn schapen.", "I take care of my sheep." ], [ "Er is een wolf in het bos! Pas op, gast!", "There is a wolf in the forest! Watch out, guest!" ], [ "De zon is heet. Ik zoek water.", "The sun is hot. I am looking for water." ] ],
 };
 const CASTRA_AMB_REGION = {
-  latium:[ "Rome is een grote stad.", "Rome is a big city." ], graecia:[ "Mare pulchrum est in Graecia.", "De zee is mooi in Griekenland." ],
+  latium:[ "Rome is een grote stad.", "Rome is a big city." ], graecia:[ "De zee is mooi in Griekenland.", "The sea is beautiful in Greece." ],
   troia:[ "De muren van Troje zijn hoog.", "The walls of Troy are high." ], gallia:[ "De bossen van Gallië zijn groot.", "The forests of Gaul are big." ],
   aegyptus:[ "De Nijl voedt onze akkers.", "The Nile feeds our fields." ], persis:[ "Onze koning is groot.", "Our king is great." ],
-  africa:[ "Sol in Africa calidus est.", "De zon is heet in Afrika." ], roma:[ "Het Forum zit vol mensen.", "The Forum is full of people." ],
+  africa:[ "De zon is heet in Afrika.", "The sun is hot in Africa." ], roma:[ "Het Forum zit vol mensen.", "The Forum is full of people." ],
   laconia:[ "De Spartanen zijn dapper.", "The Spartans are brave." ], germania:[ "Het bos is dicht. Pas op!", "The forest is dense. Watch out!" ],
   themiscyra:[ "De Amazones rijden over de velden.", "The Amazons ride across the fields." ],
 };
 /* ---------- dieren, een kar met paard en boten (Nature.png en Vehicle.png, RPG Maker MV) ---------- */
 // Dieren lopen rond (hond, kat, kip, paard); een paar staan er alleen voor de sfeer. Aanspreken geeft een Latijnse zin.
 const CASTRA_AMB_ANIMALS = [
-  { id:"canis",   nm:"Canis",   w:3, sheet:["Nature.png",0], radius:4, mv:35, lines:[ [ "Vau, vau!", "Woef, woef!" ], [ "Canis fidelis est.", "De hond is trouw." ] ] },
-  { id:"felis",   nm:"Felis",   w:2, sheet:["Nature.png",1], radius:3, mv:25, lines:[ [ "Felis dormit.", "De kat slaapt." ], [ "Mia-u!", "Miauw!" ] ] },
-  { id:"gallina", nm:"Gallina", w:3, sheet:["Nature.png",2], radius:2, mv:45, lines:[ [ "Gallina ova parit.", "De kip legt eieren." ], [ "Cotcot!", "Tok tok!" ] ] },
-  { id:"equus",   nm:"Equus",   w:2, sheet:["Nature.png",3], radius:2, mv:18, lines:[ [ "Het paard hinnikt.", "The horse neighs." ], [ "Het paard eet gras.", "The horse eats grass." ] ] },
+  { id:"canis",   nm:"Hond",   w:3, sheet:["Nature.png",0], radius:4, mv:35, lines:[ [ "Woef, woef!", "Woof, woof!" ], [ "De hond is trouw.", "The dog is loyal." ] ] },
+  { id:"felis",   nm:"Kat",   w:2, sheet:["Nature.png",1], radius:3, mv:25, lines:[ [ "De kat slaapt.", "The cat is sleeping." ], [ "Miauw!", "Meow!" ] ] },
+  { id:"gallina", nm:"Kip", w:3, sheet:["Nature.png",2], radius:2, mv:45, lines:[ [ "De kip legt eieren.", "The hen lays eggs." ], [ "Tok tok!", "Cluck cluck!" ] ] },
+  { id:"equus",   nm:"Paard",   w:2, sheet:["Nature.png",3], radius:2, mv:18, lines:[ [ "Het paard hinnikt.", "The horse neighs." ], [ "Het paard eet gras.", "The horse eats grass." ] ] },
 ];
 const CASTRA_AMB_VEH = {
-  horse:  { id:"equus_carri", nm:"Equus", sheet:["Vehicle.png",4], lines:[ [ "Het paard trekt de kar.", "The horse pulls the cart." ] ] },
-  wagon:  { id:"carrus",      nm:"Carrus", sheet:["Vehicle.png",5], lines:[ [ "Dit is de kar van de koopman.", "This is the merchant's cart." ], [ "Carrus multas merces portat.", "De kar vervoert veel waren." ] ] },
-  boats:  [ { id:"linter", nm:"Linter", sheet:["Vehicle.png",0] }, { id:"ratis", nm:"Ratis", sheet:["Vehicle.png",7] }, { id:"navis", nm:"Navis", sheet:["Vehicle.png",1] } ],
+  horse:  { id:"equus_carri", nm:"Paard", sheet:["Vehicle.png",4], lines:[ [ "Het paard trekt de kar.", "The horse pulls the cart." ] ] },
+  wagon:  { id:"carrus",      nm:"Kar", sheet:["Vehicle.png",5], lines:[ [ "Dit is de kar van de koopman.", "This is the merchant's cart." ], [ "De kar vervoert veel waren.", "The cart carries many goods." ] ] },
+  boats:  [ { id:"linter", nm:"Bootje", sheet:["Vehicle.png",0] }, { id:"ratis", nm:"Vlot", sheet:["Vehicle.png",7] }, { id:"navis", nm:"Schip", sheet:["Vehicle.png",1] } ],
 };
 const CASTRA_AMB = { list:[], region:null, timer:null, id:0, sheetOk:false };
 const CASTRA_AMB_HAIR = ["kort","lang","middel","knot","vlecht","wild"], CASTRA_AMB_COL = ["zwart","bruin","blond","rood","grijs"];
@@ -278,6 +278,6 @@ castraNpcTalk = function(id){
   "melior":"beter", "res":"spullen, dingen", "vinum":"wijn", "longa":"lang", "oves":"schapen", "curo":"ik zorg voor", "cave":"pas op", "sol":"zon", "calet":"is heet", "mare":"zee", "pulchrum":"mooi",
   "alti":"hoog", "silvae":"bossen", "galliae":"van Gallië", "magnae":"groot", "nilus":"de Nijl", "alit":"voedt", "noster":"onze", "calidus":"heet", "hominum":"van mensen", "spartiatae":"Spartanen", "densa":"dicht",
   "equitant":"rijden", "campos":"velden (4e naamval)",
-  "meos":"mijn (4e naamval)", "pacem":"vrede (4e naamval)", "canis":"hond", "felis":"kat", "gallina":"kip", "equus":"paard", "equum":"paard (4e naamval)", "fidelis":"trouw", "dormit":"slaapt", "ova":"eieren", "parit":"legt", "herbam":"gras (4e naamval)", "edit":"eet", "hinnit":"hinnikt",
+  "meos":"mijn (4e naamval)", "pacem":"vrede (4e naamval)", "canis":"hond", "felis":"kat", "gallina":"kip", "equus":"paard", "equum":"horse (accusative)", "fidelis":"trouw", "dormit":"slaapt", "ova":"eieren", "parit":"legt", "herbam":"gras (4e naamval)", "edit":"eet", "hinnit":"hinnikt",
   "carrus":"kar", "mercatoris":"van de koopman", "portat":"vervoert", "trahit":"trekt", "carrum":"kar (4e naamval)", "vau":"woef", "mia":"mauw", "cotcot":"tok tok", "linter":"roeiboot", "ratis":"vlot", "navis":"schip", "puella":"meisje", "anus":"oude vrouw", "sacerdos":"priester(es)", "coquit":"bakt", "flores":"bloemen", "pulchri":"mooi", "laboro":"ik werk", "cum":"met", "matre":"moeder (6e naamval)", "nepotes":"kleinkinderen",
   "amo":"ik hou van", "vita":"leven", "sed":"maar", "via":"weg", "deos":"goden (4e naamval)", "colo":"ik vereer", "peto":"ik vraag", "dei":"goden", "iuvant":"helpen", "templo":"tempel (6e naamval)", "orare":"bidden", "debes":"je moet" });

@@ -136,4 +136,4 @@ castraBFinish = function(){
   const box = el("cbResult"); if(!box) return;
   try{ box.insertAdjacentHTML("beforeend", castraBReportHTML(B)); castraBReportAnimate(B); }catch(e){}
 };
-Object.assign(CASTRA_GLOSS, { "quid":"wat", "difficile":"moeilijk", "erat":"was", "gratias":"dank", "tibi":"aan jou", "ago":"ik doe" });
+Object.assign(CASTRA_GLOSS, { "quid":"wat", "difficile":"moeilijk", "erat":"was", "gratias":"dank", "tibi":"to you", "ago":"I do" });

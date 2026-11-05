@@ -22,11 +22,11 @@ const CASTRA_START_RES = { frumentum:100, lignum:150, aes:150, gloria:0 };
    vita = HP, impetus = schade, tutela = schild/verdediging;
    celeritas (snelheid) en ambitus (bereik) alleen voor tower defence. */
 const CASTRA_STATS = [
-  { id:"vita",      nm:"Vita",      bm:"HP" },
-  { id:"impetus",   nm:"Impetus",   bm:"schade" },
-  { id:"tutela",    nm:"Tutela",    bm:"schild" },
-  { id:"celeritas", nm:"Celeritas", bm:null },
-  { id:"ambitus",   nm:"Ambitus",   bm:null },
+  { id:"vita",      nm:"Leven",      bm:"HP" },
+  { id:"impetus",   nm:"Kracht",   bm:"schade" },
+  { id:"tutela",    nm:"Verdediging",    bm:"schild" },
+  { id:"celeritas", nm:"Snelheid", bm:null },
+  { id:"ambitus",   nm:"Bereik",   bm:null },
 ];
 
 /* ---- Gebouwen ----
@@ -37,43 +37,43 @@ const CASTRA_STATS = [
    maxLvl: bovengrens; alle gebouwen behalve het praetorium zijn bovendien
            begrensd door het praetorium-level. */
 const CASTRA_BUILDINGS = [
-  { id:"praetorium",  nm:"Praetorium",  nl:"Hoofdgebouw", icon:"🏛️", phase:1, slot:{x:3,y:1},  maxLvl:10,
+  { id:"praetorium",  nm:"Hoofdgebouw",  nl:"Main building", icon:"🏛️", phase:1, slot:{x:3,y:1},  maxLvl:10,
     prod:{ res:"frumentum", perHour:8 }, cost:{ lignum:60, aes:60 },
-    lat:"Hic est praetorium. Ibi dux habitat.", desc:"Bepaalt het maximale level van alle andere gebouwen." },
+    lat:"Bepaalt het maximale level van alle andere gebouwen.", desc:"Sets the maximum level of all other buildings." },
   { id:"contubernia", nm:"Barakken", nl:"Barracks",    icon:"⛺", phase:1, slot:{x:10,y:2}, maxLvl:10,
     cost:{ lignum:50, aes:30 },
-    lat:"Hic milites dormiunt.", desc:"Hier staan je soldaten. Meer level = meer soldaten tegelijk." },
+    lat:"Hier staan je soldaten. Meer level = meer soldaten tegelijk.", desc:"Your soldiers stay here. More levels = more soldiers at the same time." },
   { id:"lignatio",    nm:"Houthakker",    nl:"Woodcutter",  icon:"🪓", phase:1, slot:{x:13,y:1}, maxLvl:10,
     prod:{ res:"lignum", perHour:20 }, cost:{ lignum:40, aes:40 },
-    lat:"Hic ligna caeduntur.", desc:"Levert lignum (hout)." },
+    lat:"Levert hout.", desc:"Produces wood." },
   { id:"campus",      nm:"Trainen en evolueren",      nl:"Training and evolving", icon:"🏟️", phase:1, slot:{x:2,y:6}, maxLvl:10,
     cost:{ lignum:70, aes:50 },
-    lat:"Hic milites exercentur.", desc:"Soldaten trainen en laten evolueren. (Volgt in een latere stap.)" },
+    lat:"Soldaten trainen en laten evolueren. (Volgt in een latere stap.)", desc:"Train soldiers and let them evolve. (Coming in a later step.)" },
   { id:"metallum",    nm:"Mijn",    nl:"Mine",        icon:"⛏️", phase:1, slot:{x:12,y:8}, maxLvl:10,
     prod:{ res:"aes", perHour:20 }, cost:{ lignum:50, aes:40 },
-    lat:"Hic aes effoditur.", desc:"Levert aes (brons)." },
+    lat:"Levert brons.", desc:"Produces bronze." },
   { id:"horreum",     nm:"Opslag",     nl:"Storage",      icon:"🏺", phase:1, slot:{x:4,y:8},  maxLvl:10,
     cost:{ lignum:60, aes:30 },
-    lat:"Hic frumentum servatur.", desc:"Verhoogt het opslagmaximum van je grondstoffen." },
+    lat:"Verhoogt het opslagmaximum van je grondstoffen.", desc:"Raises the storage limit of your resources." },
   { id:"principia",   nm:"Klassenevenementen",   nl:"Class events", icon:"🚩", phase:1, slot:{x:7,y:5}, maxLvl:1, fixed:true,
-    lat:"Hic legio convenit.", desc:"Midden in het kamp: hier start straks de Legio (klassenevenement)." },
+    lat:"Midden in het kamp: hier start straks de Legio (klassenevenement).", desc:"In the middle of the camp: the Legio (class event) will start here." },
   // Nog niet geplaatst (zie CASTRA_HEROUM.md, tabel Gebouwen):
   { id:"ludus",        nm:"Nieuwe aanvallen leren",        nl:"Learning new attacks", phase:9, slot:null, maxLvl:10, cost:{ lignum:80, aes:60 } },
-  { id:"fabrica",      nm:"Fabrica",      nl:"Smederij",       phase:9, slot:null, maxLvl:10, cost:{ lignum:80, aes:80 } },
-  { id:"heroum",       nm:"Heroum",       nl:"Heldenzaal",     icon:"⭐", phase:1, slot:{x:9,y:7}, maxLvl:10, cost:{ lignum:100, aes:100 },
-    lat:"Hic heroes habitant.", desc:"Hier wonen je helden: praat met ze, wijs ze toe aan een gebouw en neem ze mee het gevecht in." },
+  { id:"fabrica",      nm:"Smederij",      nl:"Forge",       phase:9, slot:null, maxLvl:10, cost:{ lignum:80, aes:80 } },
+  { id:"heroum",       nm:"Heldenzaal",       nl:"Hall of Heroes",     icon:"⭐", phase:1, slot:{x:9,y:7}, maxLvl:10, cost:{ lignum:100, aes:100 },
+    lat:"Hier wonen je helden: praat met ze, wijs ze toe aan een gebouw en neem ze mee het gevecht in.", desc:"Your heroes live here: talk to them, assign them to a building and take them into battle." },
   { id:"valetudinarium",nm:"Herstel",nl:"Healing",      icon:"🩹", phase:1, slot:{x:2,y:8}, maxLvl:10, cost:{ lignum:60, aes:40 },
-    lat:"Hic vulnerati curantur.", desc:"Gewonde soldaten herstellen hier sneller; tegen betaling genezen ze meteen." },
+    lat:"Gewonde soldaten herstellen hier sneller; tegen betaling genezen ze meteen.", desc:"Wounded soldiers recover faster here; for a price they heal at once." },
   { id:"dilectus",     nm:"Werving",     nl:"Recruitment",        icon:"📜", phase:1, slot:{x:13,y:3}, maxLvl:10, cost:{ lignum:60, aes:60 },
-    lat:"Hic milites novi conscribuntur.", desc:"Elke paar uur nieuwe rekruten; de trainer beoordeelt hun aanleg in het Latijn." },
-  { id:"templum",      nm:"Templum",      nl:"Zegen van een god", phase:9, slot:null, maxLvl:10, cost:{ lignum:90, aes:90 } },
+    lat:"Elke paar uur nieuwe rekruten; de trainer beoordeelt hun aanleg.", desc:"New recruits every few hours; the trainer judges their talent." },
+  { id:"templum",      nm:"Zegen van een god",      nl:"Blessing of a god", phase:9, slot:null, maxLvl:10, cost:{ lignum:90, aes:90 } },
   { id:"forum",        nm:"Ruilen",        nl:"Trading",         phase:9, slot:null, maxLvl:10, cost:{ lignum:70, aes:70 } },
   { id:"navalia",      nm:"Scheepswerf",      nl:"Shipyard",    icon:"⚓", phase:1, slot:{x:12,y:11}, start:0, maxLvl:10, cost:{ lignum:120, aes:80 },
-    lat:"Hic naves aedificantur.", desc:"Scheepswerf: ontgrendelt de vlootvormen (Remex, Classiarius, Navarchus)." },
+    lat:"Scheepswerf: ontgrendelt de vlootvormen (Remex, Classiarius, Navarchus).", desc:"Shipyard: unlocks the fleet forms (Remex, Classiarius, Navarchus)." },
   { id:"stabula",      nm:"Stallen",      nl:"Stables",        icon:"🐎", phase:1, slot:{x:2,y:11}, start:0, maxLvl:10, cost:{ lignum:90, aes:60 },
-    lat:"Hic equi et currus parantur.", desc:"Stallen: ontgrendelt ruiterij, strijdwagens en olifanten in de troepenbomen." },
-  { id:"bibliotheca",  nm:"Bibliotheca",  nl:"Codex",          phase:9, slot:null, maxLvl:10, cost:{ lignum:70, aes:50 } },
-  { id:"murus",        nm:"Murus",        nl:"Verdediging",    phase:9, slot:null, maxLvl:10, cost:{ lignum:100, aes:60 } },
+    lat:"Stallen: ontgrendelt ruiterij, strijdwagens en olifanten in de troepenbomen.", desc:"Stables: unlocks cavalry, chariots and elephants in the troop trees." },
+  { id:"bibliotheca",  nm:"Codex",  nl:"Codex",          phase:9, slot:null, maxLvl:10, cost:{ lignum:70, aes:50 } },
+  { id:"murus",        nm:"Verdediging",        nl:"Defence",    phase:9, slot:null, maxLvl:10, cost:{ lignum:100, aes:60 } },
   { id:"arcus",        nm:"Decoratie", nl:"Decoration", phase:9, slot:null, maxLvl:1, cost:{ lignum:0, aes:0 } },
 ];
 
@@ -83,8 +83,8 @@ const CASTRA_MAP = {
   start:{ x:8, y:13, dir:"up" },
   // Poorten liggen in de kampmuur; erdoor lopen = activiteit kiezen.
   gates:[
-    { id:"decumana",  nm:"Porta decumana",  to:"venatio",  nl:"Naar de jacht (venatio)",     tiles:[{x:7,y:0},{x:8,y:0}] },
-    { id:"praetoria", nm:"Porta praetoria", to:"proelium", nl:"Naar de campagnekaart (proelium)", tiles:[{x:15,y:5},{x:15,y:6}] },
+    { id:"decumana",  nm:"Naar de jacht (venatio)",  to:"venatio",  nl:"To the hunt (venatio)",     tiles:[{x:7,y:0},{x:8,y:0}] },
+    { id:"praetoria", nm:"Naar de campagnekaart (proelium)", to:"proelium", nl:"To the campaign map (proelium)", tiles:[{x:15,y:5},{x:15,y:6}] },
   ],
 };
 
@@ -135,16 +135,16 @@ const CASTRA_STAGE_MULT = [1, 1.6, 2.4];
 const CASTRA_INDOLES_MAX = 15;
 /* Karakters: +10% / −10%. */
 const CASTRA_INGENIA = [
-  { id:"ferox",    nm:"Ferox",    up:"impetus",   down:"tutela" },
-  { id:"cautus",   nm:"Cautus",   up:"tutela",    down:"celeritas" },
-  { id:"celer",    nm:"Celer",    up:"celeritas", down:"vita" },
-  { id:"robustus", nm:"Robustus", up:"vita",      down:"celeritas" },
-  { id:"acer",     nm:"Acer",     up:"impetus",   down:"vita" },
-  { id:"longus",   nm:"Longus",   up:"ambitus",   down:"tutela" },
-  { id:"firmus",   nm:"Firmus",   up:"tutela",    down:"impetus" },
-  { id:"agilis",   nm:"Agilis",   up:"celeritas", down:"impetus" },
-  { id:"fortis",   nm:"Fortis",   up:"vita",      down:"ambitus" },
-  { id:"sagax",    nm:"Sagax",    up:"ambitus",   down:"vita" },
+  { id:"ferox",    nm:"Wild",    up:"impetus",   down:"tutela" },
+  { id:"cautus",   nm:"Voorzichtig",   up:"tutela",    down:"celeritas" },
+  { id:"celer",    nm:"Vlug",    up:"celeritas", down:"vita" },
+  { id:"robustus", nm:"Stevig", up:"vita",      down:"celeritas" },
+  { id:"acer",     nm:"Fel",     up:"impetus",   down:"vita" },
+  { id:"longus",   nm:"Lang",   up:"ambitus",   down:"tutela" },
+  { id:"firmus",   nm:"Standvastig",   up:"tutela",    down:"impetus" },
+  { id:"agilis",   nm:"Behendig",   up:"celeritas", down:"impetus" },
+  { id:"fortis",   nm:"Sterk",   up:"vita",      down:"ambitus" },
+  { id:"sagax",    nm:"Scherpzinnig",    up:"ambitus",   down:"vita" },
 ];
 const CASTRA_INSIGNIS_CHANCE = 1/200;
 
@@ -160,27 +160,27 @@ const CASTRA_HEROES = [
   { id:"perseus",   nm:"Perseus",   region:"graecia" },
   { id:"theseus",   nm:"Theseus",   region:"graecia" },
   { id:"atalanta",  nm:"Atalanta",  region:"graecia" },
-  { id:"iason",     nm:"Iason",     region:"graecia" },
+  { id:"iason",     nm:"Jason",     region:"graecia" },
   { id:"achilles",  nm:"Achilles",  region:"troia" },
   { id:"hector",    nm:"Hector",    region:"troia" },
-  { id:"ulixes",    nm:"Ulixes",    region:"troia" },
+  { id:"ulixes",    nm:"Odysseus",    region:"troia" },
   { id:"penthesilea",nm:"Penthesilea", region:"troia" },
 ];
 
 /* ---- Regio's (venatio/proelium; inhoud volgt in fase 1b/2) ---- */
 const CASTRA_REGIONS = [
-  { id:"latium",  nm:"Latium",  nl:"Midden-Italië" },
-  { id:"graecia", nm:"Graecia", nl:"Griekenland" },
+  { id:"latium",  nm:"Midden-Italië",  nl:"Central Italy" },
+  { id:"graecia", nm:"Griekenland", nl:"Greece" },
   { id:"troia",   nm:"Troje",   nl:"Troy" },
   { id:"gallia",  nm:"Gallië",  nl:"Gaul" },
   { id:"aegyptus", nm:"Egypte", nl:"Egypt" },
   { id:"persis", nm:"Perzië", nl:"Persia" },
-  { id:"africa", nm:"Africa", nl:"Noord-Afrika" },
+  { id:"africa", nm:"Noord-Afrika", nl:"North Africa" },
   { id:"roma",   nm:"Rome",    nl:"Rome" },
   { id:"laconia", nm:"Laconië", nl:"Laconia" },
   { id:"germania", nm:"Germanië", nl:"Germania" },
   { id:"themiscyra", nm:"Themiscyra", nl:"Themiscyra" },
-  { id:"inferi",  nm:"Inferi",  nl:"De Onderwereld" },
+  { id:"inferi",  nm:"De Onderwereld",  nl:"The Underworld" },
 ];
 
 /* ---- Balans ---- */

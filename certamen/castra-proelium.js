@@ -48,7 +48,7 @@ const CASTRA_P_MAPS = {
    troepenbomen (tier en level groeien mee met de regio); hpMult stemt de zwaarte af (gesimuleerd, zie CASTRA_HEROUM.md). */
 const _fid = (v,n)=>castraFormByName(v,n).id;
 const CASTRA_P_MISSIONS = [
-  { id:"m1", nm:"Defensio castrorum", nl:"De verdediging van het kamp", map:"a", seed:1101, hpMult:0.45,
+  { id:"m1", nm:"De verdediging van het kamp", nl:"The defence of the camp", map:"a", seed:1101, hpMult:0.45,
     waves:[ [ {line:_fid("rom","Hastatus"),n:4,gap:26,lvl:3} ],
             [ {line:_fid("rom","Eques"),n:3,gap:22,lvl:3} ],
             [ {line:_fid("rom","Veles"),n:4,gap:24,lvl:3}, {line:_fid("rom","Hastatus"),n:2,gap:26,lvl:3} ] ],
@@ -59,7 +59,7 @@ const CASTRA_P_MISSIONS = [
             [ {line:_fid("rom","Veles"),n:5,gap:20,lvl:10} ],
             [ {line:_fid("rom","Eques"),n:3,gap:18,lvl:10}, {line:_fid("rom","Veles"),n:3,gap:20,lvl:10}, {line:_fid("rom","Hastatus"),n:3,gap:22,lvl:10} ] ],
     reward:{ aes:70, frumentum:50, gloria:5 } },
-  { id:"m3", nm:"Oppugnatio Ardeae", nl:"De aanval op Ardea", map:"a", seed:1303, hpMult:1.09, needs:"m2",
+  { id:"m3", nm:"De aanval op Ardea", nl:"The attack on Ardea", map:"a", seed:1303, hpMult:1.09, needs:"m2",
     waves:[ [ {line:_fid("rom","Princeps"),n:6,gap:22,lvl:14} ],
             [ {line:_fid("myt","Satyrus"),n:4,gap:20,lvl:14}, {line:_fid("rom","Funditor"),n:3,gap:20,lvl:14} ],
             [ {line:_fid("rom","Decurio"),n:5,gap:16,lvl:14} ],
@@ -79,7 +79,7 @@ const CASTRA_P_MISSIONS = [
             [ {line:_fid("gla","Primus palus"),n:4,gap:18,lvl:20}, {line:_fid("gla","Hoplomachus"),n:6,gap:12,lvl:20}, {line:_fid("gla","Rudiarius"),n:3,gap:16,lvl:20} ] ],
     reward:{ aes:1100, frumentum:770, gloria:54 } },
   /* Gallia (opent na ro2) */
-  { id:"ga1", region:"gallia", nm:"Silva Gallica", nl:"Het Gallische woud", map:"b", seed:4101, hpMult:5.81, needs:"ro2",
+  { id:"ga1", region:"gallia", nm:"Het Gallische woud", nl:"The Gallic forest", map:"b", seed:4101, hpMult:5.81, needs:"ro2",
     waves:[ [ {line:_fid("gal","Gaesatus"),n:6,gap:20,lvl:23} ],
             [ {line:_fid("gal","Eques Gallus"),n:5,gap:18,lvl:23} ],
             [ {line:_fid("gal","Bardus"),n:5,gap:18,lvl:23}, {line:_fid("gal","Bellator Gallus"),n:4,gap:20,lvl:23} ],
@@ -92,20 +92,20 @@ const CASTRA_P_MISSIONS = [
             [ {line:_fid("gal","Soldurius"),n:3,gap:20,lvl:26}, {line:_fid("ger","Batavus"),n:5,gap:14,lvl:26}, {line:_fid("gal","Bellator Gallus"),n:6,gap:14,lvl:26} ] ],
     reward:{ aes:420, frumentum:290, gloria:24 } },
   /* Germania (opent na ga2) */
-  { id:"gm1", region:"germania", nm:"Saltus Teutoburgiensis", nl:"Het Teutoburgerwoud", map:"b", seed:10101, hpMult:2.55, needs:"ga2",
+  { id:"gm1", region:"germania", nm:"Het Teutoburgerwoud", nl:"The Teutoburg Forest", map:"b", seed:10101, hpMult:2.55, needs:"ga2",
     waves:[ [ {line:_fid("ger","Centenus"),n:7,gap:14,lvl:29} ],
             [ {line:_fid("ger","Batavus"),n:6,gap:14,lvl:29}, {line:_fid("ger","Saga"),n:3,gap:20,lvl:29} ],
             [ {line:_fid("ger","Centenus"),n:7,gap:12,lvl:29}, {line:_fid("myt","Lupus Martius"),n:3,gap:20,lvl:29} ],
             [ {line:_fid("ger","Comes"),n:3,gap:20,lvl:29}, {line:_fid("ger","Batavus"),n:6,gap:12,lvl:29}, {line:_fid("ger","Vates Germana"),n:3,gap:18,lvl:29} ] ],
     reward:{ aes:1400, frumentum:980, gloria:66 } },
-  { id:"gm2", region:"germania", nm:"Ad Rhenum", nl:"Aan de Rijn", map:"a", seed:10202, hpMult:5.69, needs:"gm1",
+  { id:"gm2", region:"germania", nm:"Aan de Rijn", nl:"On the Rhine", map:"a", seed:10202, hpMult:5.69, needs:"gm1",
     waves:[ [ {line:_fid("ger","Comes"),n:6,gap:12,lvl:32} ],
             [ {line:_fid("ger","Batavus"),n:8,gap:10,lvl:32}, {line:_fid("ger","Vates Germana"),n:3,gap:18,lvl:32} ],
             [ {line:_fid("ger","Centenus"),n:9,gap:10,lvl:32} ],
             [ {line:_fid("ger","Comes"),n:5,gap:14,lvl:32}, {line:_fid("ger","Batavus"),n:8,gap:10,lvl:32}, {line:_fid("myt","Draco"),n:2,gap:26,lvl:32} ] ],
     reward:{ aes:1500, frumentum:1050, gloria:70 } },
   /* Graecia (opent na gm2, per schip vanuit Latium) */
-  { id:"g1", region:"graecia", nm:"De eerste labor", nl:"The first labour", map:"b", seed:2101, hpMult:25.43, needs:"gm2",
+  { id:"g1", region:"graecia", nm:"De eerste arbeid", nl:"The first labour", map:"b", seed:2101, hpMult:25.43, needs:"gm2",
     waves:[ [ {line:_fid("gra","Epilectus"),n:5,gap:22,lvl:35} ],
             [ {line:_fid("gra","Toxota"),n:5,gap:20,lvl:35} ],
             [ {line:_fid("gra","Prodromus"),n:4,gap:18,lvl:35}, {line:_fid("gra","Peltasta"),n:4,gap:20,lvl:35} ],
@@ -124,7 +124,7 @@ const CASTRA_P_MISSIONS = [
             [ {line:_fid("spa","Trecentus"),n:6,gap:12,lvl:39} ],
             [ {line:_fid("spa","Polemarchus"),n:3,gap:18,lvl:39}, {line:_fid("spa","Trecentus"),n:6,gap:12,lvl:39}, {line:_fid("spa","Sciritas"),n:4,gap:12,lvl:39} ] ],
     reward:{ aes:1200, frumentum:840, gloria:58 } },
-  { id:"la2", region:"laconia", nm:"Sparta", nl:"De strijd om Sparta", map:"a", seed:9202, hpMult:12.72, needs:"la1",
+  { id:"la2", region:"laconia", nm:"De strijd om Sparta", nl:"The battle for Sparta", map:"a", seed:9202, hpMult:12.72, needs:"la1",
     waves:[ [ {line:_fid("spa","Trecentus"),n:8,gap:12,lvl:41} ],
             [ {line:_fid("spa","Sciritas"),n:8,gap:10,lvl:41}, {line:_fid("spa","Polemarchus"),n:2,gap:20,lvl:41} ],
             [ {line:_fid("spa","Trecentus"),n:7,gap:10,lvl:41}, {line:_fid("myt","Lupus Martius"),n:3,gap:20,lvl:41} ],
@@ -137,20 +137,20 @@ const CASTRA_P_MISSIONS = [
             [ {line:_fid("tro","Sagittarius Lycius"),n:6,gap:16,lvl:43} ],
             [ {line:_fid("tro","Custos Pergami"),n:6,gap:16,lvl:43}, {line:_fid("tro","Bellator curru"),n:4,gap:16,lvl:43}, {line:_fid("gra","Lochagus"),n:2,gap:20,lvl:43} ] ],
     reward:{ aes:240, frumentum:160, gloria:14 } },
-  { id:"t2", region:"troia", nm:"Equus ligneus", nl:"Het houten paard", map:"a", seed:3202, hpMult:3.49, needs:"t1",
+  { id:"t2", region:"troia", nm:"Het houten paard", nl:"The wooden horse", map:"a", seed:3202, hpMult:3.49, needs:"t1",
     waves:[ [ {line:_fid("tro","Bellator curru"),n:7,gap:16,lvl:44} ],
             [ {line:_fid("tro","Custos Pergami"),n:7,gap:18,lvl:44}, {line:_fid("tro","Sagittarius Lycius"),n:4,gap:18,lvl:44} ],
             [ {line:_fid("myt","Harpyia"),n:4,gap:20,lvl:44}, {line:_fid("tro","Propugnator"),n:6,gap:16,lvl:44} ],
             [ {line:_fid("myt","Gryps"),n:3,gap:22,lvl:44}, {line:_fid("tro","Bellator curru"),n:6,gap:14,lvl:44}, {line:_fid("tro","Custos Pergami"),n:6,gap:16,lvl:44} ] ],
     reward:{ aes:300, frumentum:200, gloria:18 } },
   /* Themiscyra (opent na t2) */
-  { id:"th1", region:"themiscyra", nm:"Themiscyra", nl:"Het rijk van de Amazones", map:"a", seed:11101, hpMult:12.29, needs:"t2",
+  { id:"th1", region:"themiscyra", nm:"Het rijk van de Amazones", nl:"The kingdom of the Amazons", map:"a", seed:11101, hpMult:12.29, needs:"t2",
     waves:[ [ {line:_fid("ama","Sagittaria"),n:8,gap:14,lvl:45} ],
             [ {line:_fid("ama","Peltasta Amazon"),n:7,gap:14,lvl:45} ],
             [ {line:_fid("ama","Sagittaria equestris"),n:6,gap:14,lvl:45}, {line:_fid("ama","Sagittaria"),n:4,gap:14,lvl:45} ],
             [ {line:_fid("ama","Securifera"),n:6,gap:14,lvl:45}, {line:_fid("ama","Sagittaria equestris"),n:5,gap:12,lvl:45} ] ],
     reward:{ aes:1600, frumentum:1120, gloria:74 } },
-  { id:"th2", region:"themiscyra", nm:"Hippolyte", nl:"De strijd om Hippolyte", map:"b", seed:11202, hpMult:3.33, needs:"th1",
+  { id:"th2", region:"themiscyra", nm:"De strijd om Hippolyte", nl:"The battle for Hippolyte", map:"b", seed:11202, hpMult:3.33, needs:"th1",
     waves:[ [ {line:_fid("ama","Securifera"),n:8,gap:12,lvl:46} ],
             [ {line:_fid("ama","Sagittaria equestris"),n:8,gap:10,lvl:46}, {line:_fid("ama","Peltasta Amazon"),n:4,gap:14,lvl:46} ],
             [ {line:_fid("ama","Sagittaria"),n:9,gap:10,lvl:46}, {line:_fid("myt","Gryps"),n:3,gap:20,lvl:46} ],
@@ -170,13 +170,13 @@ const CASTRA_P_MISSIONS = [
             [ {line:_fid("per","Melophorus"),n:4,gap:16,lvl:48}, {line:_fid("per","Clibanarius"),n:5,gap:14,lvl:48}, {line:_fid("per","Immortalis"),n:6,gap:12,lvl:48} ] ],
     reward:{ aes:740, frumentum:510, gloria:38 } },
   /* Aegyptus (opent na pe2) */
-  { id:"ae1", region:"aegyptus", nm:"Ad Nilum", nl:"Aan de Nijl", map:"a", seed:5101, hpMult:36.26, needs:"pe2",
+  { id:"ae1", region:"aegyptus", nm:"Aan de Nijl", nl:"On the Nile", map:"a", seed:5101, hpMult:36.26, needs:"pe2",
     waves:[ [ {line:_fid("aeg","Machimus"),n:6,gap:18,lvl:49} ],
             [ {line:_fid("aeg","Sagittarius Aegyptius"),n:6,gap:16,lvl:49} ],
             [ {line:_fid("aeg","Auriga Aegyptius"),n:5,gap:16,lvl:49}, {line:_fid("aeg","Scriba"),n:3,gap:20,lvl:49} ],
             [ {line:_fid("aeg","Satelles"),n:5,gap:16,lvl:49}, {line:_fid("aeg","Sagittarius Nubius"),n:4,gap:16,lvl:49} ] ],
     reward:{ aes:480, frumentum:330, gloria:26 } },
-  { id:"ae2", region:"aegyptus", nm:"Pyramides", nl:"De piramiden", map:"b", seed:5202, hpMult:4.25, needs:"ae1",
+  { id:"ae2", region:"aegyptus", nm:"De piramiden", nl:"The pyramids", map:"b", seed:5202, hpMult:4.25, needs:"ae1",
     waves:[ [ {line:_fid("aeg","Satelles"),n:7,gap:14,lvl:50} ],
             [ {line:_fid("aeg","Bellator curru Aegyptius"),n:6,gap:14,lvl:50}, {line:_fid("aeg","Sacerdos Isidis"),n:3,gap:20,lvl:50} ],
             [ {line:_fid("aeg","Sagittarius Nubius"),n:7,gap:12,lvl:50} ],
@@ -232,7 +232,7 @@ function castraPPathCells(mapId){
 }
 
 /* ---------- Latijns verkenningsbericht (leesopdracht) ---------- */
-const CASTRA_P_ORD = [ ["Prima","Eerste"], ["Secunda","Tweede"], ["Tertia","Derde"], ["Quarta","Vierde"] ];
+const CASTRA_P_ORD = [ ["Eerste","First"], ["Tweede","Second"], ["Derde","Third"], ["Vierde","Fourth"] ];
 function castraPScout(m){
   const la = [], nl = [];
   m.waves.forEach((w,i)=>{

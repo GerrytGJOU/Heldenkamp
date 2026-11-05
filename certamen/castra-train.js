@@ -16,12 +16,12 @@ const CASTRA_TRAIN_POS = {
   themiscyra:[[29,41],[29,26],[33,6]],
 };
 const CASTRA_TRAIN_KINDS = [
-  { nm:"Gegroet, gast! Ik ben een jager. Laten we vechten!",   la:"Gegroet, gast! Ik ben een jager. Laten we vechten!",            nl:"Greetings, guest! I am a hunter. Let's fight!", armor:"vodden",  wapen:"speer" },
+  { nm:"Jager",   la:"Gegroet, gast! Ik ben een jager. Laten we vechten!",            nl:"Greetings, guest! I am a hunter. Let's fight!", armor:"vodden",  wapen:"speer" },
   { nm:"Ik bewaak hier de weg. Vecht je met mij?", la:"Ik bewaak hier de weg. Vecht je met mij?",               nl:"I guard the road here. Will you fight me?",            armor:"middel",  wapen:"zwaard" },
-  { nm:"Ik wil je kracht op de proef stellen. Kom op!", la:"Ik wil je kracht op de proef stellen. Kom op!",                  nl:"I want to test your strength. Come on!",        armor:"licht",   wapen:"boog" },
+  { nm:"Explorator", la:"Ik wil je kracht op de proef stellen. Kom op!",                  nl:"I want to test your strength. Come on!",        armor:"licht",   wapen:"boog" },
 ];
-const CASTRA_TRAIN_TITLES = { latium:"Latinus", graecia:"Graecus", troia:"Troianus", gallia:"Gallus", aegyptus:"Aegyptius", persis:"Persa", africa:"Poenus", roma:"Romanus", laconia:"Spartiates", germania:"Germanus", themiscyra:"Amazon" };
-const CASTRA_INSIGNIA_NAMES = { latium:"Latium", graecia:"Graecia", troia:"Troia", gallia:"Gallia", aegyptus:"Aegyptus", persis:"Persis", africa:"Africa", roma:"Roma", laconia:"Laconia", germania:"Germania", themiscyra:"Themiscyra" };
+const CASTRA_TRAIN_TITLES = { latium:"Latinus", graecia:"Graecus", troia:"Troianus", gallia:"Gallus", aegyptus:"Aegyptius", persis:"Persa", africa:"Poenus", roma:"Romanus", laconia:"Spartiates", germania:"Germanus", themiscyra:"Amazone" };
+const CASTRA_INSIGNIA_NAMES = { latium:"Latium", graecia:"Greece", troia:"Troia", gallia:"Gallia", aegyptus:"Aegyptus", persis:"Persis", africa:"Africa", roma:"Roma", laconia:"Laconia", germania:"Germania", themiscyra:"Themiscyra" };
 
 (function(){
   Object.keys(CASTRA_TRAIN_POS).forEach(rid=>{

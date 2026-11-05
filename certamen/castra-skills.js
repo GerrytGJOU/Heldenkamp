@@ -33,76 +33,76 @@
 const CASTRA_SKILL_MAX = 4;
 const CASTRA_SKILLS = {
   hopliet:[
-    { id:"percussio",      lvl:8,  la:"Percussio",      nl:"Elke 3e treffer vertraagt de vijand 40% (2 s)", fx:{ slow:{ pct:40, ticks:40, every:3 } } },
-    { id:"phalanx",        lvl:14, la:"Phalanx",        nl:"Torens in een grote kring +5% schade",           fx:{ aura:{ dmg:5, radius:2500 } } },
-    { id:"testudo",        lvl:20, la:"Testudo",        nl:"Torens dichtbij +10% schade",                    fx:{ aura:{ dmg:10, radius:1500 } } },
-    { id:"hastae_densae",  lvl:28, la:"Hastae densae",  nl:"+12% schade",                                    fx:{ dmg:12 } },
-    { id:"hasta_longa",    lvl:35, la:"Hasta longa",    nl:"+20% bereik",                                    fx:{ rng:20 } },
-    { id:"invictus",       lvl:42, la:"Invictus",       nl:"Na elke golf +1 leven voor het kamp",            fx:{ regen:1 } },
+    { id:"percussio",      lvl:8,  la:"Stoot",      nl:"Elke 3e treffer vertraagt de vijand 40% (2 s)", fx:{ slow:{ pct:40, ticks:40, every:3 } } },
+    { id:"phalanx",        lvl:14, la:"Falanx",        nl:"Torens in een grote kring +5% schade",           fx:{ aura:{ dmg:5, radius:2500 } } },
+    { id:"testudo",        lvl:20, la:"Schildpad",        nl:"Torens dichtbij +10% schade",                    fx:{ aura:{ dmg:10, radius:1500 } } },
+    { id:"hastae_densae",  lvl:28, la:"Dichte speren",  nl:"+12% schade",                                    fx:{ dmg:12 } },
+    { id:"hasta_longa",    lvl:35, la:"Lange speer",    nl:"+20% bereik",                                    fx:{ rng:20 } },
+    { id:"invictus",       lvl:42, la:"Onoverwonnen",       nl:"Na elke golf +1 leven voor het kamp",            fx:{ regen:1 } },
   ],
   spartaan:[
-    { id:"ictus_gravis",   lvl:8,  la:"Ictus gravis",   nl:"Elke 4e treffer doet dubbele schade",            fx:{ nth:{ n:4, mult:2 } } },
-    { id:"caedes",         lvl:14, la:"Caedes",         nl:"+8% schade",                                     fx:{ dmg:8 } },
-    { id:"furor",          lvl:22, la:"Furor",          nl:"+15% schade",                                    fx:{ dmg:15 } },
-    { id:"sanguis",        lvl:30, la:"Sanguis",        nl:"Slagen negeren 30% van de verdediging",          fx:{ pierce:30 } },
-    { id:"lacedaemon",     lvl:38, la:"Lacedaemon",     nl:"+25% schade",                                    fx:{ dmg:25 } },
+    { id:"ictus_gravis",   lvl:8,  la:"Zware klap",   nl:"Elke 4e treffer doet dubbele schade",            fx:{ nth:{ n:4, mult:2 } } },
+    { id:"caedes",         lvl:14, la:"Bloedbad",         nl:"+8% schade",                                     fx:{ dmg:8 } },
+    { id:"furor",          lvl:22, la:"Woede",          nl:"+15% schade",                                    fx:{ dmg:15 } },
+    { id:"sanguis",        lvl:30, la:"Bloed",        nl:"Slagen negeren 30% van de verdediging",          fx:{ pierce:30 } },
+    { id:"lacedaemon",     lvl:38, la:"Sparta",     nl:"+25% schade",                                    fx:{ dmg:25 } },
     { id:"thermopylae",    lvl:44, la:"Thermopylae",    nl:"De eerste 2 treffers van elke golf doen driedubbele schade", fx:{ charge:{ hits:2, mult:3 } } },
   ],
   boogschutter:[
-    { id:"sagitta_acuta",  lvl:8,  la:"Sagitta acuta",  nl:"Pijlen negeren de helft van de verdediging",     fx:{ pierce:50 } },
-    { id:"celeres",        lvl:14, la:"Celeres",        nl:"+10% schiettempo",                               fx:{ cd:10 } },
-    { id:"sagitta_duplex", lvl:20, la:"Sagitta duplex", nl:"Elk 3e schot raakt ook een tweede vijand",       fx:{ double:{ every:3 } } },
-    { id:"scythica",       lvl:28, la:"Scythica",       nl:"+15% bereik",                                    fx:{ rng:15 } },
-    { id:"imber",          lvl:35, la:"Imber sagittarum", nl:"+25% schiettempo",                             fx:{ cd:25 } },
-    { id:"sagitta_ignea",  lvl:42, la:"Sagitta ignea",  nl:"Treffers doen ook 40% schade aan vijanden ernaast", fx:{ splash:{ pct:40, radius:800 } } },
+    { id:"sagitta_acuta",  lvl:8,  la:"Scherpe pijl",  nl:"Pijlen negeren de helft van de verdediging",     fx:{ pierce:50 } },
+    { id:"celeres",        lvl:14, la:"Snelle pijlen",        nl:"+10% schiettempo",                               fx:{ cd:10 } },
+    { id:"sagitta_duplex", lvl:20, la:"Dubbele pijl", nl:"Elk 3e schot raakt ook een tweede vijand",       fx:{ double:{ every:3 } } },
+    { id:"scythica",       lvl:28, la:"Scythische boog",       nl:"+15% bereik",                                    fx:{ rng:15 } },
+    { id:"imber",          lvl:35, la:"Pijlenregen", nl:"+25% schiettempo",                             fx:{ cd:25 } },
+    { id:"sagitta_ignea",  lvl:42, la:"Vuurpijl",  nl:"Treffers doen ook 40% schade aan vijanden ernaast", fx:{ splash:{ pct:40, radius:800 } } },
   ],
   cavalerie:[
-    { id:"impetus",        lvl:8,  la:"Impetus equitum", nl:"De eerste 3 treffers van elke golf doen dubbele schade", fx:{ charge:{ hits:3, mult:2 } } },
-    { id:"cursus",         lvl:14, la:"Cursus",         nl:"+8% schiettempo",                                fx:{ cd:8 } },
-    { id:"velocitas",      lvl:22, la:"Velocitas",      nl:"+15% schiettempo",                               fx:{ cd:15 } },
-    { id:"hasta_equitum",  lvl:29, la:"Hasta equitum",  nl:"Slagen negeren 40% van de verdediging",          fx:{ pierce:40 } },
-    { id:"cuneus",         lvl:36, la:"Cuneus",         nl:"+20% schade",                                    fx:{ dmg:20 } },
-    { id:"triumphus",      lvl:44, la:"Triumphus",      nl:"Elke 5e treffer doet driedubbele schade",        fx:{ nth:{ n:5, mult:3 } } },
+    { id:"impetus",        lvl:8,  la:"Ruiteraanval", nl:"De eerste 3 treffers van elke golf doen dubbele schade", fx:{ charge:{ hits:3, mult:2 } } },
+    { id:"cursus",         lvl:14, la:"Galop",         nl:"+8% schiettempo",                                fx:{ cd:8 } },
+    { id:"velocitas",      lvl:22, la:"Snelheid",      nl:"+15% schiettempo",                               fx:{ cd:15 } },
+    { id:"hasta_equitum",  lvl:29, la:"Ruiterspeer",  nl:"Slagen negeren 40% van de verdediging",          fx:{ pierce:40 } },
+    { id:"cuneus",         lvl:36, la:"Wigaanval",         nl:"+20% schade",                                    fx:{ dmg:20 } },
+    { id:"triumphus",      lvl:44, la:"Triomf",      nl:"Elke 5e treffer doet driedubbele schade",        fx:{ nth:{ n:5, mult:3 } } },
   ],
   priester:[
-    { id:"benedictio",     lvl:8,  la:"Benedictio",     nl:"Torens dichtbij +10% schade (naast de gewone steun)", fx:{ aura:{ dmg:10, radius:2000 } } },
-    { id:"preces",         lvl:14, la:"Preces",         nl:"Alle torens +2% schade",                         fx:{ global:2 } },
-    { id:"sanatio",        lvl:20, la:"Sanatio",        nl:"Na elke golf +1 leven voor het kamp",            fx:{ regen:1 } },
-    { id:"pietas",         lvl:28, la:"Pietas",         nl:"+8% beloning na de missie",                      fx:{ reward:8 } },
-    { id:"ira_deorum",     lvl:35, la:"Ira deorum",     nl:"Treffers doen ook 50% schade aan vijanden ernaast", fx:{ splash:{ pct:50, radius:1200 } } },
-    { id:"miraculum",      lvl:42, la:"Miraculum",      nl:"Alle torens +4% schade",                         fx:{ global:4 } },
+    { id:"benedictio",     lvl:8,  la:"Zegening",     nl:"Torens dichtbij +10% schade (naast de gewone steun)", fx:{ aura:{ dmg:10, radius:2000 } } },
+    { id:"preces",         lvl:14, la:"Gebed",         nl:"Alle torens +2% schade",                         fx:{ global:2 } },
+    { id:"sanatio",        lvl:20, la:"Genezing",        nl:"Na elke golf +1 leven voor het kamp",            fx:{ regen:1 } },
+    { id:"pietas",         lvl:28, la:"Vroomheid",         nl:"+8% beloning na de missie",                      fx:{ reward:8 } },
+    { id:"ira_deorum",     lvl:35, la:"Toorn der goden",     nl:"Treffers doen ook 50% schade aan vijanden ernaast", fx:{ splash:{ pct:50, radius:1200 } } },
+    { id:"miraculum",      lvl:42, la:"Wonder",      nl:"Alle torens +4% schade",                         fx:{ global:4 } },
   ],
   centurio:[
-    { id:"imperium",       lvl:8,  la:"Imperium",       nl:"Torens dichtbij +10% schade",                    fx:{ aura:{ dmg:10, radius:1500 } } },
-    { id:"tuba",           lvl:14, la:"Tuba",           nl:"Torens in een grote kring +5% schade",           fx:{ aura:{ dmg:5, radius:3000 } } },
-    { id:"signum",         lvl:22, la:"Signum",         nl:"Torens in een kring +10% schade",                fx:{ aura:{ dmg:10, radius:2500 } } },
-    { id:"praemium",       lvl:30, la:"Praemium",       nl:"+8% beloning na de missie",                      fx:{ reward:8 } },
-    { id:"disciplina",     lvl:38, la:"Disciplina",     nl:"Alle torens +5% schade",                         fx:{ global:5 } },
-    { id:"legatus",        lvl:44, la:"Legatus",        nl:"Torens in een zeer grote kring +8% schade",      fx:{ aura:{ dmg:8, radius:3500 } } },
+    { id:"imperium",       lvl:8,  la:"Bevel",       nl:"Torens dichtbij +10% schade",                    fx:{ aura:{ dmg:10, radius:1500 } } },
+    { id:"tuba",           lvl:14, la:"Trompet",           nl:"Torens in een grote kring +5% schade",           fx:{ aura:{ dmg:5, radius:3000 } } },
+    { id:"signum",         lvl:22, la:"Veldteken",         nl:"Torens in een kring +10% schade",                fx:{ aura:{ dmg:10, radius:2500 } } },
+    { id:"praemium",       lvl:30, la:"Beloning",       nl:"+8% beloning na de missie",                      fx:{ reward:8 } },
+    { id:"disciplina",     lvl:38, la:"Discipline",     nl:"Alle torens +5% schade",                         fx:{ global:5 } },
+    { id:"legatus",        lvl:44, la:"Legaat",        nl:"Torens in een zeer grote kring +8% schade",      fx:{ aura:{ dmg:8, radius:3500 } } },
   ],
   genie:[
     { id:"ballista",       lvl:8,  la:"Ballista",       nl:"+30% bereik",                                    fx:{ rng:30 } },
-    { id:"catapulta",      lvl:14, la:"Catapulta",      nl:"+8% schade",                                     fx:{ dmg:8 } },
-    { id:"machina",        lvl:22, la:"Machina",        nl:"Schoten negeren de helft van de verdediging",    fx:{ pierce:50 } },
+    { id:"catapulta",      lvl:14, la:"Katapult",      nl:"+8% schade",                                     fx:{ dmg:8 } },
+    { id:"machina",        lvl:22, la:"Oorlogsmachine",        nl:"Schoten negeren de helft van de verdediging",    fx:{ pierce:50 } },
     { id:"onager",         lvl:29, la:"Onager",         nl:"+15% bereik",                                    fx:{ rng:15 } },
-    { id:"tormentum",      lvl:36, la:"Tormentum",      nl:"Treffers doen ook 50% schade aan vijanden ernaast", fx:{ splash:{ pct:50, radius:1000 } } },
-    { id:"arx",            lvl:43, la:"Arx",            nl:"Elke 3e treffer doet dubbele schade",            fx:{ nth:{ n:3, mult:2 } } },
+    { id:"tormentum",      lvl:36, la:"Werptuig",      nl:"Treffers doen ook 50% schade aan vijanden ernaast", fx:{ splash:{ pct:50, radius:1000 } } },
+    { id:"arx",            lvl:43, la:"Burcht",            nl:"Elke 3e treffer doet dubbele schade",            fx:{ nth:{ n:3, mult:2 } } },
   ],
   verkenner:[
-    { id:"explorare",      lvl:8,  la:"Explorare",      nl:"+15% bereik",                                    fx:{ rng:15 } },
-    { id:"sagax",          lvl:14, la:"Sagax",          nl:"+8% schiettempo",                                fx:{ cd:8 } },
-    { id:"insidiae",       lvl:22, la:"Insidiae",       nl:"Elke 2e treffer vertraagt de vijand 25% (2 s)",  fx:{ slow:{ pct:25, ticks:40, every:2 } } },
-    { id:"vestigia",       lvl:29, la:"Vestigia",       nl:"Schoten negeren 25% van de verdediging",         fx:{ pierce:25 } },
-    { id:"praeda",         lvl:36, la:"Praeda",         nl:"+10% beloning na de missie",                     fx:{ reward:10 } },
+    { id:"explorare",      lvl:8,  la:"Verkennen",      nl:"+15% bereik",                                    fx:{ rng:15 } },
+    { id:"sagax",          lvl:14, la:"Scherpzinnig",          nl:"+8% schiettempo",                                fx:{ cd:8 } },
+    { id:"insidiae",       lvl:22, la:"Hinderlaag",       nl:"Elke 2e treffer vertraagt de vijand 25% (2 s)",  fx:{ slow:{ pct:25, ticks:40, every:2 } } },
+    { id:"vestigia",       lvl:29, la:"Sporen",       nl:"Schoten negeren 25% van de verdediging",         fx:{ pierce:25 } },
+    { id:"praeda",         lvl:36, la:"Buit",         nl:"+10% beloning na de missie",                     fx:{ reward:10 } },
     { id:"umbra",          lvl:43, la:"Umbra",          nl:"+15% schade",                                    fx:{ dmg:15 } },
   ],
   myth:[
-    { id:"terror",         lvl:10, la:"Terror",         nl:"Elke 3e treffer vertraagt de vijand 30% (1,5 s)", fx:{ slow:{ pct:30, ticks:30, every:3 } } },
-    { id:"ungues",         lvl:16, la:"Ungues",         nl:"+8% schade",                                     fx:{ dmg:8 } },
-    { id:"ignis",          lvl:25, la:"Ignis",          nl:"Treffers doen ook 50% schade aan vijanden ernaast", fx:{ splash:{ pct:50, radius:1000 } } },
-    { id:"anima",          lvl:32, la:"Anima",          nl:"Na elke golf +1 leven voor het kamp",            fx:{ regen:1 } },
-    { id:"furia",          lvl:40, la:"Furia",          nl:"+20% schade",                                    fx:{ dmg:20 } },
-    { id:"caelum",         lvl:46, la:"Caelum",         nl:"Alle torens +3% schade",                         fx:{ global:3 } },
+    { id:"terror",         lvl:10, la:"Schrik",         nl:"Elke 3e treffer vertraagt de vijand 30% (1,5 s)", fx:{ slow:{ pct:30, ticks:30, every:3 } } },
+    { id:"ungues",         lvl:16, la:"Klauwen",         nl:"+8% schade",                                     fx:{ dmg:8 } },
+    { id:"ignis",          lvl:25, la:"Vuur",          nl:"Treffers doen ook 50% schade aan vijanden ernaast", fx:{ splash:{ pct:50, radius:1000 } } },
+    { id:"anima",          lvl:32, la:"Ziel",          nl:"Na elke golf +1 leven voor het kamp",            fx:{ regen:1 } },
+    { id:"furia",          lvl:40, la:"Razernij",          nl:"+20% schade",                                    fx:{ dmg:20 } },
+    { id:"caelum",         lvl:46, la:"Hemel",         nl:"Alle torens +3% schade",                         fx:{ global:3 } },
   ],
 };
 // Helden volgen de klasse van hun type (inf = hopliet, rng = boogschutter, cav = cavalerie, sup = bevelvoerder).
@@ -176,14 +176,14 @@ function castraSkillLearned(s, oldLvl, newLvl){
   const got = castraSkillList(cls).filter(k=>k.lvl>oldLvl && k.lvl<=newLvl);
   if(!got.length) return got;
   const eq = castraSkillIds(s);
-  got.forEach((k,i)=>setTimeout(()=>{ if(typeof toast==="function") toast("🎓 "+nm+" leert "+k.la+"!", k.nl+(eq.includes(k.id)?"":" · Je hebt al 4 artes: kies in het menu welke je gebruikt.")); }, 600+i*1800));
+  got.forEach((k,i)=>setTimeout(()=>{ if(typeof toast==="function") toast("🎓 "+nm+" leert "+k.la+"!", k.nl+(eq.includes(k.id)?"":" · Je hebt al 4 vaardigheden: kies in het menu welke je gebruikt.")); }, 600+i*1800));
   return got;
 }
 // HTML-editor voor menu: tik op een geleerde arte om hem aan/uit te zetten (max 4). kind = "s" (soldaat) of "h" (held).
 function castraSkillsHTML(s, kind, id){
   const list = castraSkillsOf(s); if(!list.length) return "";
   const eqN = list.filter(k=>k.equipped).length;
-  return `<div style="margin-top:6px;font-size:13px"><div style="font-weight:bold;margin-bottom:2px">🎓 Artes <span style="opacity:.7">${eqN} / ${CASTRA_SKILL_MAX} in gebruik — tik om te kiezen</span></div>`
+  return `<div style="margin-top:6px;font-size:13px"><div style="font-weight:bold;margin-bottom:2px">🎓 Vaardigheden <span style="opacity:.7">${eqN} / ${CASTRA_SKILL_MAX} in gebruik — tik om te kiezen</span></div>`
     + list.map(k=>k.known
       ? `<div role="button" onclick="event.stopPropagation();castraMenuSkill('${kind}','${id}','${k.id}')" style="padding:4px 6px;margin:2px 0;border:1px solid ${k.equipped?"var(--hi-dim,#8a6d2f)":"var(--parch-line,#c2a96f)"};border-radius:6px;background:${k.equipped?"rgba(212,175,55,.28)":"transparent"};cursor:pointer;min-height:32px">${k.equipped?"✅":"⬜"} <b>${esc(k.la)}</b> <small>${esc(k.nl)}</small></div>`
       : `<div style="padding:2px 6px;opacity:.5">🔒 Lv ${k.lvl} <b>${esc(k.la)}</b> <small>${esc(k.nl)}</small></div>`).join("") + `</div>`;

@@ -17,14 +17,14 @@
    ============================================================================ */
 const CASTRA_GOODS = {
   posca:       { la:"Posca",       icon:"🍶", kind:"heal",    heal:0.30, price:{ aes:25 },                nl:"posca",        note:"Zure wijn met water: de gewone drank van Romeinse soldaten." },
-  buccellatum: { la:"Buccellatum", icon:"🥖", kind:"heal",    heal:0.15, price:{ frumentum:12 },          nl:"soldatenbeschuit", note:"Hard beschuit dat maanden goed bleef, voedsel voor onderweg." },
+  buccellatum: { la:"Soldatenbeschuit", icon:"🥖", kind:"heal",    heal:0.15, price:{ frumentum:12 },          nl:"army biscuit", note:"Hard beschuit dat maanden goed bleef, voedsel voor onderweg." },
   mulsum:      { la:"Honingwijn",      icon:"🍯", kind:"heal",    heal:0.60, price:{ aes:70 },                nl:"honey wine",   note:"Wijn met honing: een kostbare versterking." },
-  theriaca:    { la:"Theriaca",    icon:"⚗️", kind:"revive",  heal:0.50, price:{ aes:120 },               nl:"wondermiddel", note:"Het beroemde tegengif en wondermiddel van Romeinse artsen. Zet iemand die buiten gevecht is weer op de been." },
+  theriaca:    { la:"Wondermiddel",    icon:"⚗️", kind:"revive",  heal:0.50, price:{ aes:120 },               nl:"miracle cure", note:"Het beroemde tegengif en wondermiddel van Romeinse artsen. Zet iemand die buiten gevecht is weer op de been." },
   suffimentum: { la:"Rookwerk", icon:"🌿", kind:"repel",   steps:100, price:{ aes:40 },               nl:"incense",     note:"Rook van kruiden en hars. Zwakkere wilde vijanden blijven 100 stappen weg." },
-  viaticum:    { la:"Viaticum",    icon:"🪙", kind:"recruit", bonus:0.15, price:{ aes:30 },               nl:"reisgeld",     note:"Het reisgeld dat een rekruut kreeg. Geef het aan een vijand om hem te overtuigen: +15% kans bij het werven." },
-  donativum:   { la:"Donativum",   icon:"💰", kind:"recruit", bonus:0.30, price:{ aes:80, gloria:1 },     nl:"geldgeschenk", note:"Het geschenk dat soldaten kregen bij een feestelijke gelegenheid: +30% kans bij het werven." },
-  libum:       { la:"Offerkoek",       icon:"🥧", kind:"heal",    heal:0.40, price:{ frumentum:20 },        nl:"offering cake",    note:"Een koekje van meel, kaas en honing dat Romeinen aan de goden offerden. Alleen op marktdag (nundinae) te koop.", nundOnly:true },
-  hamus:       { la:"Vishaak",       icon:"🎣", kind:"tool",                price:{ aes:35 },               nl:"fish hook",      note:"Een vishaak met riet. Met een hamus kun je aan het water vissen; hij blijft in je saccus.", once:true },
+  viaticum:    { la:"Reisgeld",    icon:"🪙", kind:"recruit", bonus:0.15, price:{ aes:30 },               nl:"travel money",     note:"Het reisgeld dat een rekruut kreeg. Geef het aan een vijand om hem te overtuigen: +15% kans bij het werven." },
+  donativum:   { la:"Geldgeschenk",   icon:"💰", kind:"recruit", bonus:0.30, price:{ aes:80, gloria:1 },     nl:"cash gift", note:"Het geschenk dat soldaten kregen bij een feestelijke gelegenheid: +30% kans bij het werven." },
+  libum:       { la:"Offerkoek",       icon:"🥧", kind:"heal",    heal:0.40, price:{ frumentum:20 },        nl:"offering cake",    note:"Een koekje van meel, kaas en honing dat Romeinen aan de goden offerden. Alleen op marktdag te koop.", nundOnly:true },
+  hamus:       { la:"Vishaak",       icon:"🎣", kind:"tool",                price:{ aes:35 },               nl:"fish hook",      note:"Een vishaak met riet. Hiermee kun je aan het water vissen; hij blijft in je rugzak.", once:true },
 };
 const CASTRA_GOODS_ORDER = ["posca","buccellatum","mulsum","libum","theriaca","suffimentum","viaticum","donativum","hamus"];
 
@@ -72,7 +72,7 @@ function castraBagUse(id, key){
 /* ---------- menu: Sacculus ---------- */
 let CASTRA_BAGUI = { pick:null };
 function castraBagMsg(code, g){
-  return ({ geen:"Dat voorwerp heb je niet meer.", al_vol:"Daar is geen genezing nodig.", niet_buiten:"Die is niet buiten gevecht.", al_aan:"Het suffimentum brandt al.", niet_hier:"Dat gebruik je niet zo.",
+  return ({ geen:"Dat voorwerp heb je niet meer.", al_vol:"Daar is geen genezing nodig.", niet_buiten:"Die is niet buiten gevecht.", al_aan:"Het rookwerk brandt al.", niet_hier:"Dat gebruik je niet zo.",
     deest:"Daar heb je niet genoeg grondstoffen voor.", geen_markt:"Dat is alleen op marktdag te koop.", al_zo:"Je hebt al een "+(g?g.la:"")+"." })[code] || "Dat lukt nu niet.";
 }
 function castraBagPickTarget(id){ CASTRA_BAGUI.pick = CASTRA_BAGUI.pick===id ? null : id; castraMenuRender(); }
@@ -111,9 +111,9 @@ function castraBagRowHTML(id){
 function castraBagShopOpen(){ return !!el("castraMap") || (CASTRA_BAGUI.market && typeof castraNundinae==="function" && castraNundinae().on); }
 function castraBagShopHTML(){
   const nund = typeof castraNundinae==="function" ? castraNundinae() : { on:false, next:0 };
-  const head = nund.on ? `<div class="note" style="margin:4px 0">🏺 ${castraLaHTML("Hodie nundinae sunt!", "Het is marktdag: alles is 20% goedkoper en er is libum te koop.", "bag_nund")}</div>`
-    : `<div class="note" style="margin:4px 0;font-size:12px">🏺 Nundinae (marktdag) over ${nund.next} dag${nund.next===1?"":"en"}: dan is alles 20% goedkoper.</div>`;
-  if(!castraBagShopOpen()) return head + `<div class="note" style="margin-top:6px">🏺 De mercator staat in het kamp (☰ → Castra). Op marktdag staat er ook een kraam bij de reisplek in elk land.</div>`;
+  const head = nund.on ? `<div class="note" style="margin:4px 0">🏺 ${castraLaHTML("Het is marktdag: alles is 20% goedkoper en er is offerkoek te koop.", "It is market day: everything is 20% cheaper and sacrificial cake is for sale.", "bag_nund")}</div>`
+    : `<div class="note" style="margin:4px 0;font-size:12px">🏺 Marktdag over ${nund.next} dag${nund.next===1?"":"en"}: dan is alles 20% goedkoper.</div>`;
+  if(!castraBagShopOpen()) return head + `<div class="note" style="margin-top:6px">🏺 De koopman staat in het kamp (☰ → Castra). Op marktdag staat er ook een kraam bij de reisplek in elk land.</div>`;
   const btn = "min-height:36px;padding:2px 10px;margin-left:6px;font-size:13px;font-family:inherit;cursor:pointer;border:2px solid var(--parch-edge,#4a3416);border-radius:8px;background:#e8c96a;color:var(--parch-ink,#2b1d0e)";
   return head + CASTRA_GOODS_ORDER.filter(id=>!CASTRA_GOODS[id].nundOnly || nund.on).map(id=>{ const g = CASTRA_GOODS[id], have = castraBagN(id), price = castraGoodPrice(id), can = castraCanPay(price) && !(g.once && have>0);
     return `<div style="${CASTRA_MV_ROW};flex-wrap:wrap"><span style="font-size:22px;width:32px;text-align:center">${g.icon}</span>
@@ -122,8 +122,8 @@ function castraBagShopHTML(){
 }
 function castraBagMenuHTML(){
   const owned = CASTRA_GOODS_ORDER.filter(id=>castraBagN(id)>0), rows = owned.map(castraBagRowHTML).join("");
-  return `<h4 style="margin:12px 0 2px">Saccus <small>voorwerpen om te gebruiken</small></h4>${rows || `<div class="note">${castraLaHTML("Saccus vacuus est.", "Je saccus is leeg. Koop iets bij de mercator in het kamp of vind iets onderweg.", "bag_vacuus")}</div>`}
-    <h4 style="margin:12px 0 2px">Mercator <small>kopen</small></h4>${castraBagShopHTML()}`;
+  return `<h4 style="margin:12px 0 2px">Rugzak <small>voorwerpen om te gebruiken</small></h4>${rows || `<div class="note">${castraLaHTML("Je rugzak is leeg. Koop iets bij de koopman in het kamp of vind iets onderweg.", "Your backpack is empty. Buy something from the merchant in the camp or find something on the way.", "bag_vacuus")}</div>`}
+    <h4 style="margin:12px 0 2px">Koopman <small>kopen</small></h4>${castraBagShopHTML()}`;
 }
 const _castraMenuBagBg0 = castraMenuBag;
 castraMenuBag = function(){ return _castraMenuBagBg0.apply(this, arguments) + castraBagMenuHTML(); };
@@ -204,7 +204,7 @@ castraBossWon = function(V){
   const r = _castraBossWonBag0.apply(this, arguments);
   if(key && !done){
     if(key.indexOf("trainer_")===0){ castraBagAdd("posca", 1); setTimeout(()=>toast("🍶 Posca", "De trainer geeft je een kruikje posca."), 1400); }
-    else if(firstChamp){ castraBagAdd("mulsum", 1); setTimeout(()=>toast("🍯 Mulsum", "De kampioen schenkt je honingwijn."), 1400); }
+    else if(firstChamp){ castraBagAdd("mulsum", 1); setTimeout(()=>toast("🍯 Honingwijn", "De kampioen schenkt je honingwijn."), 1400); }
     castraSave();
   }
   return r;

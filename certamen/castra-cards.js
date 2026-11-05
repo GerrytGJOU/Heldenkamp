@@ -19,20 +19,20 @@ const CASTRA_CARD_PITY = 10;                           // elke 10e trekking zond
 const CASTRA_CARD_RARITY = { 1:{ nm:"gewoon", w:60, col:"#8a7a5a" }, 2:{ nm:"bijzonder", w:28, col:"#2e7d6b" }, 3:{ nm:"zeldzaam", w:12, col:"#8a2a6b" } };
 // eff: sleutel in de bonus-som; per: waarde per ster; fmt: tekst per ster-aantal.
 const CASTRA_CARDS = [
-  { id:"vires",      la:"Vires",      rar:1, eff:"dmg",  per:2,  txt:v=>`alle torens +${v}% schade` },
-  { id:"celeritas",  la:"Celeritas",  rar:1, eff:"cd",   per:2,  txt:v=>`alle torens +${v}% schiettempo` },
-  { id:"acies",      la:"Acies",      rar:1, eff:"rng",  per:2,  txt:v=>`alle torens +${v}% bereik` },
-  { id:"horrea",     la:"Horrea",     rar:1, eff:"prod", per:3,  txt:v=>`+${v}% grondstoffenproductie` },
-  { id:"disciplina", la:"Disciplina", rar:1, eff:"xp",   per:3,  txt:v=>`+${v}% ervaring voor soldaten en helden` },
-  { id:"fabri",      la:"Fabri",      rar:2, eff:"build",per:3,  txt:v=>`gebouwen in het kamp bouwen ${v}% sneller (geldt voor nieuwe bouwwerken)` },
-  { id:"gelu",       la:"Gelu",       rar:2, eff:"spd",  per:1.5,txt:v=>`vijanden lopen ${v}% langzamer` },
-  { id:"murus",      la:"Murus",      rar:2, eff:"lives",per:0.5,txt:v=>`+${Math.floor(v)} leven${Math.floor(v)===1?"":"s"} voor het kamp (1 per 2 sterren)` },
-  { id:"praeda",     la:"Praeda",     rar:2, eff:"reward",per:3, txt:v=>`+${v}% beloning na een missie` },
-  { id:"scutum",     la:"Scutum",     rar:3, eff:"t_inf",per:4,  txt:v=>`voetsoldaten +${v}% schade` },
-  { id:"sagitta",    la:"Sagitta",    rar:3, eff:"t_rng",per:4,  txt:v=>`schutters +${v}% schade` },
-  { id:"equites",    la:"Equites",    rar:3, eff:"t_cav",per:4,  txt:v=>`ruiters +${v}% schade` },
-  { id:"auxilia",    la:"Auxilia",    rar:3, eff:"t_sup",per:4,  txt:v=>`hulptroepen +${v}% schade` },
-  { id:"monstra",    la:"Monstra",    rar:3, eff:"t_myth",per:4, txt:v=>`monsters +${v}% schade` },
+  { id:"vires",      la:"Kracht",      rar:1, eff:"dmg",  per:2,  txt:v=>`alle torens +${v}% schade` },
+  { id:"celeritas",  la:"Snelheid",  rar:1, eff:"cd",   per:2,  txt:v=>`alle torens +${v}% schiettempo` },
+  { id:"acies",      la:"Bereik",      rar:1, eff:"rng",  per:2,  txt:v=>`alle torens +${v}% bereik` },
+  { id:"horrea",     la:"Voorraad",     rar:1, eff:"prod", per:3,  txt:v=>`+${v}% grondstoffenproductie` },
+  { id:"disciplina", la:"Discipline", rar:1, eff:"xp",   per:3,  txt:v=>`+${v}% ervaring voor soldaten en helden` },
+  { id:"fabri",      la:"Bouwers",      rar:2, eff:"build",per:3,  txt:v=>`gebouwen in het kamp bouwen ${v}% sneller (geldt voor nieuwe bouwwerken)` },
+  { id:"gelu",       la:"Vorst",       rar:2, eff:"spd",  per:1.5,txt:v=>`vijanden lopen ${v}% langzamer` },
+  { id:"murus",      la:"Muur",      rar:2, eff:"lives",per:0.5,txt:v=>`+${Math.floor(v)} leven${Math.floor(v)===1?"":"s"} voor het kamp (1 per 2 sterren)` },
+  { id:"praeda",     la:"Buit",     rar:2, eff:"reward",per:3, txt:v=>`+${v}% beloning na een missie` },
+  { id:"scutum",     la:"Schild",     rar:3, eff:"t_inf",per:4,  txt:v=>`voetsoldaten +${v}% schade` },
+  { id:"sagitta",    la:"Pijl",    rar:3, eff:"t_rng",per:4,  txt:v=>`schutters +${v}% schade` },
+  { id:"equites",    la:"Ruiters",    rar:3, eff:"t_cav",per:4,  txt:v=>`ruiters +${v}% schade` },
+  { id:"auxilia",    la:"Hulptroepen",    rar:3, eff:"t_sup",per:4,  txt:v=>`hulptroepen +${v}% schade` },
+  { id:"monstra",    la:"Monsters",    rar:3, eff:"t_myth",per:4, txt:v=>`monsters +${v}% schade` },
 ];
 function castraCardCopies(id){ return (CASTRA.cards||{})[id]||0; }
 function castraCardStars(id){ const n = castraCardCopies(id); let s = 0; CASTRA_CARD_STARS.forEach((t,i)=>{ if(n>=t) s = i+1; }); return s; }

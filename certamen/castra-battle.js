@@ -40,7 +40,7 @@ function castraPLeave(){ CASTRA.pos = { x:14, y:5 }; castraSave(); go("castraHom
 function castraBHealthy(){
   if(CASTRA_B && CASTRA_B.endless && typeof castraColoUnits==="function") return castraColoUnits(CASTRA_B.div);
   const list = (CASTRA.heroes||[]).map(castraHeroAsUnit).concat(CASTRA.soldiers.filter(s=>!castraIsHurt(s) && !s.job));
-  return list.length ? list : [ { id:"dux", dux:true, line:"rom_hastatus", lvl:1, name:"Dux" } ];
+  return list.length ? list : [ { id:"dux", dux:true, line:"rom_hastatus", lvl:1, name:"Aanvoerder" } ];
 }
 function castraBCap(){ if(CASTRA_B && CASTRA_B.endless) return CASTRA_COLO.cap[CASTRA_B.div] || 8; return Math.min(14, 4 + 2*castraLvl("praetorium"), (CASTRA_B && CASTRA_B.ed) ? CASTRA_B.ed.cap : 99); }
 function castraBStart(missionId){
@@ -142,7 +142,7 @@ function castraBMapTap(e){
   if(!B.sel || !castraBTileFree(x,y)) return;
   if(B.sim.towers.length >= castraBCap()){ castraToastLa("acies_plena"); return; }
   const s0 = castraBHealthy().find(q=>q.id===B.sel); if(!s0) return;
-  if(s0.hero && !B.endless && B.sim.towers.filter(t=>String(t.sid).indexOf("hero_")===0).length >= castraHeroFieldCap()){ toast("⭐", "Je mag "+castraHeroFieldCap()+" held"+(castraHeroFieldCap()>1?"en":"")+" tegelijk inzetten (meer met een hoger heroum). Zet soldaten in de rest van de slagorde."); return; }
+  if(s0.hero && !B.endless && B.sim.towers.filter(t=>String(t.sid).indexOf("hero_")===0).length >= castraHeroFieldCap()){ toast("⭐", "Je mag "+castraHeroFieldCap()+" held"+(castraHeroFieldCap()>1?"en":"")+" tegelijk inzetten (meer met een hogere heldenzaal). Zet soldaten in de rest van de slagorde."); return; }
   if(typeof castraBBanned==="function" && castraBBanned(s0)){ toast("🚫", "Dit soort soldaat mag in deze missie niet meedoen."); return; }
   const tower = B.endless ? castraColoPlace(B, s0, x, y) : castraPMakeTower(B.sim, s0, x, y);   // Colosseum: eenheid-momentopname + actie voor het naspelen
   B.sim.towers.push(tower); B.placed[s0.id] = true; B.sel = null;
@@ -174,12 +174,12 @@ function castraBRenderHud(){
 }
 /* Dona (gunsten): na elke golf (behalve de laatste) kies je 1 van 2; ze gelden voor de rest van de missie (alleen solo). */
 const CASTRA_DONA = [
-  { id:"vires",     la:"Vires",     nl:"alle torens +15% schade",           mods:{ dmg:1.15 } },
-  { id:"celeritas", la:"Celeritas", nl:"alle torens schieten 15% sneller",  mods:{ cd:0.85 } },
-  { id:"acies",     la:"Acies",     nl:"alle torens +10% bereik",           mods:{ rng:1.10 } },
-  { id:"gelu",      la:"Gelu",      nl:"vijanden lopen 10% langzamer",      mods:{ spd:0.90 } },
-  { id:"murus",     la:"Murus",     nl:"+2 levens voor het kamp",           hp:2 },
-  { id:"praeda",    la:"Praeda",    nl:"+25% beloning na de missie",        reward:1.25 },
+  { id:"vires",     la:"Kracht",     nl:"alle torens +15% schade",           mods:{ dmg:1.15 } },
+  { id:"celeritas", la:"Snelheid", nl:"alle torens schieten 15% sneller",  mods:{ cd:0.85 } },
+  { id:"acies",     la:"Bereik",     nl:"alle torens +10% bereik",           mods:{ rng:1.10 } },
+  { id:"gelu",      la:"Vorst",      nl:"vijanden lopen 10% langzamer",      mods:{ spd:0.90 } },
+  { id:"murus",     la:"Muur",     nl:"+2 levens voor het kamp",           hp:2 },
+  { id:"praeda",    la:"Buit",    nl:"+25% beloning na de missie",        reward:1.25 },
 ];
 function castraBOfer(){
   const B = CASTRA_B, s = B.sim;
@@ -203,7 +203,7 @@ function castraBRenderCtl(){
   if(sig===B.ctlSig) return; B.ctlSig = sig;
   const nextWave = s.waveActive ? s.wave : s.wave+1;
   const pickHtml = B.pick ? `<div style="margin:8px 0;padding:8px;border:2px solid #d4af37;border-radius:10px;background:rgba(212,175,55,.12)">
-      <div style="font-size:16px;margin-bottom:6px">${castraLaHTML("Elige donum!", "Kies een gunst voor de rest van de missie!", "donum_elige")}</div>
+      <div style="font-size:16px;margin-bottom:6px">${castraLaHTML("Kies een gunst voor de rest van de missie!", "Choose a favour for the rest of the mission!", "donum_elige")}</div>
       ${B.pick.map((d,k)=>`<button class="btn btn-gold" style="margin:3px 6px 3px 0;min-height:44px" onclick="castraBPick(${k})"><b>${esc(d.la)}</b> <small>${esc(d.nl)}</small></button>`).join("")}</div>` : "";
   const cardTxt = (B.cardInfo && typeof castraCardSummary==="function") ? castraCardSummary(B.cardInfo) : "";
   const have = (B.boons.length || cardTxt) ? `<div style="font-size:12px;opacity:.8;margin-top:4px">${B.boons.map(id=>{ const d = CASTRA_DONA.find(x=>x.id===id); return esc(d.la); }).join(" · ")}${cardTxt?`<div>🃏 ${esc(cardTxt)}</div>`:""}</div>` : "";
@@ -224,7 +224,7 @@ function castraBRenderCards(){
   box.innerHTML = `<div class="note" style="margin-bottom:6px">${castraLa("elige_loca")}</div>` + list.map(s=>{
     const banned = typeof castraBBanned==="function" && castraBBanned(s), placed = !!B.placed[s.id] || banned, st = s.hero ? castraHeroStats(s.h) : s.dux ? CASTRA_V_BAL.dux : castraStats(s);
     const ty = s.hero ? CASTRA_HERO_DATA[s.h.id].type : castraLine(s.line).type;
-    const sel = B.sel===s.id, nm = s.hero ? CASTRA_HERO_DATA[s.h.id].nm : s.dux ? "Dux" : castraSoldierName(s), t = CASTRA_TYPE_LA[ty];
+    const sel = B.sel===s.id, nm = s.hero ? CASTRA_HERO_DATA[s.h.id].nm : s.dux ? "Aanvoerder" : castraSoldierName(s), t = CASTRA_TYPE_LA[ty];
     return `<button class="tile ${sel?"tile-primary":""}" ${placed?"disabled":""} style="${placed?"opacity:.45;":""}" onclick="castraBSelect('${s.id}')">
       <h3>${banned?"🚫 ":""}${s.hero?"⭐ ":s.insignis?"✨ ":""}${esc(nm)} <small>${castraLaText("gradus")} ${s.lvl||1} · ${esc(t.sg)}</small></h3>
       <p>${CASTRA_STATS.map(x=>x.nm.slice(0,3)+" "+st[x.id]).join(" · ")}</p></button>`;
@@ -347,7 +347,7 @@ function castraBFinish(){
     h += `<div style="font-size:22px;margin-bottom:6px">${castraLa("castra_capta")}</div>`;
   }
   const hurt = castraBattleWounds(s, s.over==="lose");
-  if(hurt.length) h += `<div class="note" style="margin-top:8px">🩹 ${castraLaHTML(hurt.length+" milites vulnerati sunt.", hurt.length+" soldaten zijn gewond geraakt.", "wounded_n")}</div>`;
+  if(hurt.length) h += `<div class="note" style="margin-top:8px">🩹 ${castraLaHTML(hurt.length+" soldaten zijn gewond geraakt.", hurt.length+" soldiers were wounded.", "wounded_n")}</div>`;
   h += `<div style="display:flex;gap:10px;margin-top:14px"><button class="btn btn-gold" onclick="castraBExit()">${castraLaText("perge")}</button>
     <button class="btn" onclick="castraBStart('${m.id}')">${castraLaText("iterum_pugna")}</button></div></div>`;
   box.innerHTML = h; box.scrollIntoView({ behavior:"smooth", block:"nearest" });

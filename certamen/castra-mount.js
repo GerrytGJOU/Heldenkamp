@@ -48,5 +48,5 @@ castraWorldAvatar = function(){
     castraMountSync();
   }catch(e){ console.error(e); }
 };
-Object.assign(CASTRA_GLOSS, { "fugit":"loopt weg", "quaere":"zoek", "equum":"paard (4e naamval)", "fabrum":"bouwer (4e naamval)", "dabo":"ik zal geven", "redit":"keert terug", "frenum":"tuig, teugel", "novum":"nieuwe", "paravi":"ik heb gemaakt",
+Object.assign(CASTRA_GLOSS, { "fugit":"loopt weg", "quaere":"zoek", "equum":"horse (accusative)", "fabrum":"bouwer (4e naamval)", "dabo":"ik zal geven", "redit":"keert terug", "frenum":"tuig, teugel", "novum":"nieuwe", "paravi":"I have made",
   "do":"ik geef", "mercatorem":"koopman (4e naamval)", "celeriter":"snel", "equitare":"rijden", "potes":"je kunt", "roga":"vraag" });

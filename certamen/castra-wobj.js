@@ -21,14 +21,14 @@
 
 /* ---------- voorwerpen ---------- */
 const CASTRA_ITEMS = {
-  amphora:    { nm:"Amfoor",    icon:"🏺", nl:"amphora" },
+  amphora:    { nm:"Amfora",    icon:"🏺", nl:"amphora" },
   lyra:       { nm:"Lier",       icon:"🎶", nl:"lyre" },
-  clipeus:    { nm:"Clipeus",    icon:"🛡️", nl:"schild" },
-  torques:    { nm:"Torques",    icon:"📿", nl:"halsband" },
+  clipeus:    { nm:"Schild",    icon:"🛡️", nl:"shield" },
+  torques:    { nm:"Halsring",    icon:"📿", nl:"neck ring (torc)" },
   scarabaeus: { nm:"Scarabee", icon:"🪲", nl:"scarab" },
   corona:     { nm:"Kroon",     icon:"👑", nl:"crown" },
   ebur:       { nm:"Ivoor",       icon:"🦷", nl:"ivory" },
-  gladius:    { nm:"Gladius",    icon:"🗡️", nl:"zwaard" },
+  gladius:    { nm:"Zwaard",    icon:"🗡️", nl:"sword" },
   galea:      { nm:"Helm",      icon:"⛑️", nl:"helmet" },
   cornu:      { nm:"Hoorn",      icon:"📯", nl:"horn" },
   arcus:      { nm:"Boog",      icon:"🏹", nl:"bow" },
@@ -36,17 +36,17 @@ const CASTRA_ITEMS = {
 /* ---------- per regio: opdrachtgever, voorwerp, gebouw ---------- */
 // Latijn: acc = 4e naamval, nom = 1e naamval, pn/pa = mijn (1e/4e naamval), where = waar het ligt.
 const CASTRA_WREG = {
-  latium:     { npc:"Agricola", folk:"rom", item:"amphora",    nom:"Amphora",    acc:"amphoram", pn:"mea",   pa:"meam", where:"in silva",     whereNl:"in het bos",       bld:"puteus" },
-  graecia:    { npc:"Poeta",    folk:"gra", item:"lyra",       nom:"Lyra",       acc:"lyram",    pn:"mea",   pa:"meam", where:"in monte",     whereNl:"op de berg",       bld:"horreum" },
-  troia:      { npc:"Custos",   folk:"tro", item:"clipeus",    nom:"Clipeus",    acc:"clipeum",  pn:"meus",  pa:"meum", where:"ante muros",   whereNl:"voor de muren",    bld:"lignatio" },
-  gallia:     { npc:"Mercator", folk:"gal", item:"torques",    nom:"Torques",    acc:"torquem",  pn:"meus",  pa:"meum", where:"in silva",     whereNl:"in het woud",      bld:"metallum" },
-  aegyptus:   { npc:"Scriba",   folk:"aeg", item:"scarabaeus", nom:"Scarabaeus", acc:"scarabaeum",pn:"meus", pa:"meum", where:"in deserto",   whereNl:"in de woestijn",   bld:"puteus" },
-  persis:     { npc:"Magus",    folk:"per", item:"corona",     nom:"Corona",     acc:"coronam",  pn:"mea",   pa:"meam", where:"in montibus",  whereNl:"in de bergen",     bld:"horreum" },
-  africa:     { npc:"Nauta",    folk:"car", item:"ebur",       nom:"Ebur",       acc:"ebur",     pn:"meum",  pa:"meum", where:"ad litus",     whereNl:"aan de kust",      bld:"lignatio" },
-  roma:       { npc:"Gladiator",folk:"gla", item:"gladius",    nom:"Gladius",    acc:"gladium",  pn:"meus",  pa:"meum", where:"in foro",      whereNl:"op het Forum",     bld:"metallum" },
-  laconia:    { npc:"Spartiates",folk:"spa",item:"galea",      nom:"Galea",      acc:"galeam",   pn:"mea",   pa:"meam", where:"ad Eurotam",   whereNl:"bij de Eurotas",   bld:"puteus" },
-  germania:   { npc:"Venator",  folk:"ger", item:"cornu",      nom:"Cornu",      acc:"cornu",    pn:"meum",  pa:"meum", where:"in paludibus", whereNl:"in de moerassen",  bld:"horreum" },
-  themiscyra: { npc:"Amazon",   folk:"ama", item:"arcus",      nom:"Arcus",      acc:"arcum",    pn:"meus",  pa:"meum", where:"in silva",     whereNl:"in het woud",      bld:"lignatio" },
+  latium:     { npc:"Boer", folk:"rom", item:"amphora",    nom:"Amfora",    acc:"amphoram", pn:"mea",   pa:"meam", where:"in het bos",     whereNl:"in the forest",       bld:"puteus" },
+  graecia:    { npc:"Dichter",    folk:"gra", item:"lyra",       nom:"Lier",       acc:"lyram",    pn:"mea",   pa:"meam", where:"op de berg",     whereNl:"on the mountain",       bld:"horreum" },
+  troia:      { npc:"Wachter",   folk:"tro", item:"clipeus",    nom:"Schild",    acc:"clipeum",  pn:"meus",  pa:"meum", where:"voor de muren",   whereNl:"in front of the walls",    bld:"lignatio" },
+  gallia:     { npc:"Koopman", folk:"gal", item:"torques",    nom:"Halsring",    acc:"torquem",  pn:"meus",  pa:"meum", where:"in het bos",     whereNl:"in the woods",      bld:"metallum" },
+  aegyptus:   { npc:"Scriba",   folk:"aeg", item:"scarabaeus", nom:"Scarabee", acc:"scarabaeum",pn:"meus", pa:"meum", where:"in de woestijn",   whereNl:"in the desert",   bld:"puteus" },
+  persis:     { npc:"Magus",    folk:"per", item:"corona",     nom:"Kroon",     acc:"coronam",  pn:"mea",   pa:"meam", where:"in de bergen",  whereNl:"in the mountains",     bld:"horreum" },
+  africa:     { npc:"Zeeman",    folk:"car", item:"ebur",       nom:"Ivoor",       acc:"ebur",     pn:"meum",  pa:"meum", where:"aan de kust",     whereNl:"on the coast",      bld:"lignatio" },
+  roma:       { npc:"Gladiator",folk:"gla", item:"gladius",    nom:"Zwaard",    acc:"gladium",  pn:"meus",  pa:"meum", where:"op het Forum",      whereNl:"on the Forum",     bld:"metallum" },
+  laconia:    { npc:"Spartiates",folk:"spa",item:"galea",      nom:"Helm",      acc:"galeam",   pn:"mea",   pa:"meam", where:"bij de Eurotas",   whereNl:"by the Eurotas",   bld:"puteus" },
+  germania:   { npc:"Jager",  folk:"ger", item:"cornu",      nom:"Hoorn",      acc:"cornu",    pn:"meum",  pa:"meum", where:"in de moerassen", whereNl:"in the marshes",  bld:"horreum" },
+  themiscyra: { npc:"Amazone",   folk:"ama", item:"arcus",      nom:"Boog",      acc:"arcum",    pn:"meus",  pa:"meum", where:"in het bos",     whereNl:"in the woods",      bld:"lignatio" },
 };
 // Gebouwtypes: Latijnse naam, Nederlandse naam, effect (heal of dagelijkse grondstof) en kaartstukken.
 const CASTRA_WBT = {
@@ -87,7 +87,7 @@ const CASTRA_WENT = [];     // alle entiteiten
     CASTRA_WENT.push({ id:g.item, region:rid, kind:"pickup", item:g.item, x:p.pickup[0], y:p.pickup[1], needs:{ qid, step:1 } });
     CASTRA_WENT.push({ id:qid, region:rid, kind:"npc", role:"quest", nm:g.npc, qid, x:p.quest[0], y:p.quest[1], dir:"left" });
     CASTRA_WENT.push({ id:leg.bid ? "faber" : "f_"+rid, region:rid, kind:"npc", role:"builder", nm:"Faber", bid, x:p.faber[0], y:p.faber[1], dir:"left" });
-    CASTRA_WENT.push({ id:leg.bid ? "magistra" : "m_"+rid, region:rid, kind:"npc", role:"puzzle", nm:"Magistra", x:p.magistra[0], y:p.magistra[1], dir:"right" });
+    CASTRA_WENT.push({ id:leg.bid ? "magistra" : "m_"+rid, region:rid, kind:"npc", role:"puzzle", nm:"Lerares", x:p.magistra[0], y:p.magistra[1], dir:"right" });
     CASTRA_WENT.push({ id:bid+"_bld", region:rid, kind:"bld", bid, x:p.site[0], y:p.site[1], needsBuilt:bid });
     CASTRA_WBUILD[bid] = { rid, type:g.bld, site:{ x:p.site[0], y:p.site[1] }, cost:{ lignum:Math.round(30*scale), aes:Math.round(15*scale) }, scale, qid };
   });
@@ -217,26 +217,26 @@ function castraWBldUse(e){
 function castraWQuestText(rid){
   const g = CASTRA_WREG[rid];
   return {
-    ask:[ { la:`Salve, dux {naam}! ${g.nom} ${g.pn} amisi.`, nl:`Gegroet, leider {naam}! Ik ben mijn ${CASTRA_ITEMS[g.item].nl} kwijt.` },
-          { la:`Quaere ${g.acc} ${g.where}, et aes tibi dabo.`, nl:`Zoek de ${CASTRA_ITEMS[g.item].nl} ${g.whereNl}, dan geef ik je brons.` } ],
-    wait:[ { la:`Ubi est ${g.nom.toLowerCase()} ${g.pn}?`, nl:`Waar is mijn ${CASTRA_ITEMS[g.item].nl}?` } ],
-    done:[ { la:`${g.nom} ${g.pn}! Gratias tibi ago, dux {naam}!`, nl:`Mijn ${CASTRA_ITEMS[g.item].nl}! Dank je wel, leider {naam}!` } ],
+    ask:[ { la:`Gegroet, leider {naam}! ${g.nom} ${g.pn} amisi.`, nl:`Gegroet, leider {naam}! Ik ben mijn ${CASTRA_ITEMS[g.item].nl} kwijt.` },
+          { la:`Zoek de ${g.acc} ${g.where}, dan geef ik je brons.`, nl:`Find the ${CASTRA_ITEMS[g.item].nl} ${g.whereNl}, and I will give you bronze.` } ],
+    wait:[ { la:`Waar is ${g.nom.toLowerCase()} ${g.pn}?`, nl:`Where is my ${CASTRA_ITEMS[g.item].nl}?` } ],
+    done:[ { la:`${g.nom} ${g.pn}! Dank je wel, leider {naam}!`, nl:`My ${CASTRA_ITEMS[g.item].nl}! Thank you, leader {naam}!` } ],
     after:[ { la:"Tot ziens, leider {naam}! Het ga je goed!", nl:"Goodbye, leader {naam}! Farewell!" } ],
-    hud:{ la:`${g.nom} quaere ${g.where}!`, nl:`Zoek de ${CASTRA_ITEMS[g.item].nl} van de ${g.npc} ${g.whereNl} (✨).` },
+    hud:{ la:`${g.nom} quaere ${g.where}!`, nl:`Find the ${CASTRA_ITEMS[g.item].nl} from the ${g.npc} ${g.whereNl} (✨).` },
   };
 }
 function castraWBuildText(bid){
   const B = CASTRA_WBUILD[bid], T = CASTRA_WBT[B.type];
   return {
-    ask:[ { la:`Salve! Faber sum. ${T.acc.charAt(0).toUpperCase()+T.acc.slice(1)} aedifico.`, nl:`Gegroet! Ik ben de bouwer. Ik bouw een ${T.nl}.` },
-          { la:`Mihi opus est ${B.cost.lignum} lignis et ${B.cost.aes} aeribus.`, nl:`Ik heb ${B.cost.lignum} hout en ${B.cost.aes} brons nodig.` } ],
-    built:[ { la:`${T.la} ${T.done} est! ${T.say.la}`, nl:`De ${T.nl} is klaar! ${T.say.nl}` } ],
-    hud:{ la:"Ligna et aes da fabro!", nl:`Lever ${B.cost.lignum} hout en ${B.cost.aes} brons in bij de Faber, dan bouwt hij een ${T.nl}.` },
+    ask:[ { la:`Gegroet! Ik ben de bouwer. ${T.acc.charAt(0).toUpperCase()+T.acc.slice(1)} aedifico.`, nl:`Hello! I am the builder. I am building a ${T.nl}.` },
+          { la:`Ik heb ${B.cost.lignum} hout en ${B.cost.aes} aeribus.`, nl:`I need ${B.cost.lignum} wood and ${B.cost.aes} bronze.` } ],
+    built:[ { la:`${T.la} ${T.done} est! ${T.say.la}`, nl:`The ${T.nl} is finished! ${T.say.nl}` } ],
+    hud:{ la:"Geef hout en brons aan de bouwer!", nl:`Hand over ${B.cost.lignum} wood and ${B.cost.aes} bronze to the builder, and he will build a ${T.nl}.` },
   };
 }
 const CASTRA_WPUZ_HI = [
   { la:"Gegroet, leider {naam}! Laten we spelen!", nl:"Greetings, leader {naam}! Let's play!" },
-  { la:"Welk spel kies je?", nl:"Which game do you choose?", opts:[ { la:"Ordo verborum", nl:"woorden op volgorde" }, { la:"Verba iungere", nl:"woorden koppelen" }, { la:"Nu niet", nl:"not now" } ] },
+  { la:"Welk spel kies je?", nl:"Which game do you choose?", opts:[ { la:"Woordvolgorde", nl:"words in order" }, { la:"Woorden koppelen", nl:"match the words" }, { la:"Nu niet", nl:"not now" } ] },
 ];
 
 function castraWSay(e, lines, done){ castraDlgOpen({ nm:e.nm, look:castraWLook(e) }, lines, done); }
@@ -325,7 +325,7 @@ function castraPuzzleReward(){
 function castraPuzzleRender(){
   const Z = CASTRA_PUZ, panel = el("cwPanel"); if(!Z || !panel) return;
   const first = (CASTRA.wday||{})[castraPuzzleKey()]!==castraWDay();
-  const head = `<h3 style="margin:0 0 6px">🧩 Magistra <small>${first?"eerste keer vandaag in deze regio: beloning!":"geen beloning meer vandaag in deze regio, oefenen mag"}</small></h3>`;
+  const head = `<h3 style="margin:0 0 6px">🧩 Lerares <small>${first?"eerste keer vandaag in deze regio: beloning!":"geen beloning meer vandaag in deze regio, oefenen mag"}</small></h3>`;
   const foot = `<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn" style="min-height:44px" onclick="castraPuzzleClose()">Sluiten</button>
       ${Z.done?`<button class="btn btn-gold" style="min-height:44px" onclick="castraPuzzleOpen('${Z.kind}')">Nog een keer</button>`:""}</div>`;

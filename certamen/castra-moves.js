@@ -41,15 +41,15 @@ const CASTRA_FORM_CATCH = {
 };
 function castraFormCatch(formId){ return CASTRA_FORM_CATCH[formId] != null ? CASTRA_FORM_CATCH[formId] : 1; }
 const CASTRA_MV_BASIC  = { id:"oppugna", la:"Gewone aanval", nl:"Normal attack", kind:"dmg", power:50, acc:100, pp:0 };
-const CASTRA_MV_DEFEND = { id:"defende", la:"Defende", nl:"Verdedig: deze beurt de helft minder schade (niet twee keer achter elkaar)", kind:"guard", pp:0, prio:2 };
+const CASTRA_MV_DEFEND = { id:"defende", la:"Verdedigen", nl:"Verdedig: deze beurt de helft minder schade (niet twee keer achter elkaar)", kind:"guard", pp:0, prio:2 };
 // eff = bijwerkingen na een treffer: { st:"vulnus", p:25 } (status op de vijand) of { stage:["cel",-1], p:100 } (stage van de vijand; self:true = van jezelf)
 const CASTRA_MV_SIG = {
   inf:  { id:"sig_inf",  la:"Zware slag", nl:"Heavy blow", kind:"dmg", power:72, acc:90,  pp:6 },
   rec:  { id:"sig_inf",  la:"Zware slag", nl:"Heavy blow", kind:"dmg", power:72, acc:90,  pp:6 },
-  rng:  { id:"sig_rng",  la:"Sagitta",      nl:"Pijl die een kwart van de verdediging negeert", kind:"dmg", power:60, acc:100, pp:8, pierce:25, eff:[{ st:"vulnus", p:25 }] },
-  cav:  { id:"sig_cav",  la:"Incursus",     nl:"Snelle uitval (gaat eerst)", kind:"dmg", power:62, acc:95, pp:6, prio:1 },
-  sup:  { id:"sig_sup",  la:"Cura",         nl:"Geneest 30% van je levenspunten", kind:"heal", pp:4 },
-  myth: { id:"sig_myth", la:"Terror",       nl:"Zwakke aanval die de vijand vertraagt", kind:"dmg", power:40, acc:100, pp:8, eff:[{ stage:["cel",-1], p:100 }, { st:"pavor", p:20 }] },
+  rng:  { id:"sig_rng",  la:"Pijl",      nl:"Pijl die een kwart van de verdediging negeert", kind:"dmg", power:60, acc:100, pp:8, pierce:25, eff:[{ st:"vulnus", p:25 }] },
+  cav:  { id:"sig_cav",  la:"Uitval",     nl:"Snelle uitval (gaat eerst)", kind:"dmg", power:62, acc:95, pp:6, prio:1 },
+  sup:  { id:"sig_sup",  la:"Genezing",         nl:"Geneest 30% van je levenspunten", kind:"heal", pp:4 },
+  myth: { id:"sig_myth", la:"Schrik",       nl:"Zwakke aanval die de vijand vertraagt", kind:"dmg", power:40, acc:100, pp:8, eff:[{ stage:["cel",-1], p:100 }, { st:"pavor", p:20 }] },
 };
 const CASTRA_MV_ICON = { rec:"⚔️", inf:"🛡️", rng:"🏹", cav:"🐎", sup:"✨", myth:"🐉" };
 
@@ -110,7 +110,7 @@ function castraMvSync(V){   // oude velden (castraVFinish en anderen lezen die)
   V.myHp = V.s.me.hp; V.myMax = V.s.me.max; V.enHp = V.s.en.hp; V.enMax = V.s.en.max;
 }
 const _castraVFightMv0 = castraVFight;
-function castraMvName(u){ return u.dux ? "Dux" : u.hero ? CASTRA_HERO_DATA[u.h.id].nm : castraSoldierName(u); }
+function castraMvName(u){ return u.dux ? "Aanvoerder" : u.hero ? CASTRA_HERO_DATA[u.h.id].nm : castraSoldierName(u); }
 function castraMvInit(V){
   const myName = castraMvName(V.mine), enName = castraSoldierName(V.enemy);
   V.s = { me:castraMvSide(V.mine, V.myStats, V.myType, myName), en:castraMvSide(V.enemy, V.stats, V.enType, enName) };
@@ -206,10 +206,10 @@ function castraMvSpeed(S){ return castraMvStat(S, "cel"); }
 
 /* ---------- teksten bij gebeurtenissen ---------- */
 const CASTRA_MV_STATUS_LA = {
-  vulnus:{ on:["Vulnus accipit.", "{n} is gewond."], dot:["Vulnus dolet.", "De wond doet pijn."], key:"mv_vulnus" },
-  ustio: { on:["{n} heeft een brandwond.", "{n} has a burn."], dot:["Ustio urit.", "De brandwond brandt."], key:"mv_ustio" },
-  somnus:{ on:["Somnus cadit.", "{n} valt in slaap."], key:"mv_somnus" },
-  pavor: { on:["Pavor capit.", "{n} is bang."], key:"mv_pavor" },
+  vulnus:{ on:["{n} is gewond.", "{n} is wounded."], dot:["De wond doet pijn.", "The wound hurts."], key:"mv_vulnus" },
+  ustio: { on:["{n} heeft een brandwond.", "{n} has a burn."], dot:["De brandwond brandt.", "The burn stings."], key:"mv_ustio" },
+  somnus:{ on:["{n} valt in slaap.", "{n} falls asleep."], key:"mv_somnus" },
+  pavor: { on:["{n} is bang.", "{n} is scared."], key:"mv_pavor" },
 };
 function castraMvStageLine(S, stat, d){
   return d>0 ? castraLaHTML(esc(S.name)+" crescit.", S.name+": "+CASTRA_STAGE_NL[stat]+" stijgt.", "mv_stage_up") : castraLaHTML(esc(S.name)+" minuitur.", S.name+": "+CASTRA_STAGE_NL[stat]+" daalt.", "mv_stage_dn");
@@ -222,30 +222,30 @@ function castraMvExec(V, who, move){
   const ev = e=>castraMvEv(V, { w:who, ...e });
   // slaap en schrik kunnen de beurt kosten
   if(A.status==="somnus"){
-    if(A.sleep>0){ A.sleep--; ev({ t:"skip", why:"somnus" }); castraMvFx(V, { w:who, k:"status", s:"somnus", skip:true }); lines.push(`${nm}: ${castraLaHTML("Dormit.", "Slaapt.", "mv_dormit")} 💤`); return lines; }
-    A.status = null; ev({ t:"wake" }); lines.push(`${nm}: ${castraLaHTML("Expergiscitur!", "Wordt wakker!", "mv_expergiscitur")}`);
+    if(A.sleep>0){ A.sleep--; ev({ t:"skip", why:"somnus" }); castraMvFx(V, { w:who, k:"status", s:"somnus", skip:true }); lines.push(`${nm}: ${castraLaHTML("Slaapt.", "Sleeping.", "mv_dormit")} 💤`); return lines; }
+    A.status = null; ev({ t:"wake" }); lines.push(`${nm}: ${castraLaHTML("Wordt wakker!", "Wakes up!", "mv_expergiscitur")}`);
   }
   if(A.status==="pavor" && rng() < CASTRA_STATUS.pavor.skipP){
-    ev({ t:"skip", why:"pavor" }); castraMvFx(V, { w:who, k:"status", s:"pavor", skip:true }); lines.push(`${nm}: ${castraLaHTML("Metu paralysatur.", "Verstijft van schrik.", "mv_metu")} 😨`); return lines;
+    ev({ t:"skip", why:"pavor" }); castraMvFx(V, { w:who, k:"status", s:"pavor", skip:true }); lines.push(`${nm}: ${castraLaHTML("Verstijft van schrik.", "Freezes in fear.", "mv_metu")} 😨`); return lines;
   }
   if(move.pp) A.pp[move.id] = Math.max(0, (A.pp[move.id]||0)-1);
   ev({ t:"use", id:move.id });
   if(move.kind==="guard"){
-    if(A.lastGuard){ lines.push(head+" "+castraLaHTML("Sed non iterum.", "Maar niet twee keer achter elkaar.", "mv_iter")); A.lastGuard = false; return lines; }
-    A.guard = true; ev({ t:"guard" }); castraMvFx(V, { w:who, k:"guard" }); lines.push(head+" "+castraLaHTML("Se defendit.", "Verdedigt zich.", "mv_defendit")); return lines;
+    if(A.lastGuard){ lines.push(head+" "+castraLaHTML("Maar niet twee keer achter elkaar.", "But not twice in a row.", "mv_iter")); A.lastGuard = false; return lines; }
+    A.guard = true; ev({ t:"guard" }); castraMvFx(V, { w:who, k:"guard" }); lines.push(head+" "+castraLaHTML("Verdedigt zich.", "Defends itself.", "mv_defendit")); return lines;
   }
   if(move.kind==="heal"){
     const amt = Math.round(A.max*B.healPct/100), got = Math.min(amt, A.max-A.hp); A.hp += got; ev({ t:"heal", n:got }); castraMvFx(V, { w:who, k:"heal", n:got });
-    lines.push(head+" "+(got ? `+${got} ❤️` : castraLaHTML("Nihil iuvat.", "Het helpt niet (al vol).", "mv_nihil"))); return lines;
+    lines.push(head+" "+(got ? `+${got} ❤️` : castraLaHTML("Het helpt niet (al vol).", "It does not help (already full).", "mv_nihil"))); return lines;
   }
   if(move.kind==="buff" || move.kind==="shield"){
     const stat = move.kind==="buff" ? "imp" : "tut", got = castraStageChange(A, stat, 1);
     ev({ t:"stage", stat, d:got, to:who }); if(got) castraMvFx(V, { w:who, k:"buff", stat, d:got });
-    lines.push(head+" "+(got ? (stat==="imp" ? "⬆ "+castraLaHTML("Vires crescunt.", "De aanvalskracht stijgt.", "mv_vires") : "🛡 "+castraLaHTML("Tutela crescit.", "De verdediging stijgt.", "mv_tutela")) : castraLaHTML("Nihil crescit.", "Het kan niet hoger.", "mv_nihilcr"))); return lines;
+    lines.push(head+" "+(got ? (stat==="imp" ? "⬆ "+castraLaHTML("De aanvalskracht stijgt.", "Attack power rises.", "mv_vires") : "🛡 "+castraLaHTML("De verdediging stijgt.", "Defence rises.", "mv_tutela")) : castraLaHTML("Het kan niet hoger.", "It cannot go higher.", "mv_nihilcr"))); return lines;
   }
   // schade: nauwkeurigheid en ontwijken (stages) bepalen de kans om te raken
   const acc = move.sure ? 100 : (move.acc||100) * castraStageMult("acc", ((A.stages||{}).acc||0) - ((D.stages||{}).eva||0));
-  if(rng()*100 >= acc){ ev({ t:"miss" }); castraMvFx(V, { w:who, k:"miss" }); lines.push(head+" "+castraLaHTML("Ictus fallit.", "De aanval mist.", "mv_fallit")); return lines; }
+  if(rng()*100 >= acc){ ev({ t:"miss" }); castraMvFx(V, { w:who, k:"miss" }); lines.push(head+" "+castraLaHTML("De aanval mist.", "The attack misses.", "mv_fallit")); return lines; }
   const hits = move.hits || 1; let total = 0, last = null, crit = false;
   for(let i=0;i<hits && D.hp>0;i++){
     const isCrit = rng()*100 < B.critPct + (move.crit||0), spread = B.spread[0] + rng()*(B.spread[1]-B.spread[0]);
@@ -256,7 +256,7 @@ function castraMvExec(V, who, move){
   if(who==="en") V.dmgTaken += total;
   ev({ t:"hit", n:total, hits, crit, mult:last.m, stab:last.stab>1, el:move.el||null });
   castraMvFx(V, { w:who, k:"hit", n:total, crit, mult:last.m, hits });
-  lines.push(head+` −${total}`+(hits>1?` (${hits}×)`:"")+castraMvEff(last.m)+(move.el && last.stab>1 ? ` <small title="STAB: het element van de move hoort bij de gebruiker">${CASTRA_ELEMS[move.el].icon}</small>` : "")+(crit?" 💥 "+castraLaHTML("Ictus gravis!", "Voltreffer!", "mv_crit"):""));
+  lines.push(head+` −${total}`+(hits>1?` (${hits}×)`:"")+castraMvEff(last.m)+(move.el && last.stab>1 ? ` <small title="STAB: het element van de move hoort bij de gebruiker">${CASTRA_ELEMS[move.el].icon}</small>` : "")+(crit?" 💥 "+castraLaHTML("Voltreffer!", "Direct hit!", "mv_crit"):""));
   // bijwerkingen na een treffer
   (move.eff||[]).forEach(e=>{
     if(D.hp<=0 || rng()*100 >= e.p) return;
@@ -370,8 +370,8 @@ function castraMvCatchChance(V, latinOk){
 function castraMvChanceLabel(p){ return p>=0.65 ? ["goed","#3f9d52"] : p>=0.35 ? ["redelijk","#d4a017"] : ["laag","#c8392a"]; }
 function castraVCatch(){
   const V = CASTRA_V; if(!V || V.over || !V.s) return;
-  if(!castraMvCatchable(V)){ V.log = [castraLaHTML("Hunc hostem capere non potes.", "Deze vijand kun je niet vangen (een baas).", "mv_baas")]; castraVRender("battle"); return; }
-  if(V.catchLeft<=0){ V.log = [castraLaHTML("Nulli funes manent.", "Je hebt geen vangpogingen meer.", "mv_nofunes")]; castraVRender("battle"); return; }
+  if(!castraMvCatchable(V)){ V.log = [castraLaHTML("Deze vijand kun je niet vangen (een baas).", "You cannot catch this enemy (a boss).", "mv_baas")]; castraVRender("battle"); return; }
+  if(V.catchLeft<=0){ V.log = [castraLaHTML("Je hebt geen vangpogingen meer.", "You have no catch attempts left.", "mv_nofunes")]; castraVRender("battle"); return; }
   if(CASTRA.soldiers.length >= castraBarracksCap()){ V.log = [castraLa("castra_plena")]; castraVRender("battle"); return; }
   // optionele Latijnse vraag: welk soort vijand is dit? (het bericht van de verkenner)
   const types = ["inf","rng","cav","sup","myth"].filter(t=>t!==V.enType).sort(()=>V.rng()-0.5).slice(0,2).concat([V.enType]).sort(()=>V.rng()-0.5);
@@ -384,15 +384,15 @@ function castraVCatchTry(k){        // k = gekozen antwoord, of -1 = overslaan
   const p = castraMvCatchChance(V, ok); V.catchLeft--; (CASTRA.seenTD || (CASTRA.seenTD = {})).vcatch = 1;
   const roll = V.rng();
   if(roll < p){
-    V.log = [ (ok ? castraLaHTML("Recte! ", "Goed gelezen! ", "mv_recte") : "") + castraLaHTML("Funis tenet!", "Het touw houdt!", "mv_tenet") ];
+    V.log = [ (ok ? castraLaHTML("Goed gelezen! ", "Well read! ", "mv_recte") : "") + castraLaHTML("Het touw houdt!", "The rope holds!", "mv_tenet") ];
     V.over = "win"; V.caught = true; V.round++;
     castraVFinish();
     if(CASTRA.soldiers.length < castraBarracksCap()){ CASTRA.soldiers.push(V.enemy); V.recruited = true; if(typeof castraPxpAdd==="function") castraPxpAdd(10); castraSave(); }
     castraVRender("result"); return;
   }
-  const pre = (ok ? castraLaHTML("Recte! ", "Goed gelezen! ", "mv_recte") : "") + castraLaHTML("Funis ruptus est!", "Het touw breekt!", "mv_ruptus");
+  const pre = (ok ? castraLaHTML("Goed gelezen! ", "Well read! ", "mv_recte") : "") + castraLaHTML("Het touw breekt!", "The rope breaks!", "mv_ruptus");
   castraMvPlay(V, null);
-  V.log.unshift(pre); V.log.splice(1, 0, castraLaHTML("Hostis occasionem habet!", "De vijand grijpt zijn kans.", "mv_occasio")); if(!V.over) castraVRender("battle");
+  V.log.unshift(pre); V.log.splice(1, 0, castraLaHTML("De vijand grijpt zijn kans.", "The enemy seizes its chance.", "mv_occasio")); if(!V.over) castraVRender("battle");
 }
 // Vluchten kost een beurt: de kans hangt af van je snelheid ten opzichte van de vijand en groeit met elke poging; mislukt het, dan valt de vijand gratis aan.
 function castraMvFleeChance(V){
@@ -401,11 +401,11 @@ function castraMvFleeChance(V){
 }
 function castraVFlee(){
   const V = CASTRA_V; if(!V || V.over || V.busy) return;
-  if(typeof castraTrainerOf==="function" && castraTrainerOf(V)){ V.log = [castraLaHTML("Non potes fugere!", "Voor een trainer kun je niet vluchten.", "mv_nofuga")]; castraVRender("battle"); return; }
+  if(typeof castraTrainerOf==="function" && castraTrainerOf(V)){ V.log = [castraLaHTML("Voor een trainer kun je niet vluchten.", "You cannot flee from a trainer.", "mv_nofuga")]; castraVRender("battle"); return; }
   const p = castraMvFleeChance(V); V.fleeTries = (V.fleeTries||0)+1;
   if(V.rng() < p){ V.over = "flee"; castraVFinish(); castraVRender("result"); return; }
   castraMvPlay(V, null);
-  V.log.unshift(castraLaHTML("Fuga non successit!", "Je komt niet weg!", "mv_fuga_mal")); if(!V.over) castraVRender("battle");
+  V.log.unshift(castraLaHTML("Je komt niet weg!", "You do not get away!", "mv_fuga_mal")); if(!V.over) castraVRender("battle");
 }
 
 /* ---------- weergave ---------- */
@@ -473,13 +473,13 @@ function castraVBattleHTML(){
     // het hoofdmenu zoals in Pokémon: links de vraag, rechts vier grote knoppen; drie ervan openen een submenu, Fuga is direct
     if(!document.getElementById("castraVMenuCss")){ const st = document.createElement("style"); st.id = "castraVMenuCss"; st.textContent = CASTRA_VMENU_CSS; document.head.appendChild(st); }
     const reserve = typeof castraMvReserve==="function" ? castraMvReserve(V).length : 0, nm = castraMvName(V.mine);
-    const tip = !(CASTRA.seenTD||{}).vcatch && castraMvCatchable(V) ? `<div style="font-size:12px;margin-top:6px;opacity:.9">💡 Wil je de vijand in je kamp? Open <b>Saccus</b> en kies <b>Capere</b>. Verslaan betekent dat hij vlucht.</div>` : "";
+    const tip = !(CASTRA.seenTD||{}).vcatch && castraMvCatchable(V) ? `<div style="font-size:12px;margin-top:6px;opacity:.9">💡 Wil je de vijand in je kamp? Open <b>Rugzak</b> en kies <b>Vangen</b>. Verslaan betekent dat hij vlucht.</div>` : "";
     const big = (cls, ic, la, nl, click, dis, title)=>`<button class="cbcmd ${cls}" ${dis?"disabled":""} onclick="${click}" title="${esc(title)}"><span class="cbci">${ic}</span><b>${la}</b><small>${nl}</small></button>`;
-    menu = `<div class="cbmenu"><div class="cbprompt">${castraLaHTML("Quid faciet "+nm+"?", "Wat gaat "+nm+" doen?", "mv_quid")}${tip}</div>
-      <div class="cbcmds">${big("cmd-fight","⚔️","Pugna","vechten","castraVFightMenu(true)",false,"Kies een aanval")}
-        ${big("cmd-bag","🎒","Saccus","zak","castraBagBattleOpen()",false,"Voorwerpen en vangen (Capere)")}
-        ${big("cmd-party","👥","Milites","soldaten",reserve?"castraVSwitchOpen()":"",!reserve,reserve?"Wissel van soldaat (kost je beurt)":"Je hebt geen reserve")}
-        ${big("cmd-run","🏃","Fuga","(vlucht)","castraVFlee()",false,"Vluchten: kost een beurt en lukt niet altijd (voor een trainer kan het niet)")}</div></div>`;
+    menu = `<div class="cbmenu"><div class="cbprompt">${castraLaHTML("Wat doet "+nm+"?", "Wat gaat "+nm+" doen?", "mv_quid")}${tip}</div>
+      <div class="cbcmds">${big("cmd-fight","⚔️","Aanvallen","vechten","castraVFightMenu(true)",false,"Kies een aanval")}
+        ${big("cmd-bag","🎒","Rugzak","zak","castraBagBattleOpen()",false,"Voorwerpen en vangen")}
+        ${big("cmd-party","👥","Leger","soldaten",reserve?"castraVSwitchOpen()":"",!reserve,reserve?"Wissel van soldaat (kost je beurt)":"Je hebt geen reserve")}
+        ${big("cmd-run","🏃","Rennen","(vlucht)","castraVFlee()",false,"Vluchten: kost een beurt en lukt niet altijd (voor een trainer kan het niet)")}</div></div>`;
   }
   if(typeof castraVSceneHTML==="function") return castraVSceneHTML(V, me, en, mySpr, enSpr, log, menu);
   return `<div class="panel">
@@ -513,7 +513,7 @@ function castraVResultHTML(){
   } else {
     h += `<div style="font-size:22px;margin-bottom:6px">${castraLa(V.over==="lose"?"victus_es":"hostis_fugit")}</div>`;
     if(V.over==="lose" && !V.mine.dux && !V.mine.hero) h += `<div class="note">${castraLa("vulneratus")}</div>`;
-    if(V.over==="flee") h += `<div class="note">${castraLaHTML("Fuga inutilis fuit.", "De vijand is ontsnapt. Probeer hem de volgende keer te vangen voor hij vlucht.", "mv_flee")}</div>`;
+    if(V.over==="flee") h += `<div class="note">${castraLaHTML("De vijand is ontsnapt. Probeer hem de volgende keer te vangen voor hij vlucht.", "The enemy has escaped. Next time, try to catch it before it flees.", "mv_flee")}</div>`;
   }
   h += V.fromWorld
     ? `<div style="display:flex;gap:10px;margin-top:14px"><button class="btn btn-gold" onclick="castraVBack()">${castraLaText("perge")}</button></div></div>`
@@ -525,7 +525,7 @@ function castraVResultHTML(){
 /* ---------- teksten ---------- */
 Object.assign(CASTRA_LA, {
   capere:           { la:"Vangen", nl:"Capture" },
-  fuga:             { la:"Vluchten", nl:"Flee" },
+  fuga:             { la:"Rennen", nl:"Flee" },
   captus_est:       { la:"De vijand is gevangen!", nl:"The enemy is captured!" },
   hostis_adiungit:  { la:"De vijand sluit zich bij je aan.", nl:"The enemy joins you." },
   hostis_fugit_victus:{ la:"De verslagen vijand vlucht. Wil je een vijand in je kamp? Vang hem voor hij verslagen is.", nl:"The defeated enemy flees. Do you want an enemy in your camp? Capture him before he is defeated." },
@@ -550,9 +550,9 @@ function castraMvMenuHTML(unit){
     const sigNote = lvl < CASTRA_MV_BAL.sigLvl ? `<div style="padding:3px 0;opacity:.55">🔒 Gradus ${CASTRA_MV_BAL.sigLvl}: eigen move van je soort</div>` : "";
     const ids = castraSkillIds(isHero ? { hero:true, h:unit.h } : unit);
     const eq = ids.map(id=>castraSkillById(id)).filter(Boolean);
-    const td = eq.length ? eq.map(k=>`<div style="padding:2px 0"><b>${esc(k.la)}</b> <small style="opacity:.75">${esc(k.nl)}</small></div>`).join("") : `<div style="opacity:.6;padding:2px 0">Nog geen artes (de eerste vanaf gradus 8). Als toren schiet hij met zijn basiswaarden.</div>`;
-    const fights = isHero ? "Een held kan ook op jacht (je kiest hem bij het verkenningsbericht) en vecht dan met deze moves." : "";
-    return `<div style="margin-top:8px;font-size:13px"><div style="font-weight:bold">⚔ Moves in het gevecht (jacht)</div>${moves.map(row).join("")}${sigNote}
+    const td = eq.length ? eq.map(k=>`<div style="padding:2px 0"><b>${esc(k.la)}</b> <small style="opacity:.75">${esc(k.nl)}</small></div>`).join("") : `<div style="opacity:.6;padding:2px 0">Nog geen vaardigheden (de eerste vanaf level 8). Als toren schiet hij met zijn basiswaarden.</div>`;
+    const fights = isHero ? "Een held kan ook op jacht (je kiest hem bij het verkenningsbericht) en vecht dan met deze aanvallen." : "";
+    return `<div style="margin-top:8px;font-size:13px"><div style="font-weight:bold">⚔ Aanvallen in het gevecht (jacht)</div>${moves.map(row).join("")}${sigNote}
       <div style="padding:3px 0;border-top:1px dotted var(--parch-line,#c2a96f)"><b>Defende</b> <small style="opacity:.75">halve schade deze beurt (niet twee beurten achter elkaar)</small></div>
       <div style="font-size:11px;opacity:.7;margin-top:2px">${fights}</div>
       <div style="font-weight:bold;margin-top:8px">🏰 In de tower defence</div>${td}</div>`;
@@ -560,11 +560,11 @@ function castraMvMenuHTML(unit){
 }
 function castraMvXpLine(u, cap){
   const need = castraXpToNext(u.lvl||1), left = Math.max(0, need - (u.xp||0));
-  return (u.lvl||1) >= cap ? "maximaal level (bouw het praetorium uit)" : `nog <b>${left}</b> XP tot ${castraLaText("gradus")} ${(u.lvl||1)+1}`;
+  return (u.lvl||1) >= cap ? "maximaal level (bouw het hoofdgebouw uit)" : `nog <b>${left}</b> XP tot ${castraLaText("gradus")} ${(u.lvl||1)+1}`;
 }
 function castraContMenuHTML(){
   const lv = (typeof castraUnlockDef==="function") ? castraUnlockDef("contubernium") : null;
-  if(!castraContActive()) return `<div class="note" style="font-size:12px;margin:0 0 6px">🔒 Contubernium vanaf Castra-niveau ${lv?lv.lvl:7}: rustende soldaten leren mee.</div>`;
-  return `<div class="note" style="font-size:12px;margin:0 0 6px">🏕️ <b>Contubernium</b>: soldaten die niet meevechten krijgen ${castraContShare()}% van de ervaring (maximaal ${castraContSlots()} soldaten, de laagste levels eerst). Campus uitbouwen geeft meer.</div>`;
+  if(!castraContActive()) return `<div class="note" style="font-size:12px;margin:0 0 6px">🔒 Barakken vanaf Castra-niveau ${lv?lv.lvl:7}: rustende soldaten leren mee.</div>`;
+  return `<div class="note" style="font-size:12px;margin:0 0 6px">🏕️ <b>Barakken</b>: soldaten die niet meevechten krijgen ${castraContShare()}% van de ervaring (maximaal ${castraContSlots()} soldaten, de laagste levels eerst). Campus uitbouwen geeft meer.</div>`;
 }
 

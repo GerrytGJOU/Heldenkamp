@@ -14,7 +14,7 @@
    ============================================================================ */
 
 CASTRA_ITEMS.aqua = { nm:"Heilig water", icon:"💧", nl:"holy water" };
-CASTRA_WENT.push({ id:"venator_latium", region:"latium", kind:"npc", role:"bounty", nm:"Venator", x:36, y:44, dir:"left",
+CASTRA_WENT.push({ id:"venator_latium", region:"latium", kind:"npc", role:"bounty", nm:"Jager", x:36, y:44, dir:"left",
   look:{ huid:"getint", haar:"kort", haarkleur:"bruin", baard:"baard", cape:"geen", helm:"bandana", schild:"geen", wapen:"boog", armor:"middel" } });
 const _castraWFeatLat0 = castraWFeat;
 castraWFeat = function(e){ if(e.role==="senator") return "puzzels"; return _castraWFeatLat0(e); };
@@ -24,7 +24,7 @@ function castraLatSay(who, look, lines, done){ castraDlgOpen({ nm:who, look }, l
 function castraEremitaTalk(){
   if(CASTRA_DLG) return;
   const e = CASTRA_WENT.find(x=>x.id==="eremita"), q = castraWQ("eremita");
-  const say = (lines, done)=>castraLatSay("Eremita", e.look, lines, done);
+  const say = (lines, done)=>castraLatSay("Kluizenaar", e.look, lines, done);
   if(q.step===0){
     say([ { la:"Gegroet, gast {naam}! Ik zoek heilig water.", nl:"Greetings, guest {naam}! I am looking for holy water." },
           { la:"Daal af in de diepe grot (trap bovenin) en breng het heilige water.", nl:"Descend into the deep cave (stairs at the top) and bring the holy water." } ],
@@ -125,14 +125,14 @@ function castraBountyTalk(npcId){
   if(CASTRA_DLG) return;
   const e = CASTRA_WENT.find(x=>x.id===npcId) || CASTRA_WENT.find(x=>x.id==="venator_latium"), rid = e.region, b = castraBountyToday(rid), tr = castraBountyTerr(b);
   const low = s=>s.charAt(0).toLowerCase()+s.slice(1);
-  const say = (lines, done)=>castraLatSay("Venator", e.look, lines, done);
+  const say = (lines, done)=>castraLatSay("Jager", e.look, lines, done);
   if(b.done) return say([ { la:"Vandaag heb je genoeg gedaan. Kom morgen terug, leider {naam}!", nl:"You have done enough today. Come back tomorrow, leader {naam}!" } ], null);
   if(!b.acc){
-    return say([ { la:`Salve, dux {naam}! Hodie hostes ${low(tr.la)} vince.`, nl:`Gegroet, leider {naam}! Vandaag: versla vijanden ${low(tr.nl)}.` },
+    return say([ { la:`Gegroet, leider {naam}! Vandaag: versla vijanden ${low(tr.la)} vince.`, nl:`Hello, leader {naam}! Today: defeat enemies ${low(tr.nl)}.` },
                  { la:"Versla er drie en je krijgt een beloning.", nl:"Defeat three and you will receive a reward.", opts:[ { la:"Aannemen", nl:"accept" }, { la:"Nu niet", nl:"not now" } ] } ],
       k=>{ if(k===0){ b.acc = true; castraSave(); if(typeof castraWRefreshHud==="function") castraWRefreshHud(); } });
   }
-  if(b.n < b.need) return say([ { la:`Quot hostes vicisti? ${b.n} / ${b.need}.`, nl:`Hoeveel vijanden heb je verslagen? ${b.n} van ${b.need} (${low(tr.nl)}).` } ], null);
+  if(b.n < b.need) return say([ { la:`Hoeveel vijanden heb je verslagen? ${b.n} / ${b.need}.`, nl:`How many enemies have you defeated? ${b.n} van ${b.need} (${low(tr.nl)}).` } ], null);
   say([ { la:"Uitstekend, leider {naam}! Hier is je beloning.", nl:"Excellent, leader {naam}! Here is your reward." } ], ()=>{
     b.done = true; const t = castraWGive(Object.assign(castraWScaled({ aes:50, frumentum:25 }, castraWScale(rid)), { gloria:1 })); castraSave();
     toast("🏹 "+castraLaText("recte"), t); if(typeof castraPxpAdd==="function") castraPxpAdd(15, "Dagelijkse opdracht");
@@ -150,13 +150,13 @@ castraQuestOnWin = function(V){
 function castraBountyHud(){
   const b = (CASTRA.bounties||{})[CASTRA_WORLDS[CASTRA_W_REGION].parent || CASTRA_W_REGION]; if(!b || !b.acc || b.done || b.day!==castraWDay()) return null;
   const tr = castraBountyTerr(b), low = s=>s.charAt(0).toLowerCase()+s.slice(1);
-  return { la:`Hodie hostes ${low(tr.la)} vince! (${b.n}/${b.need})`, nl:`Dagelijkse opdracht: versla ${b.need} vijanden ${low(tr.nl)} (${b.n}/${b.need}).` };
+  return { la:`Vandaag: versla vijanden ${low(tr.la)} (${b.n}/${b.need})`, nl:`Dagelijkse opdracht: versla ${b.need} vijanden ${low(tr.nl)} (${b.n}/${b.need}).` };
 }
 const _castraQuestHudLat0 = castraQuestHud;
 castraQuestHud = function(){
   const t = castraBountyHud(); let extra = t ? `<div class="note" style="text-align:center">🏹 ${castraLaHTML(t.la, t.nl, "bounty_hud")}</div>` : "";
-  if(CASTRA_W_REGION==="specus_latium" || CASTRA_W_REGION==="specus_altus"){ if(castraWQ("eremita").step===1) extra += `<div class="note" style="text-align:center">📜 ${castraLaHTML("Aquam sacram refer!", "Haal heilig water uit de diepe grot voor de Eremita (trap naar beneden bovenin de grot).", "eremita_hud")}</div>`; }
+  if(CASTRA_W_REGION==="specus_latium" || CASTRA_W_REGION==="specus_altus"){ if(castraWQ("eremita").step===1) extra += `<div class="note" style="text-align:center">📜 ${castraLaHTML("Haal heilig water!", "Get holy water from the deep cave for the hermit (stairs going down at the top of the cave).", "eremita_hud")}</div>`; }
   return _castraQuestHudLat0() + extra;
 };
 const _castraWobjOpusLat0 = castraWobjOpus;
-castraWobjOpus = function(){ const out = _castraWobjOpusLat0(); const t = castraBountyHud(); if(t) out.push({ la:t.la, nl:t.nl }); const q = castraWQ("eremita"); if(q.step===1) out.push({ la:"Latium: haal heilig water uit de diepe grot (trap bovenin de Specus Lupae) voor de Eremita.", nl:"Latium: fetch holy water from the deep cave (stairs at the top of the Specus Lupae) for the Hermit." }); return out; };
+castraWobjOpus = function(){ const out = _castraWobjOpusLat0(); const t = castraBountyHud(); if(t) out.push({ la:t.la, nl:t.nl }); const q = castraWQ("eremita"); if(q.step===1) out.push({ la:"Haal heilig water!", nl:"Latium: fetch holy water from the deep cave (stairs at the top of the Specus Lupae) for the Hermit." }); return out; };
