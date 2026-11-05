@@ -190,7 +190,7 @@ const CASTRA_QUIZ_SENT = [
 function castraConsulTalk(){
   if(CASTRA_DLG) return;
   romaSay("Consul", CASTRA_ROMA_LOOKS.consul, [ { la:"Gegroet, leider {naam}! De senaat roept je.", nl:"Greetings, leader {naam}! The senate is calling you." },
-    { la:"Vertaal Latijnse zinnen! Vijf vragen.", nl:"Translate Latin sentences! Five questions.", opts:[ { la:"Beginnen", nl:"begin" }, { la:"Nu niet", nl:"not now" } ] } ],
+    { la:"Vertaal de Nederlandse zinnen in het Engels! Vijf vragen.", nl:"Translate the Dutch sentences into English! Five questions.", opts:[ { la:"Beginnen", nl:"begin" }, { la:"Nu niet", nl:"not now" } ] } ],
     k=>{ if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_consul", rid:"roma", words:CASTRA_QUIZ_SENT, title:"Besluit van de senaat" }; castraQuizStart(); } });
 }
 

@@ -217,7 +217,7 @@ castraNpcTalk = function(id){
 };
 function castraRegQuiz(e){
   if(CASTRA_DLG) return;
-  castraLatSay(e.nm, e.look, [ { la:"Gegroet, leider {naam}! Vertaal Latijnse zinnen! Vijf vragen.", nl:"Greetings, leader {naam}! Translate Latin sentences! Five questions.", opts:[ { la:"Beginnen", nl:"begin" }, { la:"Nu niet", nl:"not now" } ] } ],
+  castraLatSay(e.nm, e.look, [ { la:"Gegroet, leider {naam}! Vertaal de Nederlandse zinnen in het Engels! Vijf vragen.", nl:"Greetings, leader {naam}! Translate the Dutch sentences into English! Five questions.", opts:[ { la:"Beginnen", nl:"begin" }, { la:"Nu niet", nl:"not now" } ] } ],
     k=>{ if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_"+e.id, rid:CASTRA_WORLDS[e.region].parent, words:CASTRA_QUIZ_SENT_BASE.concat(e.sents||[]), title:e.title }; castraQuizStart(); } });
 }
 function castraRegRest(e){

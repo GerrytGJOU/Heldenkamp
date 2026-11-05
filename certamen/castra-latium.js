@@ -58,7 +58,7 @@ let CASTRA_QUIZ_KIND = { key:"quiz_senator", rid:"latium", words:null, title:"Wo
 function castraQuizOpen(){
   if(CASTRA_DLG) return;
   const e = CASTRA_WENT.find(x=>x.id==="senator");
-  castraLatSay("Senator", e.look, [ { la:"Gegroet, leider {naam}! Ken jij Latijnse woorden?", nl:"Greetings, leader {naam}! Do you know Latin words?" },
+  castraLatSay("Senator", e.look, [ { la:"Gegroet, leider {naam}! Ken jij Nederlandse woorden?", nl:"Greetings, leader {naam}! Do you know Dutch words?" },
     { la:"Ik geef je vijf vragen.", nl:"I will give you five questions.", opts:[ { la:"Beginnen", nl:"begin" }, { la:"Nu niet", nl:"not now" } ] } ],
     k=>{ if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_senator", rid:"latium", words:null, title:"Woordenquiz" }; castraQuizStart(); } });
 }

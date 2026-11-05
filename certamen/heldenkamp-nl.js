@@ -29,6 +29,19 @@
     box.style.display = "block";
     clearTimeout(box._t); box._t = setTimeout(()=>{ box.style.display="none"; }, 3500);
   };
+  // Woordenquiz (Senator): Nederlandse woorden met Engelse betekenis i.p.v. de Latijnse lijst; geen Certamen-woordenbrug.
+  const HK_WORDQUIZ = [["soldaat","soldier"],["kamp","camp"],["vijand","enemy"],["leider","leader"],["poort","gate"],["stad","city"],["paard","horse"],["water","water"],["bos","forest"],["schip","ship"],["vrede","peace"],["oorlog","war"],["koning","king"],["koningin","queen"],["aarde","earth"],["zee","sea"],["vuur","fire"],["wind","wind"],["nacht","night"],["dag","day"],["vriend","friend"],["jongen","boy"],["meisje","girl"],["boek","book"],["tempel","temple"],["weg","road"],["rivier","river"],["berg","mountain"],["tuin","garden"],["wolf","wolf"],["hond","dog"],["vogel","bird"],["vader","father"],["moeder","mother"],["broer","brother"],["zus","sister"],["groot","big"],["klein","small"],["goed","good"],["slecht","bad"],["huis","house"],["brood","bread"],["wijn","wine"],["melk","milk"],["vis","fish"],["appel","apple"],["boom","tree"],["bloem","flower"],["steen","stone"],["zon","sun"],["maan","moon"],["ster","star"],["regen","rain"],["sneeuw","snow"],["koud","cold"],["warm","warm"],["snel","fast"],["langzaam","slow"],["sterk","strong"],["zwak","weak"],["oud","old"],["nieuw","new"],["jong","young"],["mooi","beautiful"],["lang","long"],["kort","short"],["hoog","high"],["laag","low"],["dik","thick"],["dun","thin"],["eten","to eat"],["drinken","to drink"],["slapen","to sleep"],["lopen","to walk"],["rennen","to run"],["vechten","to fight"],["bouwen","to build"],["zoeken","to look for"],["vinden","to find"],["geven","to give"],["nemen","to take"],["komen","to come"],["gaan","to go"],["zien","to see"],["horen","to hear"],["praten","to talk"],["werken","to work"],["spelen","to play"],["kopen","to buy"],["helpen","to help"],["een","one"],["twee","two"],["drie","three"],["vier","four"],["vijf","five"],["zes","six"],["zeven","seven"],["acht","eight"],["negen","nine"],["tien","ten"],["rood","red"],["blauw","blue"],["groen","green"],["geel","yellow"],["wit","white"],["zwart","black"],["hoofd","head"],["hand","hand"],["voet","foot"],["oog","eye"],["school","school"],["markt","market"],["brug","bridge"],["muur","wall"],["zwaard","sword"],["schild","shield"],["goud","gold"],["geld","money"],["tijd","time"],["naam","name"]];
+  if(typeof CASTRA_QUIZ_WORDS!=="undefined"){ CASTRA_QUIZ_WORDS.length = 0; HK_WORDQUIZ.forEach(p=>CASTRA_QUIZ_WORDS.push(p)); }
+  window.cxQuizExtras = function(){ return []; };
+  // Zinnenquiz: het leesteken van de zin staat anders voor het vraagteken ("...dapper.?").
+  if(typeof castraQuizRender==="function"){
+    const orig = castraQuizRender;
+    window.castraQuizRender = function(){
+      orig();
+      const b = document.querySelector('#cwPanel div[style*="font-size:26px"] b');
+      if(b) b.textContent = b.textContent.replace(/[.!?…]+$/, "");
+    };
+  }
   // Heldenkamp heeft geen docentoverzicht en geen Firebase: opzoekingen blijven lokaal in CASTRA.help.
   window.castraHelpSync = function(){};
 })();
