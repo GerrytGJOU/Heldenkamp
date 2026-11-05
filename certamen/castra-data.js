@@ -83,8 +83,8 @@ const CASTRA_MAP = {
   start:{ x:8, y:13, dir:"up" },
   // Poorten liggen in de kampmuur; erdoor lopen = activiteit kiezen.
   gates:[
-    { id:"decumana",  nm:"Naar de jacht (venatio)",  to:"venatio",  nl:"To the hunt (venatio)",     tiles:[{x:7,y:0},{x:8,y:0}] },
-    { id:"praetoria", nm:"Naar de campagnekaart (proelium)", to:"proelium", nl:"To the campaign map (proelium)", tiles:[{x:15,y:5},{x:15,y:6}] },
+    { id:"decumana",  nm:"Jachtpoort",  to:"venatio",  nl:"To the hunt",     tiles:[{x:7,y:0},{x:8,y:0}] },
+    { id:"praetoria", nm:"Gevechtspoort", to:"proelium", nl:"To the battle map", tiles:[{x:15,y:5},{x:15,y:6}] },
   ],
 };
 

@@ -218,7 +218,7 @@ SCREENS.helpHub = function(){
 /* ---------- ingangen in het spel ---------- */
 (function(){
   const i = CASTRA_MENU_ITEMS.findIndex(x=>x.id==="servare");
-  CASTRA_MENU_ITEMS.splice(i<0 ? CASTRA_MENU_ITEMS.length : i, 0, { id:"faq", la:"Handleiding", nl:"guide and FAQ" });
+  CASTRA_MENU_ITEMS.splice(i<0 ? CASTRA_MENU_ITEMS.length : i, 0, { id:"faq", la:"Uitleg en FAQ", nl:"guide and FAQ" });
 })();
 const _castraMenuViewFaq0 = castraMenuView;
 castraMenuView = function(id){

@@ -41,11 +41,11 @@ const CASTRA_TUT_TEXT = {
   ],
   chosen:[
     { la:"Goed gekozen! Deze soldaat is van jou.", nl:"Well chosen! This soldier is yours." },
-    { la:"Vang nu nog een soldaat. Ga door de porta decumana naar Latium. Verzwak een vijand en gebruik Capere om hem te vangen.", nl:"Now capture another soldier. Go through the porta decumana to Latium. Weaken an enemy and use Capere to capture him." },
+    { la:"Vang nu nog een soldaat. Ga door de jachtpoort naar Latium. Verzwak een vijand en gebruik Vangen om hem te vangen.", nl:"Now capture another soldier. Go through the hunting gate to Latium. Weaken an enemy and use Catch to capture him." },
   ],
   caught:[
     { la:"Uitstekend! Je hebt twee soldaten.", nl:"Excellent! You have two soldiers." },
-    { la:"Verdedig nu het kamp. Ga door de porta praetoria en win het gevecht.", nl:"Now defend the camp. Go through the porta praetoria and win the battle." },
+    { la:"Verdedig nu het kamp. Ga door de gevechtspoort en win het gevecht.", nl:"Now defend the camp. Go through the battle gate and win the battle." },
     { la:"Plaats je soldaten (tik op een soldaat, dan op een vrij vak) en versla de vijanden!", nl:"Place your soldiers (tap a soldier, then a free tile) and defeat the enemies!" },
   ],
   done:[
@@ -53,8 +53,8 @@ const CASTRA_TUT_TEXT = {
     { la:"Nu weet je hoe je jaagt, werft en vecht.", nl:"Now you know how to hunt, recruit and fight." },
     { la:"Zoek nu helden en verken nieuwe regio's. Tot ziens!", nl:"Now look for heroes and explore new regions. See you!" },
   ],
-  bar1:{ la:"Opdracht 1: vang een tweede soldaat. Ga door de porta decumana (bovenaan), verzwak de vijand met je moves en tik op \"Capere\" (verslaan laat hem vluchten).", nl:"Task 1: capture a second soldier. Go through the porta decumana (at the top), weaken the enemy with your moves and tap \"Capere\" (defeating him makes him flee)." },
-  bar2:{ la:"Opdracht 2: win het eerste gevecht. Ga door de porta praetoria (rechts), kies \"Defensio castrorum\" en plaats je soldaten.", nl:"Task 2: win the first battle. Go through the porta praetoria (right), choose \"Defensio castrorum\" and place your soldiers." },
+  bar1:{ la:"Opdracht 1: vang een tweede soldaat. Ga door de jachtpoort (bovenaan), verzwak de vijand met je moves en tik op \"Vangen\" (verslaan laat hem vluchten).", nl:"Task 1: capture a second soldier. Go through the hunting gate (at the top), weaken the enemy with your moves and tap \"Catch\" (defeating him makes him flee)." },
+  bar2:{ la:"Opdracht 2: win het eerste gevecht. Ga door de gevechtspoort (rechts), kies \"De verdediging van het kamp\" en plaats je soldaten.", nl:"Task 2: win the first battle. Go through the battle gate (right), choose \"The defence of the camp\" and place your soldiers." },
 };
 
 /* ---------- dialoogvenster ---------- */

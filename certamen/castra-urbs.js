@@ -146,7 +146,7 @@ function castraPontifexTalk(){
   const w = CASTRA.wday || (CASTRA.wday = {}), done = w.templum===castraWDay();
   castraLatSay("Priester", CASTRA_ROMA_LOOKS.pontifex, [ { la:"Gegroet, gast {naam}! De tempel van Iuppiter staat open.", nl:"Greetings, guest {naam}! The temple of Jupiter is open." },
     done ? { la:"Je hebt vandaag al geofferd. Kom morgen terug!", nl:"You have already made an offering today. Come back tomorrow!" }
-         : { la:"Wil je een offer brengen aan Iuppiter?", nl:"Do you want to make an offering to Jupiter?", opts:[ { la:"Offeren", nl:"sacrifice" }, { la:"Tot ziens", nl:"goodbye" } ] } ],
+         : { la:"Wil je een offer brengen aan Iuppiter?", nl:"Do you want to make an offering to Jupiter?", opts:[ { la:"Offeren", nl:"to sacrifice" }, { la:"Tot ziens", nl:"goodbye" } ] } ],
     k=>{
       if(done || k!==0) return;
       const hurt = castraHealAll();
