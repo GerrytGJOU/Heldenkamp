@@ -1,0 +1,2295 @@
+/* ---- HOME ---- */
+SCREENS.home = function(){
+  document.body.classList.remove("greek");
+  H(brand(true)+`
+  <div class="eyebrow l">Kies wat je wilt doen</div>
+  <button class="tile tile-primary" onclick="go('join')">
+    <span class="ic">${iconSVG("shield",44,"currentColor")}</span>
+    <h3>Meedoen</h3>
+    <p>Voor leerlingen. Voer de code in die op het bord staat, of doe mee aan Battle Mode.</p>
+  </button>
+  <div class="two">
+    <button class="tile" onclick="go('battleHome')">
+      <span class="corner">${iconSVG("eagle",88,"currentColor")}</span>
+      <span class="ic">${iconSVG("eagle",44,"currentColor")}</span>
+      <h3>⚔️ Battle Mode <span style="font-size:11px;background:var(--ox);color:#fff;border-radius:4px;padding:2px 5px;vertical-align:middle;margin-left:4px">BETA</span></h3>
+      <p>Twee teams strijden om woordkennis. Verdien Actiepunten met goede antwoorden.</p>
+    </button>
+    <button class="tile" onclick="go('castraHome')">
+      <span class="corner">${iconSVG("tent",88,"currentColor")}</span>
+      <span class="ic">${iconSVG("tent",44,"currentColor")}</span>
+      <h3>🏕️ Castra Heroum <span style="font-size:11px;background:var(--ox);color:#fff;border-radius:4px;padding:2px 5px;vertical-align:middle;margin-left:4px">BETA</span></h3>
+      <p>Bouw je kamp, verzamel soldaten en helden en trek erop uit in Latium, Graecia, Troia, Gallia, Aegyptus, Persis, Africa, Roma, Laconia, Germania en Themiscyra — alles in het Latijn.</p>
+    </button>
+    <button class="tile" onclick="go('totalWar')">
+      <span class="corner">${iconSVG("crown",88,"currentColor")}</span>
+      <span class="ic">${iconSVG("crown",44,"currentColor")}</span>
+      <h3>🗺️ Total War <span style="font-size:11px;background:var(--ox);color:#fff;border-radius:4px;padding:2px 5px;vertical-align:middle;margin-left:4px">BETA</span></h3>
+      <p>Doorlopende veldtocht: elke klas is een beschaving en verovert samen de kaart van Europa. Oefen thuis, val aan in de les.</p>
+    </button>
+    <button class="tile" onclick="go('singlePlayer')">
+      <span class="corner">${iconSVG("star",88,"currentColor")}</span>
+      <span class="ic">${iconSVG("star",44,"currentColor")}</span>
+      <h3>📜 Chronica Classica <span style="font-size:11px;background:var(--ox);color:#fff;border-radius:4px;padding:2px 5px;vertical-align:middle;margin-left:4px">BETA</span></h3>
+      <p>Reis als een eenvoudige boer door de klassieke mythologie en herstel de vergeten herinnering — solo, op je eigen tempo.</p>
+    </button>
+  </div>
+  <button class="tile" onclick="go('freePractice')">
+    <span class="ic">${iconSVG("owl",44,"currentColor")}</span>
+    <h3>Vrij oefenen</h3>
+    <p>Los oefenen met woordjes, geen code of klas nodig. Verdien XP en munten voor je profiel.</p>
+  </button>
+  <button class="tile" onclick="startHost()">
+    <span class="corner">${iconSVG("column",88,"currentColor")}</span>
+    <span class="ic">${iconSVG("helmet",44,"currentColor")}</span>
+    <h3>Andere spellen</h3>
+    <p>Voor docenten. Touwtrekken, Marathon of Snelvuur starten en projecteer de code op het bord.</p>
+  </button>
+  <button class="tile" onclick="go('collection')">
+    <span class="ic">${iconSVG("amphora",44,"currentColor")}</span>
+    <h3>Mijn profiel</h3>
+    <p>Rang, XP, eerbewijzen, munten en avatars die je hebt verdiend.</p>
+  </button>
+  <button class="tile" onclick="go('helpHub')">
+    <span class="ic">${iconSVG("torch",44,"currentColor")}</span>
+    <h3>📖 Handleiding</h3>
+    <p>Uitleg en veelgestelde vragen bij Battle Mode en Castra Heroum.</p>
+  </button>
+  <button class="tile tile-compact" onclick="go('teacherLogin')">
+    <span class="ic">${iconSVG("column",44,"currentColor")}</span>
+    <h3>Docentenportaal</h3>
+    <p>Klassen beheren, leerlingen verplaatsen en resultaten bekijken.</p>
+  </button>
+  ${!hasFirebase?`<div class="panel"><div class="note warn">Firebase is nog niet ingesteld. Je kunt de spellen nu al uitproberen in de <b>oefenmodus</b> (met computer-spelers). Voor échte leerlingen op aparte iPads: vul je Firebase-gegevens in (zie de instructies bovenaan het bestand).</div></div>`:""}
+  ${foot()}`);
+};
+
+/* Castra Heroum: SCREENS.castraHome staat in castra.js. */
+
+/* ---- HOST: spel kiezen ---- */
+function startHost(){ ROLE="host"; go("hostGamePick"); }
+SCREENS.hostGamePick = function(){
+  H(brand(true)+`<div class="scrhead"><button class="back" onclick="leaveAll();go('home')">${iconSVG("shield",20,"currentColor")}</button><h2>Kies een spel</h2></div>
+  <button class="tile" onclick="pickGame('touwtrekken')">
+    <span class="corner">${iconSVG("shield",88,"currentColor")}</span>
+    <span class="ic">${iconSVG("shield",44,"currentColor")}</span>
+    <h3>Touwtrekken</h3>
+    <p>Twee teams. Een goed antwoord trekt het touw jouw kant op, een fout antwoord de andere kant. Eerste team over de streep wint.</p>
+  </button>
+  <button class="tile" onclick="pickGame('marathon')">
+    <span class="corner">${iconSVG("column",88,"currentColor")}</span>
+    <span class="ic">${iconSVG("horse",44,"currentColor")}</span>
+    <h3>Marathon <span class="pill">Grieks thema</span></h3>
+    <p>Iedereen rent tegelijk. Goed = vooruit, fout = terug of even stilstaan. Eerste over de finish wint.</p>
+  </button>
+  <button class="tile" onclick="pickGame('snelvuur')">
+    <span class="corner">${iconSVG("torch",88,"currentColor")}</span>
+    <span class="ic">${iconSVG("torch",44,"currentColor")}</span>
+    <h3>Snelvuur</h3>
+    <p>Iedereen speelt tegelijk. Geef in de beschikbare tijd zoveel mogelijk goede antwoorden. De hoogste score wint.</p>
+  </button>
+  ${foot()}`);
+};
+function pickGame(g){ DRAFT.game=g; DRAFT.target = g==="touwtrekken"?15:g==="snelvuur"?120:20; go("hostSource"); }
+
+/* ---- HOST: woordbron ---- */
+SCREENS.hostSource = function(){
+  const baseLA = VOCAB_LA.filter(usable).length, baseEL = VOCAB_EL.filter(usable).length;
+  // Dit scherm wordt gedeeld door de klassieke spellen (via hostGamePick) én
+  // Battle Mode/Boss Battle (bmStartHost slaat hostGamePick
+  // over en zet DRAFT.game="battle" direct) — de terugknop moet dus naar
+  // de bijpassende vorige stap, niet altijd naar "Kies een spel".
+  const backTarget = DRAFT.game==="battle" ? "battleHome" : "hostGamePick";
+  H(brand(true)+`<div class="scrhead"><button class="back" onclick="go('${backTarget}')">${iconSVG("shield",20,"currentColor")}</button><h2>Welke woorden?</h2></div>
+  <div class="panel">
+    <label class="fld">Bron</label>
+    <div class="chips" id="srcChips">
+      <button class="chip ${DRAFT.source==='verbforms'?'on':''}" onclick="setSrc('verbforms',DRAFT.lang)">Werkwoorden</button>
+      <button class="chip ${DRAFT.source==='naamvallen'?'on':''}" onclick="setSrc('naamvallen',DRAFT.lang)">Naamvallen</button>
+      <button class="chip ${DRAFT.source==='freq'&&DRAFT.lang==='la'?'on':''}" onclick="setSrc('freq','la')">Frequentielijst Latijn <small>${baseLA}</small></button>
+      <button class="chip ${DRAFT.source==='freq'&&DRAFT.lang==='el'?'on':''}" onclick="setSrc('freq','el')">Frequentielijst Grieks <small>${baseEL}</small></button>
+      <button class="chip ${DRAFT.source==='custom'?'on':''}" onclick="setSrc('custom','')">Eigen lijsten</button>
+    </div>
+  </div>
+  <div id="srcBody"></div>
+  <button class="btn btn-gold btn-block lg" onclick="confirmSource()">Verder</button>
+  ${foot()}`);
+  renderSrcBody();
+};
+function setSrc(src,lang){ DRAFT.source=src; if(lang)DRAFT.lang=lang; if(src==="verbforms"&&!DRAFT.vf)DRAFT.vf=vfqDefaultDraft(DRAFT.lang); if(src==="naamvallen")DRAFT.cq=cqFixDraft(DRAFT.cq,DRAFT.lang); SCREENS.hostSource(); }
+function setSrcVfLang(lang){ DRAFT.lang=lang; DRAFT.vf=vfqDefaultDraft(lang); renderSrcBody(); }
+function setSrcCqLang(lang){ DRAFT.lang=lang; DRAFT.cq=cqDefaultDraft(lang); renderSrcBody(); }
+function renderSrcBody(){
+  const body = el("srcBody"); if(!body) return;
+  if(DRAFT.source==="verbforms"){
+    if(!DRAFT.vf) DRAFT.vf = vfqDefaultDraft(DRAFT.lang);
+    body.innerHTML = `<div class="panel"><label class="fld">Taal</label><div class="chips">
+        <button class="chip ${DRAFT.lang==='la'?'on':''}" onclick="setSrcVfLang('la')">Latijn</button>
+        <button class="chip ${DRAFT.lang==='el'?'on':''}" onclick="setSrcVfLang('el')">Grieks</button>
+      </div></div>` + vfqFilterHTML(DRAFT.vf, DRAFT.lang, "DRAFT.vf", "renderSrcBody()");
+    return;
+  }
+  if(DRAFT.source==="naamvallen"){
+    DRAFT.cq = cqFixDraft(DRAFT.cq, DRAFT.lang);
+    body.innerHTML = `<div class="panel"><label class="fld">Taal</label><div class="chips">
+        <button class="chip ${DRAFT.lang==='la'?'on':''}" onclick="setSrcCqLang('la')">Latijn</button>
+        <button class="chip ${DRAFT.lang==='el'?'on':''}" onclick="setSrcCqLang('el')">Grieks</button>
+      </div></div>` + cqFilterHTML(DRAFT.cq, DRAFT.lang, "DRAFT.cq", "renderSrcBody()");
+    return;
+  }
+  if(DRAFT.source==="custom"){
+    body.innerHTML = wlManagerHTML(DRAFT, "DRAFT", "renderSrcBody()");
+  } else {
+    const list = baseList(DRAFT.lang).filter(usable);
+    const maxN = list.reduce((m,w)=>Math.max(m,w.f||0),0);
+    body.innerHTML = `<div class="panel">
+      <label class="fld">Frequentiebereik — woord nr.</label>
+      <div class="row">
+        <div><input type="number" id="fromN" min="1" max="${maxN}" value="${DRAFT.fromN}" oninput="DRAFT.fromN=+this.value||1"></div>
+        <div style="flex:0 0 auto;align-self:center;color:var(--muted)">t/m</div>
+        <div><input type="number" id="toN" min="1" max="${maxN}" value="${Math.min(DRAFT.toN,maxN)}" oninput="DRAFT.toN=+this.value||1"></div>
+      </div>
+      <div class="chips" style="margin-top:12px">
+        ${[[1,50],[1,100],[100,300],[300,600],[1,maxN]].map(([a,b])=>`<button class="chip" onclick="setRange(${a},${b})">${a}–${b}</button>`).join("")}
+      </div>
+    </div>
+    <div class="panel">
+      <label class="fld">Woordsoort</label>
+      <div class="chips">
+        ${CATS.map(c=>`<button class="chip ${DRAFT.cat===c.id?'on':''}" onclick="setCat('${c.id}')">${c.nm} <small>${catCount(list,c.id)}</small></button>`).join("")}
+      </div>
+    </div>`;
+  }
+}
+function setRange(a,b){ DRAFT.fromN=a; DRAFT.toN=b; SCREENS.hostSource(); }
+function setCat(id){ DRAFT.cat=id; SCREENS.hostSource(); }
+function loadSheetJS(){
+  return new Promise((res,rej)=>{
+    if(window.XLSX) return res(window.XLSX);
+    const s=document.createElement("script");
+    s.src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+    s.onload=()=>res(window.XLSX); s.onerror=rej; document.head.appendChild(s);
+  });
+}
+function confirmSource(){
+  const pool = srcPoolFor(DRAFT);
+  if(pool.length<25){ toast("Te weinig woorden","Kies een groter bereik/meer werkwoorden, naamvallen of tijden (minimaal 25 woorden)."); return; }
+  if(DRAFT.game==="battle"){ go("battleHostSettings"); return; }
+  go("hostSettings");
+}
+
+/* ---- HOST: instellingen ---- */
+SCREENS.hostSettings = function(){
+  const g=DRAFT.game;
+  const poolN = srcPoolFor(DRAFT).length;
+  const gameNm=g==="touwtrekken"?"Touwtrekken":g==="snelvuur"?"Snelvuur":"Marathon";
+  H(brand(true)+`<div class="scrhead"><button class="back" onclick="go('hostSource')">${iconSVG("shield",20,"currentColor")}</button><h2>Instellingen</h2></div>
+  <div class="panel"><div class="note">Spel: <b>${gameNm}</b> · ${poolN} woorden geselecteerd.</div></div>
+  ${g==="snelvuur"?`
+  <div class="panel">
+    <label class="fld">Tijdsduur</label>
+    <div class="chips">${[60,90,120,180,300].map(n=>`<button class="chip ${DRAFT.target===n?'on':''}" onclick="DRAFT.target=${n};SCREENS.hostSettings()">${n<120?n+"s":n/60+"min"}</button>`).join("")}</div>
+  </div>`:g==="touwtrekken"?`
+  <div class="panel">
+    <label class="fld">Lengte van het touw (punten voorsprong om te winnen)</label>
+    <div class="chips">${[10,15,20,30].map(n=>`<button class="chip ${DRAFT.target===n?'on':''}" onclick="DRAFT.target=${n};SCREENS.hostSettings()">${n}</button>`).join("")}</div>
+  </div>`:`
+  <div class="panel">
+    <label class="fld">Afstand tot de finish</label>
+    <div class="chips">${[15,20,25,30].map(n=>`<button class="chip ${DRAFT.target===n?'on':''}" onclick="DRAFT.target=${n};SCREENS.hostSettings()">${n}</button>`).join("")}</div>
+  </div>
+  <div class="panel">
+    <label class="fld">Bij een fout antwoord</label>
+    <div class="chips">
+      <button class="chip ${DRAFT.penalty==='back'?'on':''}" onclick="DRAFT.penalty='back';SCREENS.hostSettings()">Stap terug</button>
+      <button class="chip ${DRAFT.penalty==='freeze'?'on':''}" onclick="DRAFT.penalty='freeze';SCREENS.hostSettings()">Even stilstaan</button>
+    </div>
+    ${DRAFT.penalty==='freeze'?`<div style="margin-top:12px"><label class="fld">Aantal seconden stilstaan</label>
+      <div class="chips">${[3,4,5,6].map(n=>`<button class="chip ${DRAFT.freezeSec===n?'on':''}" onclick="DRAFT.freezeSec=${n};SCREENS.hostSettings()">${n}s</button>`).join("")}</div></div>`:""}
+  </div>`}
+  <button class="btn btn-gold btn-block lg" onclick="createRoom()">Wedstrijd aanmaken</button>
+  ${foot()}`);
+};
+
+/* ---- HOST: kamer aanmaken ---- */
+function chooseNet(){
+  if(hasFirebase && initFirebase()){ Net=FBNet; } else { Net=DemoNet; }
+}
+async function createRoom(){
+  chooseNet();
+  const pool = srcPoolFor(DRAFT);
+  POOL = pool;
+  const meta = { game:DRAFT.game, lang:DRAFT.lang, target:DRAFT.target, penalty:DRAFT.penalty, freezeSec:DRAFT.freezeSec, createdAt:Net.serverTime(),
+    source:DRAFT.source, vfMode: DRAFT.source==="verbforms" ? DRAFT.vf.mode : null };
+  META = meta;
+  // unieke code
+  let c = code4();
+  if(Net===FBNet){ for(let i=0;i<5;i++){ const ex=await Net.exists(c); if(!ex)break; c=code4(); } }
+  CODE=c;
+  const state = { status:"lobby", ropePos:0, winner:null };
+  await Net.createRoom(c, { meta, pool, state, players:{} });
+  go("hostLobby");
+}
+
+/* ---- HOST: lobby ---- */
+SCREENS.hostLobby = function(){
+  const url = location.origin+location.pathname+"?room="+CODE;
+  H(brand(false)+`<div class="scrhead"><button class="back" onclick="leaveAll();go('home')">${iconSVG("shield",20,"currentColor")}</button><h2>${META.game==="touwtrekken"?"Touwtrekken":META.game==="snelvuur"?"Snelvuur":"Marathon"}</h2></div>
+  <div class="codecard">
+    <div class="lbl">Speelcode</div>
+    <div class="code">${CODE}</div>
+    <div class="url">${Net===DemoNet?"Oefenmodus — voeg computer-spelers toe en start":esc(url)}</div>
+  </div>
+  <div class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <h3 style="margin:0">Spelers <span id="pcount">(0)</span></h3>
+      <button class="btn btn-ghost" style="padding:9px 14px" onclick="addBot()">+ Computer-speler</button>
+    </div>
+    <div class="plist" id="lobbyList"><div class="note">Wachten op spelers…</div></div>
+  </div>
+  ${META.game==="touwtrekken"?`<button class="btn btn-ghost btn-block" onclick="shuffleTeams()" style="margin-bottom:12px">Teams door elkaar husselen</button>`:""}
+  <button class="btn btn-gold btn-block lg" id="startBtn" onclick="startGame()" disabled>Start de wedstrijd</button>
+  ${foot()}`);
+  unsubPlayers = Net.onPlayers(CODE, ps=>{ PLAYERS=ps||{}; renderLobby(); });
+};
+function renderLobby(){
+  const ids=Object.keys(PLAYERS);
+  const cnt=el("pcount"); if(cnt)cnt.textContent="("+ids.length+")";
+  const list=el("lobbyList");
+  if(list){
+    list.innerHTML = ids.length ? ids.map(id=>{ const p=PLAYERS[id];
+      const team = META.game==="touwtrekken" ? `<span style="width:10px;height:10px;border-radius:50%;background:${p.team==='A'?'var(--teamA)':'var(--teamB)'};display:inline-block;margin-left:4px"></span>`:"";
+      return `<span class="ptag ${p.isBot?'bot':''}"><span class="av">${avatarHTML(p.avatar,p.color,30)}</span>${esc(p.name)}${team}</span>`;
+    }).join("") : `<div class="note">Wachten op spelers…</div>`;
+  }
+  const btn=el("startBtn"); if(btn)btn.disabled = ids.length<1;
+}
+function addBot(){
+  const names=["Brutus","Livia","Cato","Iulia","Marcus","Flavia","Drusus","Cornelia","Nero","Aelia","Galba","Tullia"];
+  const used=Object.values(PLAYERS).map(p=>p.name);
+  let nm=pick(names); let tries=0; while(used.includes(nm)&&tries<20){ nm=pick(names)+" "+(rand(9)+1); tries++; }
+  const team = teamBalance();
+  const p={ name:nm, color:pick(COLORS), avatar:pick(AVATARS).id, isBot:true, online:true,
+    team, pos:0, correct:0, wrong:0, frozenUntil:0, skill:0.55+Math.random()*0.35 };
+  Net.addPlayer(CODE, p);
+}
+function teamBalance(){
+  if(META.game!=="touwtrekken") return "A";
+  let a=0,b=0; Object.values(PLAYERS).forEach(p=>{ if(p.team==="A")a++; else if(p.team==="B")b++; });
+  return a<=b ? "A" : "B";
+}
+function shuffleTeams(){
+  const ids=shuffle(Object.keys(PLAYERS));
+  ids.forEach((id,i)=>Net.updatePlayer(CODE,id,{team: i%2===0?"A":"B"}));
+}
+
+/* ---- HOST: spel starten ---- */
+function startGame(){
+  const stPatch={ status:"playing", startedAt:Net.serverTime(), ropePos:0, winner:null };
+  if(META.game==="snelvuur") stPatch.deadline = Date.now() + (META.target||120)*1000;
+  Net.setState(CODE, stPatch);
+  Object.keys(PLAYERS).forEach(id=>Net.updatePlayer(CODE,id,{pos:0,correct:0,wrong:0,finished:false,frozenUntil:0}));
+  go("hostGame");
+}
+
+/* ---- HOST: spelweergave (projectie) ---- */
+SCREENS.hostGame = function(){
+  const greek = META.game==="marathon";
+  const gameNm=META.game==="touwtrekken"?"Touwtrekken":META.game==="snelvuur"?"Snelvuur":"Marathon";
+  H(brand(false)+`<div class="scrhead"><button class="back" onclick="endGameManual()">${iconSVG("shield",20,"currentColor")}</button>
+    <h2>${gameNm}</h2><span class="pill">code ${CODE}</span></div>
+    <div id="gameRoot"></div>${foot()}`);
+  if(META.game==="touwtrekken") buildRope();
+  else if(META.game==="snelvuur") buildScoreboard();
+  else buildTrack();
+  unsubState = Net.onState(CODE, s=>{ STATE=s||{}; if(STATE.status==="finished"){ showResultHost(); } else { updateGameView(); } });
+  unsubPlayers = Net.onPlayers(CODE, ps=>{ PLAYERS=ps||{}; updateGameView(); hostCheckEnd(); });
+  startBots();
+  // Snelvuur: countdown-display bijwerken elke seconde
+  if(META.game==="snelvuur"){
+    if(freezeTimer)clearInterval(freezeTimer);
+    freezeTimer=setInterval(()=>{
+      const ct=el("snelvuurCountdown"); if(!ct)return;
+      const left=Math.max(0,Math.ceil(((STATE.deadline||Date.now())-Date.now())/1000));
+      ct.textContent=left+"s";
+      if(left===0){clearInterval(freezeTimer);freezeTimer=null;}
+    },500);
+  }
+};
+function endGameManual(){ Net.setState(CODE,{status:"finished",winner:"_stopped"}); }
+
+function startBots(){
+  if(botTimer)clearInterval(botTimer);
+  botTimer=setInterval(()=>{
+    if(STATE.status!=="playing")return;
+    if(META.game==="snelvuur"){hostCheckEnd();}
+    Object.keys(PLAYERS).forEach(id=>{
+      const p=PLAYERS[id]; if(!p.isBot)return;
+      if(META.game!=="snelvuur"&&p.finished)return;
+      if(p.frozenUntil&&nowMs()<p.frozenUntil)return;
+      if(Math.random()<0.45){ // niet elke tick
+        const ok = Math.random() < (p.skill||0.6);
+        applyAnswer(id, p, ok);
+      }
+    });
+  }, 900);
+}
+
+/* gedeelde antwoord-afhandeling (gebruikt door bots op host én door spelers lokaal) */
+// Snelvuur-score telt fout beantwoorden mee (nooit onder 0): puur gokken om
+// zoveel mogelijk te klikken levert zo geen voordeel meer op t.o.v. rustig
+// nadenken. Zie benchmark-toetsing/01-risicos.md (Hanus & Fox / Blooket-euvel
+// / Kahoot-tempo, alle drie samenkomend in Snelvuur).
+function snelScore(p){ return Math.max(0,(p.correct||0)-(p.wrong||0)); }
+function applyAnswer(pid, p, ok){
+  if(META.game==="snelvuur"){
+    Net.updatePlayer(CODE, pid, ok?{correct:(p.correct||0)+1}:{wrong:(p.wrong||0)+1});
+    return;
+  }
+  if(META.game==="touwtrekken"){
+    const dir = p.team==="A" ? -1 : 1;       // A trekt naar links (negatief), B naar rechts
+    const delta = ok ? dir : -dir;
+    Net.ropePull(CODE, delta, -META.target, META.target);
+    Net.updatePlayer(CODE, pid, ok?{correct:(p.correct||0)+1}:{wrong:(p.wrong||0)+1});
+  } else {
+    if(ok){
+      const np=Math.min(META.target,(p.pos||0)+1);
+      const patch={ pos:np, correct:(p.correct||0)+1 };
+      if(np>=META.target){ patch.finished=true; patch.finishedAt=Net.serverTime(); }
+      Net.updatePlayer(CODE, pid, patch);
+    } else {
+      if(META.penalty==="freeze"){ Net.updatePlayer(CODE,pid,{ frozenUntil: nowMs()+META.freezeSec*1000, wrong:(p.wrong||0)+1 }); }
+      else { Net.updatePlayer(CODE,pid,{ pos:Math.max(0,(p.pos||0)-1), wrong:(p.wrong||0)+1 }); }
+    }
+  }
+}
+
+/* host bepaalt het einde */
+let _ending=false;
+function hostCheckEnd(){
+  if(ROLE!=="host"||STATE.status!=="playing"||_ending)return;
+  if(META.game==="touwtrekken"){
+    const rp=STATE.ropePos||0;
+    if(rp<=-META.target){ _ending=true; Net.setState(CODE,{status:"finished",winner:"A"}); }
+    else if(rp>=META.target){ _ending=true; Net.setState(CODE,{status:"finished",winner:"B"}); }
+  } else if(META.game==="snelvuur"){
+    if(STATE.deadline && Date.now() >= STATE.deadline){
+      const sorted=Object.entries(PLAYERS).sort((a,b)=>snelScore(b[1])-snelScore(a[1]));
+      _ending=true;
+      Net.setState(CODE,{status:"finished",winner:sorted.length?sorted[0][0]:"_stopped"});
+    }
+  } else {
+    const fin=Object.entries(PLAYERS).filter(([id,p])=>p.finished).sort((a,b)=>(a[1].finishedAt||0)-(b[1].finishedAt||0));
+    if(fin.length){ _ending=true; Net.setState(CODE,{status:"finished",winner:fin[0][0]}); }
+  }
+}
+
+/* ---- TOUWTREKKEN view ---- */
+function buildRope(){
+  const root=el("gameRoot"); if(!root)return;
+  root.innerHTML=`<div class="arena">
+    <div class="teamscores">
+      <div class="ts r"><div class="nm" style="color:var(--teamA)">Rubri (Rood)</div><div class="sc" id="scA">0 goed</div></div>
+      <div class="ts b"><div class="nm" style="color:var(--teamB)">Caerulei (Blauw)</div><div class="sc" id="scB">0 goed</div></div>
+    </div>
+    <div class="ropelane">
+      <div class="goal l"></div><div class="center"></div><div class="goal r"></div>
+      <div class="rope"></div><div class="knot" id="knot" style="left:50%"></div>
+    </div>
+    <div class="pullers"><div class="pullcol r" id="pullA"></div><div class="pullcol b" id="pullB"></div></div>
+  </div>`;
+}
+function buildTrack(){
+  const root=el("gameRoot"); if(!root)return;
+  root.innerHTML=`<div class="track" id="trackBox"></div>`;
+  updateGameView();
+}
+function buildScoreboard(){
+  const root=el("gameRoot"); if(!root)return;
+  root.innerHTML=`<div style="margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:28px;font-weight:700">Tijd: <span id="snelvuurCountdown" style="color:var(--hi)">—</span></div>
+    <div style="font-size:13px;color:var(--muted)">${Object.keys(PLAYERS).length} speler(s)</div>
+  </div>
+  <div id="scoreList" style="display:flex;flex-direction:column;gap:6px"></div>`;
+  updateGameView();
+}
+function updateGameView(){
+  if(!el("gameRoot"))return;
+  if(META.game==="snelvuur"){
+    const sl=el("scoreList"); if(!sl)return;
+    const sorted=Object.values(PLAYERS).sort((a,b)=>snelScore(b)-snelScore(a));
+    sl.innerHTML=sorted.map((p,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:var(--stone3);border-radius:8px">
+      <span style="font-size:18px;font-weight:700;color:var(--muted);min-width:22px">${i+1}</span>
+      ${avatarHTML(p.avatar,p.color,30)}
+      <span style="flex:1;font-size:14px">${esc(p.name)}</span>
+      <span style="font-size:20px;font-weight:700;color:var(--hi)">${snelScore(p)}</span>
+      <span style="font-size:11px;color:var(--muted)">score</span>
+    </div>`).join("") || `<div class="note">Nog geen antwoorden…</div>`;
+    return;
+  }
+  if(META.game==="touwtrekken"){
+    const rp=clamp(STATE.ropePos||0,-META.target,META.target);
+    const pct = 50 + (rp/META.target)*44; // 6%..94% effectief
+    const knot=el("knot"); if(knot)knot.style.left=pct+"%";
+    const A=Object.values(PLAYERS).filter(p=>p.team==="A");
+    const B=Object.values(PLAYERS).filter(p=>p.team==="B");
+    const sa=el("scA"), sb=el("scB");
+    if(sa)sa.textContent=A.reduce((s,p)=>s+(p.correct||0),0)+" goed";
+    if(sb)sb.textContent=B.reduce((s,p)=>s+(p.correct||0),0)+" goed";
+    const top=(arr)=>arr.slice().sort((a,b)=>(b.correct||0)-(a.correct||0)).slice(0,5)
+      .map(p=>`<div class="pullrow"><span class="av">${avatarHTML(p.avatar,p.color,24)}</span>${esc(p.name)} · ${p.correct||0}</div>`).join("")||`<div class="note">—</div>`;
+    const pa=el("pullA"), pb=el("pullB"); if(pa)pa.innerHTML=top(A); if(pb)pb.innerHTML=top(B);
+  } else {
+    const box=el("trackBox"); if(!box)return;
+    const ids=Object.keys(PLAYERS).sort((a,b)=>(PLAYERS[b].pos||0)-(PLAYERS[a].pos||0));
+    box.innerHTML = ids.length ? ids.map(id=>{ const p=PLAYERS[id];
+      const pct = clamp((p.pos||0)/META.target,0,1);
+      const left = 6 + pct*84;
+      return `<div class="lane ${p.finished?'done':''}"><div class="finish"></div>
+        <div class="runner" style="left:${left}%"><span class="av">${avatarHTML(p.avatar,p.color,30)}</span><span class="nm">${esc(p.name)}</span></div></div>`;
+    }).join("") : `<div class="note">Nog geen spelers…</div>`;
+  }
+}
+
+function showResultHost(){
+  cleanup();
+  const winner=STATE.winner;
+  let title, medal, podium="";
+  if(META.game==="snelvuur"){
+    const w=PLAYERS[winner];
+    title = w?`${esc(w.name)} wint met score ${snelScore(w)}!`:"Wedstrijd gestopt";
+    medal = medalSVG("crown",120);
+    const order=Object.values(PLAYERS).sort((a,b)=>snelScore(b)-snelScore(a));
+    podium=`<div class="podium">${order.slice(0,6).map((p,i)=>`<div class="podline"><span class="rk">${i+1}</span><span class="av">${avatarHTML(p.avatar,p.color,32)}</span><span class="nm">${esc(p.name)}</span><span class="sc">${snelScore(p)} score</span></div>`).join("")}</div>`;
+  } else if(META.game==="touwtrekken"){
+    const team = winner==="A"?"Rubri (Rood)":winner==="B"?"Caerulei (Blauw)":null;
+    title = team?`${team} wint!`:"Wedstrijd gestopt";
+    medal = medalSVG("laurel",120);
+    const top=Object.values(PLAYERS).sort((a,b)=>(b.correct||0)-(a.correct||0)).slice(0,6);
+    podium = `<div class="podium">${top.map((p,i)=>`<div class="podline"><span class="rk">${i+1}</span><span class="av">${avatarHTML(p.avatar,p.color,32)}</span><span class="nm">${esc(p.name)} <small style="color:var(--muted)">${p.team==='A'?'Rood':'Blauw'}</small></span><span class="sc">${p.correct||0} goed</span></div>`).join("")}</div>`;
+  } else {
+    const w=PLAYERS[winner];
+    title = w?`${esc(w.name)} wint de marathon!`:"Wedstrijd gestopt";
+    medal = medalSVG("crown",120);
+    const order=Object.values(PLAYERS).sort((a,b)=> (b.finished?1:0)-(a.finished?1:0) || (b.pos||0)-(a.pos||0));
+    podium = `<div class="podium">${order.slice(0,6).map((p,i)=>`<div class="podline"><span class="rk">${i+1}</span><span class="av">${avatarHTML(p.avatar,p.color,32)}</span><span class="nm">${esc(p.name)}</span><span class="sc">${p.finished?"finish":(p.pos||0)+"/"+META.target}</span></div>`).join("")}</div>`;
+  }
+  beep("win");
+  const ov=el("overlay");
+  ov.innerHTML=`<div class="modal"><div class="big">${medal}</div><h2>${title}</h2>${podium}
+    <div class="btnrow" style="flex-direction:column;margin-top:8px">
+      <button class="btn btn-gold btn-block" onclick="closeOverlay();rematch()">Opnieuw met dezelfde spelers</button>
+      <button class="btn btn-ghost btn-block" onclick="closeOverlay();leaveAll();go('home')">Naar startscherm</button>
+    </div></div>`;
+  ov.classList.add("show");
+}
+function rematch(){ _ending=false; Net.setState(CODE,{status:"lobby",ropePos:0,winner:null}); go("hostLobby"); }
+
+/* ============================================================================
+   LEERLING-KANT
+   ============================================================================ */
+// Eerste stap: alleen de code. Battle Mode/Boss Battle en de klassieke
+// spellen (touwtrekken/marathon/snelvuur) delen hetzelfde rooms/{code}-schema
+// (net.js: FBNet.roomRef) en verschillen alleen in meta.game — dus één
+// opzoeking volstaat om de leerling automatisch naar de juiste vervolgstap te
+// sturen. Geen "kies je modus"-keuze meer vooraf.
+let JOIN_CODE = null; // opgezochte kamercode, bekend voor de vervolgstap
+SCREENS.join = function(){
+  document.body.classList.remove("greek");
+  const pre = new URLSearchParams(location.search).get("room")||"";
+  H(brand(true)+`<div class="scrhead"><button class="back" onclick="go('home')">${iconSVG("shield",20,"currentColor")}</button><h2>Meedoen</h2></div>
+  <div class="panel">
+    <label class="fld">Speelcode (van het bord)</label>
+    <input type="text" id="joinCode" maxlength="4" placeholder="ABCD" value="${esc(pre)}" style="text-transform:uppercase;letter-spacing:.25em;font-size:24px;text-align:center" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')joinDetectGame()">
+    <div id="joinCodeErr" class="note warn" style="display:none;margin-top:8px"></div>
+  </div>
+  <button class="btn btn-gold btn-block lg" onclick="joinDetectGame()">Verder</button>
+  ${foot()}`);
+};
+async function joinDetectGame(){
+  const c=(el("joinCode").value||"").trim().toUpperCase();
+  const err=el("joinCodeErr");
+  if(err)err.style.display="none";
+  if(c.length!==4){ if(err){err.textContent="Voer de 4-letter code van het bord in.";err.style.display="";} return; }
+  chooseNet();
+  if(Net===DemoNet){ toast("Geen verbinding","Deze code werkt alleen met Firebase. Vraag je docent of dit is ingesteld."); return; }
+  let meta;
+  try{ meta=await Net.getMeta(c); }catch(e){ meta=null; }
+  if(!meta){ if(err){err.textContent="Geen wedstrijd met code "+c+". Controleer de code.";err.style.display="";} return; }
+  JOIN_CODE=c;
+  if(meta.game==="battle"){
+    // Battle Mode/Boss Battle: vereist een klascode+leerlingcode-identiteit;
+    // bmDoJoin() leest de code uit #bmJC, dus geven 'm mee als prefill i.p.v.
+    // de leerling 'm nogmaals te laten intypen.
+    BM_JOIN_PREFILL_CODE=c;
+    BM_IDENT_RETURN="battleJoin";
+    go(BM_IDENT?"battleJoin":"battleIdentity");
+  } else {
+    go("joinDetails");
+  }
+}
+
+/* Vervolgscherm voor klassieke spellen (touwtrekken/marathon/snelvuur) — de
+   code is al bekend (JOIN_CODE), hier alleen nog naam/kleur/avatar. */
+SCREENS.joinDetails = function(){
+  document.body.classList.remove("greek");
+  if(!JOIN_CODE){ go("join"); return; }
+  H(brand(true)+`<div class="scrhead"><button class="back" onclick="go('join')">${iconSVG("shield",20,"currentColor")}</button><h2>Meedoen</h2></div>
+  <div class="panel">
+    <div class="note">Code: <b>${esc(JOIN_CODE)}</b></div>
+    <label class="fld" style="margin-top:10px">Jouw naam <small style="text-transform:none">(optioneel — leeg = je avatarnaam)</small></label>
+    <input type="text" id="joinName" maxlength="16" placeholder="bv. ${esc(autoJoinName())}" value="${esc(P.name)}">
+  </div>
+  <div class="panel">
+    <label class="fld">Kleur</label>
+    <div class="chips" id="colorPick">${COLORS.map(c=>`<button class="chip" style="padding:6px" onclick="setColor('${c}')"><span style="width:26px;height:26px;border-radius:50%;display:inline-block;background:${c};${P.color===c?'box-shadow:0 0 0 2px var(--hi-bright)':''}"></span></button>`).join("")}</div>
+    <label class="fld" style="margin-top:14px">Avatar <small style="text-transform:none">(meer in je verzameling)</small></label>
+    <div class="chips" id="avPick">${P.owned.map(id=>{const a=AVATARS.find(x=>x.id===id);return a?`<button class="chip ${P.avatar===id?'on':''}" onclick="setAvatar('${id}')">${avatarHTML(id,P.color,26)}</button>`:""}).join("")}</div>
+  </div>
+  <button class="btn btn-gold btn-block lg" onclick="doJoin()">Doe mee</button>
+  ${foot()}`);
+};
+function setColor(c){ P.color=c; saveProfile(); SCREENS.joinDetails(); }
+function setAvatar(id){ P.avatar=id; saveProfile(); SCREENS.joinDetails(); }
+// Kernmodus: leerlingen mogen anoniem meedoen — geen naam invullen levert een
+// label uit hun avatar op ("Uil 42") i.p.v. verplichte vrije tekst.
+function autoJoinName(){
+  const a=AVATARS.find(x=>x.id===P.avatar);
+  return (a?a.nm:"Speler")+" "+(1+rand(99));
+}
+
+async function doJoin(){
+  const c=JOIN_CODE;
+  const nm=(el("joinName").value||"").trim()||autoJoinName();
+  if(!c){ go("join"); return; }
+  P.name=nm; saveProfile();
+  chooseNet();
+  if(Net===DemoNet){ toast("Geen verbinding","Deze code werkt alleen met Firebase. Vraag je docent of dit is ingesteld."); return; }
+  const ex=await Net.exists(c);
+  if(!ex){ toast("Niet gevonden","Geen wedstrijd met code "+c+". Controleer de code."); go("join"); return; }
+  CODE=c; ROLE="player";
+  META = await Net.getMeta(CODE);
+  POOL = await Net.getPool(CODE);
+  const team = await assignTeam();
+  PID = Net.addPlayer(CODE, { name:nm, color:P.color, avatar:P.avatar, isBot:false, online:true,
+    team, pos:0, correct:0, wrong:0, finished:false, frozenUntil:0 });
+  go("playerLobby");
+}
+async function assignTeam(){
+  if(META.game!=="touwtrekken") return "A";
+  return new Promise(res=>{
+    const off=Net.onPlayers(CODE, ps=>{ off();
+      let a=0,b=0; Object.values(ps||{}).forEach(p=>{ if(p.team==="A")a++; else if(p.team==="B")b++; });
+      res(a<=b?"A":"B");
+    });
+  });
+}
+
+SCREENS.playerLobby = function(){
+  const greek=META.game==="marathon";
+  document.body.classList.toggle("greek",greek);
+  H(brand(false)+`<div class="scrhead"><button class="back" onclick="leaveAll();go('home')">${iconSVG("shield",20,"currentColor")}</button><h2>${META.game==="snelvuur"?"Snelvuur":greek?"Marathon":"Touwtrekken"}</h2></div>
+  <div class="codecard"><div class="lbl">Je doet mee als</div><div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px">${avatarHTML(P.avatar,P.color,44)}<span style="font-size:24px">${esc(P.name)}</span></div>
+  ${META.game==="touwtrekken"?`<div style="margin-top:10px" class="pill" id="teamPill">Team —</div>`:""}</div>
+  <div class="panel"><div class="note" style="text-align:center">Wachten tot de docent start… <span id="lobbyN"></span></div></div>
+  ${foot()}`);
+  unsubPlayers = Net.onPlayers(CODE, ps=>{ PLAYERS=ps||{};
+    const n=el("lobbyN"); if(n)n.textContent="("+Object.keys(PLAYERS).length+" spelers)";
+    const me=PLAYERS[PID]; const tp=el("teamPill");
+    if(tp&&me)tp.textContent="Team "+(me.team==="A"?"Rood":"Blauw");
+  });
+  unsubState = Net.onState(CODE, s=>{ STATE=s||{}; if(STATE.status==="playing"){ go("playerGame"); } else if(STATE.status==="finished"){ go("result"); } });
+};
+
+/* ---- LEERLING: spelen ---- */
+let curQ=null, answered=false;
+// Gespreide herhaling binnen één sessie: telt hoe vaak elk woord deze sessie
+// fout ging (voor de gewogen trekking in makeQuestion) en bewaart welke
+// woorden/antwoorden dat waren (voor het overzicht op het resultaatscherm).
+let WRONG_COUNTS={}, MISSED_WORDS=[];
+SCREENS.playerGame = function(){
+  myStreak=0; answered=false; WRONG_COUNTS={}; MISSED_WORDS=[];
+  unsubState = Net.onState(CODE, s=>{ STATE=s||{}; if(STATE.status==="finished")go("result"); else updatePlayerMini(); });
+  unsubPlayers = Net.onPlayers(CODE, ps=>{ PLAYERS=ps||{}; updatePlayerMini(); });
+  drawQuestion();
+  if(META.game==="snelvuur"){
+    if(freezeTimer)clearInterval(freezeTimer);
+    freezeTimer=setInterval(()=>{ updatePlayerMini(); },1000);
+  }
+};
+function myPlayer(){ return PLAYERS[PID]||{pos:0,team:"A"}; }
+function miniHTML(){
+  if(META.game==="snelvuur"){
+    const me=myPlayer();
+    const left=STATE.deadline?Math.max(0,Math.ceil((STATE.deadline-Date.now())/1000)):0;
+    const pct=META.target?Math.round(left/META.target*100):100;
+    return `<div class="ministat">
+      <span style="font-weight:700">Score: ${snelScore(me)}</span>
+      <div class="seg"><i style="left:0;width:${pct}%;background:linear-gradient(90deg,var(--hi-dim),var(--hi))"></i></div>
+      <span style="font-weight:700;color:${left<=10?"#e05555":"var(--hi)"}">${left}s</span></div>
+      <div class="note" style="text-align:center;margin-top:-6px;margin-bottom:10px">Zo snel mogelijk goede antwoorden geven!</div>`;
+  }
+  if(META.game==="touwtrekken"){
+    const rp=clamp(STATE.ropePos||0,-META.target,META.target);
+    const me=myPlayer(); const mine = me.team==="A"?-1:1;
+    const lead = mine*rp; // positief = jouw team voor
+    const pct = 50 + (rp/META.target)*50;
+    return `<div class="ministat"><span style="color:var(--teamA);font-weight:700">Rood</span>
+      <div class="seg"><i style="left:0;width:${pct}%;background:linear-gradient(90deg,var(--teamA),var(--teamA))"></i></div>
+      <span style="color:var(--teamB);font-weight:700">Blauw</span></div>
+      <div class="note" style="text-align:center;margin-top:-6px;margin-bottom:10px">${lead>0?"Jouw team ligt voor (+"+lead+")":lead<0?"Jouw team ligt achter ("+lead+")":"Gelijkspel"}</div>`;
+  } else {
+    const me=myPlayer(); const pct=clamp((me.pos||0)/META.target,0,1)*100;
+    return `<div class="ministat"><span style="font-weight:700">Start</span>
+      <div class="seg"><i style="left:0;width:${pct}%;background:linear-gradient(90deg,var(--hi-dim),var(--hi))"></i></div>
+      <span style="font-weight:700">${iconSVG("column",18,"var(--hi)")}</span></div>
+      <div class="note" style="text-align:center;margin-top:-6px;margin-bottom:10px">Afstand: ${me.pos||0} / ${META.target}</div>`;
+  }
+}
+function updatePlayerMini(){ const m=el("mini"); if(m)m.innerHTML=miniHTML(); }
+function drawQuestion(){
+  const me=myPlayer();
+  if(me.frozenUntil && nowMs()<me.frozenUntil){ return drawFrozen(me.frozenUntil); }
+  answered=false;
+  if(META.source==="naamvallen"){
+    curQ = cqMakeQuestion(POOL, "game");
+    if(curQ.mode==="naamval"){
+      cqStart(curQ, renderNaamval, answerNaamval);
+      renderNaamval();
+      return;
+    }
+    // "kies de juiste vorm": gewone meerkeuze, hieronder
+    H(brand(false)+`<div id="mini">${miniHTML()}</div>
+      <div class="qcard"><div class="kick">${curQ.taal==="el"?"Grieks":"Latijn"} — kies de juiste vorm</div>
+        <div class="word" style="font-size:20px">${curQ.vraag}</div></div>
+      <div class="choices" id="choices">${curQ.options.map((o,i)=>`<button class="choice" onclick="answer(${i})"><span class="n">${i+1}</span><span>${esc(o)}</span></button>`).join("")}</div>`);
+    return;
+  }
+  if(META.source==="verbforms" && META.vfMode==="ontleed"){
+    vfqOntleedReset();
+    curQ = vfqMakeOntleedQuestion(POOL, "game");
+    renderOntleed();
+    return;
+  }
+  if(META.source==="verbforms" && META.vfMode==="typed"){
+    curQ = vfqMakeTypedQuestion(POOL, "game");
+    H(brand(false)+`<div id="mini">${miniHTML()}</div>
+      <div class="qcard"><div class="kick">${curQ.taal==="el"?"Grieks":"Latijn"} — getypte vorm</div>
+        <div class="word" style="font-size:20px">${curQ.vraag}</div></div>
+      <div class="panel"><input type="text" id="playerTyped" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="typ de vorm..." style="width:100%;font-size:18px" onkeydown="if(event.key==='Enter')answerTyped()">
+        <button class="btn btn-gold btn-block" style="margin-top:10px" onclick="answerTyped()">Controleer</button></div>`);
+    const box=el("playerTyped"); if(box)box.focus();
+    return;
+  }
+  curQ = META.source==="verbforms" ? vfqMakeQuestion(POOL, "game") : makeQuestion(POOL, w=>2*(WRONG_COUNTS[w.la]||0), null, "game");
+  const kick = META.source==="verbforms" ? "Welke vertaling hoort bij deze vorm?" : `${META.lang==="el"?"Grieks":"Latijn"} → Nederlands`;
+  const woord = META.source==="verbforms" ? curQ.vorm : curQ.la;
+  H(brand(false)+`<div id="mini">${miniHTML()}</div>
+    <div class="qcard"><div class="kick">${kick}</div>
+      <div class="word">${esc(woord)}</div>${curQ.pos?`<div class="pos">${esc(curQ.pos)}</div>`:""}</div>
+    <div class="choices" id="choices">${curQ.options.map((o,i)=>`<button class="choice" onclick="answer(${i})"><span class="n">${i+1}</span><span>${esc(o)}</span></button>`).join("")}</div>`);
+}
+function renderNaamval(){
+  if(!curQ) return;
+  H(brand(false)+`<div id="mini">${miniHTML()}</div>`+cqQuestionHTML(curQ));
+}
+function answerNaamval(ok){
+  if(answered||!curQ) return; answered=true;
+  const q=curQ;
+  H(brand(false)+`<div id="mini">${miniHTML()}</div>`+cqResultHTML(q)
+    + `<div class="panel" style="text-align:center;color:${ok?'var(--good,#4a4)':'var(--bad,#a44)'}">${ok?"Goed!":"Fout"}</div>`);
+  if(!ok && !MISSED_WORDS.some(m=>m.la===q.vorm)) MISSED_WORDS.push({la:q.vorm, correct:q.antwoord});
+  scoreAnswer(ok, q.vorm);
+}
+function renderOntleed(){
+  if(!curQ) return;
+  H(brand(false)+`<div id="mini">${miniHTML()}</div>`
+    + vfqOntleedPickerHTML(curQ, "renderOntleed()")
+    + `<button class="btn btn-gold btn-block" style="margin-top:10px"${vfqOntleedComplete(curQ)?"":" disabled"} onclick="checkOntleed()">Controleer</button>`);
+}
+function checkOntleed(){
+  if(answered||!curQ) return; answered=true;
+  const q=curQ;
+  const grade = vfqOntleedGrade(q);
+  H(brand(false)+`<div id="mini">${miniHTML()}</div>`
+    + vfqOntleedResultHTML(q, grade)
+    + `<div class="panel" style="text-align:center;color:${grade.ok?'var(--good,#4a4)':'var(--bad,#a44)'}">${grade.ok?"Goed!":"Niet helemaal — bekijk de rode/groene assen hierboven"}</div>`);
+  if(!grade.ok && !MISSED_WORDS.some(m=>m.la===q.vorm)) MISSED_WORDS.push({la:q.vorm, correct:q.antwoord});
+  scoreAnswer(grade.ok, q.vorm);
+}
+function drawFrozen(until){
+  H(brand(false)+`<div id="mini">${miniHTML()}</div>
+    <div class="frozen"><div style="font-size:40px;margin-bottom:6px">${iconSVG("torch",40,"var(--teamB)")}</div>
+    Even stilstaan…<div style="font-size:34px;font-weight:800;margin-top:6px" id="freezeN">${Math.ceil((until-nowMs())/1000)}</div></div>`);
+  if(freezeTimer)clearInterval(freezeTimer);
+  freezeTimer=setInterval(()=>{
+    const left=Math.ceil((until-nowMs())/1000);
+    const n=el("freezeN"); if(n)n.textContent=Math.max(0,left);
+    if(left<=0){ clearInterval(freezeTimer); freezeTimer=null; if(STATE.status==="playing")drawQuestion(); }
+  },250);
+}
+function answer(i){
+  if(answered)return; answered=true;
+  const ok = i===curQ.correctIdx;
+  const key = curQ.vorm||curQ.la;
+  document.querySelectorAll("#choices .choice").forEach((b,k)=>{
+    if(k===curQ.correctIdx)b.classList.add("correct");
+    else if(k===i)b.classList.add("wrong"); else b.classList.add("dim");
+    b.onclick=null;
+  });
+  if(!ok && !MISSED_WORDS.some(m=>m.la===key)) MISSED_WORDS.push({la:key, correct:curQ.options[curQ.correctIdx]});
+  scoreAnswer(ok, key);
+}
+function answerTyped(){
+  if(answered)return; answered=true;
+  const box=el("playerTyped"); const typed=box?box.value:"";
+  const ok = vfqControleer(curQ, typed);
+  if(box)box.disabled=true;
+  const app=document.getElementById("app");
+  if(app) app.insertAdjacentHTML("beforeend", `<div class="panel" style="text-align:center;color:${ok?'var(--good,#4a4)':'var(--bad,#a44)'}">${ok?"Goed!":"Fout — juiste antwoord: "+esc(curQ.antwoord)}</div>`);
+  if(!ok && !MISSED_WORDS.some(m=>m.la===curQ.antwoord)) MISSED_WORDS.push({la:curQ.antwoord, correct:curQ.antwoord});
+  scoreAnswer(ok, curQ.antwoord);
+}
+function scoreAnswer(ok, wrongKey){
+  const me=myPlayer();
+  hwNote(curQ, ok); // moeilijke woorden, over sessies heen (core.js)
+  if(ok){ myStreak++; P.stats.totalCorrect++; P.stats.currentStreak++;
+    if(P.stats.currentStreak>P.stats.bestStreak)P.stats.bestStreak=P.stats.currentStreak;
+    addCoins(2); beep("good"); }
+  else { myStreak=0; P.stats.currentStreak=0; P.stats.totalWrong++; beep("bad");
+    WRONG_COUNTS[wrongKey]=(WRONG_COUNTS[wrongKey]||0)+1;
+  }
+  saveProfile();
+  applyAnswer(PID, me, ok);
+  // Snelvuur had voorheen een vaste pauze ongeacht goed/fout — daardoor kostte
+  // blind gokken niets. Nu net als de andere spellen: een fout antwoord duurt
+  // langer (900ms) dan een goed antwoord (520ms), zodat gokken binnen de
+  // sessietijd ook echt tijd (en dus vragen) kost.
+  const delay=ok?520:900;
+  setTimeout(()=>{ if(STATE.status==="playing")drawQuestion(); }, delay);
+}
+
+/* ---- resultaat (leerling) ---- */
+SCREENS.result = function(){
+  cleanup();
+  const me=PLAYERS[PID]||{};
+  let won=false, line="";
+  if(META.game==="touwtrekken"){
+    won = STATE.winner===me.team;
+    line = STATE.winner==="A"?"Rood wint!":STATE.winner==="B"?"Blauw wint!":"Wedstrijd gestopt";
+  } else if(META.game==="snelvuur"){
+    won = STATE.winner===PID;
+    const w=PLAYERS[STATE.winner];
+    line = w?(won?`Jij wint met score ${snelScore(me)}!`:`${esc(w.name)} wint (score ${snelScore(w)})`):"Wedstrijd gestopt";
+  } else {
+    won = STATE.winner===PID;
+    const w=PLAYERS[STATE.winner];
+    line = w?(won?"Jij wint!":esc(w.name)+" wint"):"Wedstrijd gestopt";
+  }
+  // tel resultaat 1x
+  if(!STATE._counted_for_me){ STATE._counted_for_me=true;
+    const _g=META.game, _c=me.correct||0, _w=me.wrong||0;
+    if(_g==="touwtrekken"){ P.stats.tournamentsPlayed++; if(won)P.stats.tournamentsWon++; }
+    else if(_g==="marathon"){ P.stats.marathonsPlayed++; if(won)P.stats.marathonsWon++; }
+    else if(_g==="snelvuur"){ P.stats.snelvuurPlayed++; if(won)P.stats.snelvuurWon++; }
+    const _xp=_c*2+5+(won?10:0);
+    addXP(_xp); addCoins(_c+(won?15:0));
+    saveProfile();
+    const _tot=_c+_w, _allWon=P.stats.tournamentsWon+P.stats.marathonsWon+P.stats.snelvuurWon+P.stats.battlesWon;
+    checkAch({mode:_g, won, isFirst:won&&_g==="snelvuur", accurate:_tot>0?_c/_tot:0});
+  }
+  const medal = won?medalSVG("laurel",120):iconSVG("shield",110,"var(--muted)");
+  beep(won?"win":"good");
+  const _lv=calcLevel(P.xp), _xpFill=Math.round(_lv.progress*100);
+  H(brand(true)+`<div class="screen" style="text-align:center;padding-top:20px">
+    <div style="width:120px;margin:0 auto 10px">${medal}</div>
+    <h2 style="color:var(--hi-bright);font-size:26px">${line}</h2>
+    <div class="note" style="margin:6px 0 18px">Je had <b>${me.correct||0}</b> goed${won?" en je wint 15 munten!":""}.</div>
+    <div class="panel" style="text-align:left">
+      <div style="display:flex;justify-content:space-between"><span>Munten</span><b>${P.coins}</b></div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px"><span>Rang</span><b>${P.rank} (niv.${P.level})</b></div>
+      <div style="margin-top:8px;height:8px;background:var(--stone3);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${_xpFill}%;background:var(--hi);border-radius:4px;transition:width .6s"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px"><span>Totaal goed</span><b>${P.stats.totalCorrect}</b></div>
+    </div>
+    ${MISSED_WORDS.length?`<div class="panel" style="text-align:left">
+      <div class="fld">Deze woorden gingen fout</div>
+      ${MISSED_WORDS.map(m=>`<div style="display:flex;justify-content:space-between;margin-top:6px"><span>${esc(m.la)}</span><b style="color:var(--hi)">${esc(m.correct)}</b></div>`).join("")}
+    </div>`:""}
+    <button class="btn btn-gold btn-block lg" onclick="backToLobbyPlayer()">Wachten op volgende ronde</button>
+    <button class="btn btn-ghost btn-block" style="margin-top:10px" onclick="leaveAll();go('collection')">Mijn verzameling</button>
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="leaveAll();go('home')">Terug naar hoofdmenu</button>
+  </div>${foot()}`);
+};
+function backToLobbyPlayer(){
+  // terug naar lobby en wachten op rematch
+  unsubState = Net.onState(CODE, s=>{ STATE=s||{}; if(STATE.status==="playing")go("playerGame"); else if(STATE.status==="lobby")go("playerLobby"); });
+}
+
+/* ============================================================================
+   MIJN PROFIEL (rang, XP, statistieken, Battle Mode, avatars, eerbewijzen)
+   ============================================================================ */
+SCREENS.collection = function(){
+  document.body.classList.remove("greek");
+  const s=P.stats, lv=calcLevel(P.xp), xb=xpBarInfo(lv);
+  const allP=s.tournamentsPlayed+s.marathonsPlayed+s.snelvuurPlayed+s.battlesPlayed;
+  const allW=s.tournamentsWon+s.marathonsWon+s.snelvuurWon+s.battlesWon;
+  function statsRow(l,v){ return `<div style="display:flex;justify-content:space-between;margin-top:4px"><span class="note">${l}</span><b>${v}</b></div>`; }
+
+  // ---- Battle Mode sectie (uit lokale cache) ----
+  const bmIdent = typeof bmIdentLoad==="function" ? bmIdentLoad() : null;
+  let bmSection = "";
+  if(bmIdent){
+    const bmXp=bmIdent.xp||0, bmLv=bmCalcLevel(bmXp), bmXb=xpBarInfo(bmLv);
+    const bmAchs=bmIdent.achievements||[];
+    const masteryGrid=BM_CLASSES.map(c=>{
+      const ms=bmCalcMastery(bmIdent.classHistory?.[c.id]);
+      // Zelfde klikbare skill-tree-tegel als op het Battle Mode-profiel (battle.js: battleProfile).
+      const st=(typeof bmSkillTreesVisible==="function"&&bmSkillTreesVisible());
+      return `<div ${st?`role="button" tabindex="0" onclick="bmOpenSkillTree('${c.id}','collection')" title="Skill-tree van ${esc(c.nm)}"`:""} style="background:${c.color}18;border:1px solid ${c.color}44;border-radius:10px;padding:8px 4px;text-align:center${st?";cursor:pointer":""}">
+        ${iconSVG(c.icon,20,c.color)}
+        <div style="font-size:9px;color:var(--muted);margin:2px 0">${esc(c.nm)}</div>
+        <div style="line-height:1;font-size:13px">${bmStars(ms)}</div>
+        ${st?`<div style="font-size:9px;color:var(--hi);margin-top:2px">🌳 skill-tree</div>`:""}
+      </div>`;
+    }).join("");
+    const bmAchItems=ACHIEVEMENTS_DEF.filter(a=>a.mode==="battle"||["eerste_gevecht","overwinnaar","scholar","onbreekbaar","strateeg","commandant","combokunstenaar","legendarisch"].includes(a.id));
+    const bmAchievedIds=[...new Set([...bmAchs,...P.achievements])];
+    const bmAchRows=achGroupsHTML(bmAchItems,bmAchievedIds,a=>{
+      const got=bmAchievedIds.includes(a.id);
+      if(a.secret&&!got) return `<div class="ach locked"><span class="m" style="filter:grayscale(1) opacity(.3)">${medalSVG("star",40)}</span><div><div class="nm">???</div><div class="ds">Geheim eerbewijs</div></div></div>`;
+      return `<div class="ach ${got?"":"locked"}"><span class="m">${medalSVG(a.icon,40)}</span><div><div class="nm">${a.nm}</div><div class="ds">${a.ds}</div></div></div>`;
+    });
+    bmSection=`
+    <div class="eyebrow l" style="margin-top:20px">⚔️ Battle Mode</div>
+    <div class="panel">
+      <div style="display:flex;gap:14px;align-items:center;margin-bottom:12px">
+        <div style="flex:0 0 auto">${renderPixelHeroIcon(bmIdent.avatar,64)}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px;min-width:0">
+            <div style="font-size:18px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(bmIdent.name||"")}</div>
+            <button class="chip" onclick="bmRenameSelf('collection')" title="Wijzig de naam die anderen zien" style="flex:0 0 auto;padding:3px 9px">✏️ Naam</button>
+          </div>
+          <div class="note">${esc(bmIdent.klascode||"")} · ${esc(bmIdent.leerlingcode||"")}</div>
+          <div class="pill" style="margin:4px 0 0">${esc(bmLv.title||bmLv.rank)} · niveau ${bmLv.level}${bmXb.starSuffix}</div>
+        </div>
+      </div>
+      <div style="height:8px;background:var(--stone3);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${bmXb.pct}%;background:var(--ox);border-radius:4px;transition:width .6s"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:3px">
+        <span class="note">${bmXp} XP</span>
+        <span class="note">${bmXb.label}</span></div>
+      ${statsRow("Gevechten gespeeld",bmIdent.battles||0)}
+      <button class="btn btn-ghost btn-block" style="margin-top:10px;font-size:13px" onclick="BM_AV_RETURN='collection';go('battleAvatarEdit')">Avatar aanpassen</button>
+    </div>
+    <div class="eyebrow l">Klasbeheersing</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:4px">${masteryGrid}</div>
+    <div class="eyebrow l" style="margin-top:16px">Battle eerbewijzen (${bmAchievedIds.filter(id=>bmAchItems.some(a=>a.id===id)).length}/${bmAchItems.length})</div>
+    ${bmAchRows}`;
+  } else {
+    bmSection=`<div class="eyebrow l" style="margin-top:20px">⚔️ Battle Mode</div>
+    <div class="panel"><div class="note">Je hebt nog geen Battle Mode-profiel. Doe mee via het hoofdmenu om je avatar en klasse-mastery op te bouwen.</div>
+    <button class="btn btn-ghost btn-block" style="margin-top:8px;font-size:13px" onclick="go('battleJoin')">Doe mee aan Battle Mode</button></div>`;
+  }
+
+  // ---- Chronica Classica sectie — tegenhanger van de Battle Mode-sectie
+  // hierboven: zelfde kaartopmaak (avatar/koptekst/knop), direct erna, zodat
+  // je in één oogopslag ziet hoe je in Battle Mode/Boss Battle/Total War
+  // verschijnt én hoe je Chronica-avatar nog moet groeien. Eretitels zelf
+  // (met hun eventuele passieve bonus) staan verderop tussen de eerbewijzen. ----
+  const spAv = spAvatarMerge(spAvatarLoadLocal());
+  const spTitlesEarned = spTitlesLoadLocal();
+  const spBonusTitles = SP_TITLES.filter(t=>t.bonus && spTitlesEarned.includes(t.id));
+  const spBonusHTML = spBonusTitles.length
+    ? spBonusTitles.map(t=>`<div class="note" style="color:var(--hi);margin-top:2px">⚡ ${esc(t.bonus.desc)} <span style="opacity:.7">— ${esc(t.nm)}</span></div>`).join("")
+    : `<div class="note" style="margin-top:2px">Nog geen passieve bonussen verdiend — speel verder in Chronica Classica.</div>`;
+  const spSection = `
+  <div class="eyebrow l" style="margin-top:20px">📜 Chronica Classica</div>
+  <div class="panel">
+    <div style="display:flex;gap:14px;align-items:center;margin-bottom:12px">
+      <div style="flex:0 0 auto">${renderPixelHeroPreview(spAv) || bmAvatarSVG(spAv,64)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:18px;font-weight:700">Chronica Classica Avatar</div>
+        <div class="note" style="margin-top:2px">Uitrusting ontgrendel je door het verhaal te spelen, los van je Battle Mode-avatar.</div>
+      </div>
+    </div>
+    <div class="note" style="font-weight:700;margin-bottom:2px">Passieve bonussen</div>
+    ${spBonusHTML}
+    <button class="btn btn-ghost btn-block" style="margin-top:10px;font-size:13px" onclick="SP_AV_RETURN='collection';go('spAvatarEdit')">Avatar aanpassen</button>
+  </div>`;
+
+  // ---- Algemene eerbewijzen (niet battle-specifiek) + Chronica-eretitels ----
+  // SP_TITLES heeft dezelfde vorm als ACHIEVEMENTS_DEF-items (ds/icon/cat:
+  // "chronica", zie singleplayer-data.js) en loopt daarom gewoon mee in
+  // dezelfde achGroupsHTML()-groepering als "Algemeen"/"Klassieke Spellen".
+  const generalAchItems=[
+    ...ACHIEVEMENTS_DEF.filter(a=>a.mode!=="battle"&&!["eerste_gevecht","overwinnaar","scholar","onbreekbaar","strateeg","commandant","combokunstenaar","legendarisch"].some(id=>id===a.id)),
+    ...SP_TITLES,
+  ];
+  const generalAchievedIds=[...P.achievements, ...spTitlesEarned];
+  const generalAchHTML=achGroupsHTML(generalAchItems,generalAchievedIds,a=>{
+    const got=generalAchievedIds.includes(a.id);
+    if(a.secret&&!got) return `<div class="ach locked"><span class="m" style="filter:grayscale(1) opacity(.3)">${medalSVG("star",46)}</span><div><div class="nm">???</div><div class="ds">Geheim eerbewijs</div></div></div>`;
+    return `<div class="ach ${got?"":"locked"}"><span class="m">${medalSVG(a.icon,46)}</span><div><div class="nm">${a.nm}</div><div class="ds">${a.ds}</div>${a.bonus&&got?`<div class="ds" style="color:var(--hi)">⚡ ${esc(a.bonus.desc)}</div>`:""}</div></div>`;
+  });
+
+  H(brand(true)+`<div class="scrhead"><button class="back" onclick="go('home')">${iconSVG("shield",20,"currentColor")}</button><h2>Mijn profiel</h2></div>
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div><div class="note">Rang</div><div style="font-size:22px;color:var(--hi-bright);font-weight:800">${P.rank}${xb.starSuffix}</div>
+        <div class="note">Niveau ${lv.level}</div></div>
+      <div style="text-align:right"><div class="note">Munten</div>
+        <div style="font-size:22px;color:var(--hi-bright);font-weight:800">${P.coins}</div></div>
+    </div>
+    <div style="height:10px;background:var(--stone3);border-radius:5px;overflow:hidden">
+      <div style="height:100%;width:${xb.pct}%;background:var(--hi);border-radius:5px;transition:width .6s"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:3px">
+      <span class="note">${P.xp} XP</span>
+      <span class="note">${xb.label}</span></div>
+  </div>
+  ${syncStatusHTML(bmIdent)}
+  <details style="margin:0 0 4px"><summary class="eyebrow l" style="cursor:pointer">Statistieken per modus</summary>
+  <div class="panel" style="margin-top:0">
+    <div class="note" style="font-weight:700;margin-bottom:4px">Totaal</div>
+    ${statsRow("Goed beantwoord",s.totalCorrect)}
+    ${statsRow("Langste serie",s.bestStreak)}
+    ${statsRow("Spellen gespeeld",allP)}
+    ${statsRow("Gewonnen",allW)}
+    <div class="note" style="font-weight:700;margin:10px 0 4px">Touwtrekken</div>
+    ${statsRow("Gespeeld",s.tournamentsPlayed)} ${statsRow("Gewonnen",s.tournamentsWon)}
+    <div class="note" style="font-weight:700;margin:10px 0 4px">Marathon</div>
+    ${statsRow("Gespeeld",s.marathonsPlayed)} ${statsRow("Gewonnen",s.marathonsWon)}
+    <div class="note" style="font-weight:700;margin:10px 0 4px">Snelvuur</div>
+    ${statsRow("Gespeeld",s.snelvuurPlayed)} ${statsRow("1e plek",s.snelvuurWon)}
+    <div class="note" style="font-weight:700;margin:10px 0 4px">Battle Mode</div>
+    ${statsRow("Gespeeld",s.battlesPlayed)} ${statsRow("Gewonnen",s.battlesWon)}
+    ${statsRow("Schade gegeven",s.totalDamage)} ${statsRow("Genezen",s.totalHealing)}
+  </div></details>
+  ${bmSection}
+  ${spSection}
+  ${typeof cxCastraSectionHTML==="function"?cxCastraSectionHTML():""}
+  ${typeof cxHardWordsCardHTML==="function"?cxHardWordsCardHTML():""}
+  <div class="eyebrow l" style="margin-top:20px">Avatars (klassieke spellen)</div>
+  <div class="collgrid">${AVATARS.map(a=>{
+    const owned=P.owned.includes(a.id), on=P.avatar===a.id;
+    return `<button class="coll ${owned?'':'locked'} ${on?'on':''}" onclick="buyOrEquip('${a.id}')">
+      <div class="av">${avatarHTML(a.id,P.color,54)}</div><div class="nm">${a.nm}</div>
+      ${owned?(on?`<div class="pr">in gebruik</div>`:`<div class="pr">kies</div>`):`<div class="pr">${a.cost} munten</div>`}
+    </button>`;
+  }).join("")}</div>
+  <div class="eyebrow l" style="margin-top:20px">Eerbewijzen (${generalAchItems.filter(a=>generalAchievedIds.includes(a.id)).length}/${generalAchItems.length})</div>
+  ${generalAchHTML}
+  ${foot()}`);
+  // Ververs Battle Mode-gegevens uit Firebase en herrender als er nieuwere data is
+  if(typeof bmRefreshIdentCache==="function" && bmIdent){
+    bmRefreshIdentCache().then(()=>{
+      const fresh = typeof bmIdentLoad==="function" ? bmIdentLoad() : null;
+      if(fresh && JSON.stringify(fresh)!==JSON.stringify(bmIdent)) SCREENS.collection();
+    });
+  }
+  // Ververs de algemene XP (P.xp) vanuit dezelfde gedeelde identiteit, zodat
+  // dit toestel altijd bijwerkt als er elders (ander toestel) is gespeeld.
+  if(typeof syncProfileFromCloud==="function") syncProfileFromCloud("collection");
+};
+
+/* ---- "Koppel dit toestel": algemeen profiel (buiten Battle Mode) delen via
+   dezelfde klascode+leerlingcode-identiteit, zodat XP overal gelijk blijft.
+   Geen verplichting: zonder koppeling werkt alles gewoon lokaal, zoals voorheen. ---- */
+let _gpLinkOpen=false;
+function syncStatusHTML(bmIdent){
+  if(bmIdent){
+    const g=bmIdent.googleUid;
+    return `<div class="note" style="text-align:center;margin:6px 0 2px">
+      🔗 Gekoppeld aan <b>${esc(bmIdent.klascode)}</b> · <b>${esc(bmIdent.leerlingcode)}</b> — je XP loopt gelijk op al je toestellen.</div>
+      <div class="panel" style="text-align:center;padding:10px 16px;margin-top:6px">
+        ${g?`
+        <div class="note">✅ Gekoppeld aan${bmIdent.googleEmail?` <b>${esc(bmIdent.googleEmail)}</b>`:" een Google-account"}.</div>
+        <button class="btn btn-ghost" style="font-size:13px;margin-top:8px" onclick="bmGoogleUnlink().then(()=>SCREENS.collection())">Ontkoppelen</button>
+        `:`
+        <div class="note">Koppel je Google-account om op een nieuw toestel in te loggen zonder codes te typen.</div>
+        <button class="btn btn-gold" style="font-size:13px;margin-top:8px" onclick="bmGoogleLinkCurrentIdent().then(()=>SCREENS.collection())">Koppel Google-account</button>
+        `}
+      </div>
+      <div class="panel" style="text-align:center;padding:10px 16px;margin-top:6px">
+        <div class="note">Wachtwoord van je profiel</div>
+        <div id="gpPwShown" class="note" style="margin-top:6px"></div>
+        <div class="btnrow" style="justify-content:center;margin-top:8px">
+          <button class="btn btn-ghost" style="font-size:13px" onclick="gpChangePw()">Wijzig wachtwoord</button>
+          ${g?`<button class="btn btn-ghost" style="font-size:13px" onclick="gpRevealPw()">Toon mijn wachtwoord</button>`:""}
+        </div>
+        ${g?`<div class="note" style="margin-top:6px;font-size:12px">Wachtwoord vergeten? "Toon mijn wachtwoord" laat het zien nadat je met je gekoppelde Google-account hebt ingelogd.</div>`:`<div class="note" style="margin-top:6px;font-size:12px">Wachtwoord vergeten? Vraag het je docent — of koppel hierboven je Google-account, dan kun je het zelf terugzien.</div>`}
+      </div>`;
+  }
+  if(!_gpLinkOpen){
+    return `<div class="panel" style="text-align:center;padding:12px 16px">
+      <div class="note" style="margin-bottom:8px">Je voortgang staat nu alleen lokaal op dit toestel. Koppel een klascode + leerlingcode om je XP op al je toestellen gelijk te houden.</div>
+      <button class="btn btn-ghost" style="font-size:13px" onclick="_gpLinkOpen=true;SCREENS.collection()">Koppel dit toestel</button>
+    </div>`;
+  }
+  return `<div class="panel">
+    <label class="fld">Klascode (van de docent)</label>
+    <input id="gpKlas" type="text" placeholder="bv. LATIJN3B" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+    <label class="fld" style="margin-top:12px">Leerlingcode (zelf gekozen)</label>
+    <input id="gpLcode" type="text" placeholder="bv. marcus42">
+    <label class="fld" style="margin-top:12px">Wachtwoord <small style="text-transform:none">(nieuw profiel of nog geen wachtwoord: kies er nu een, minstens ${KT_PW_MIN} tekens)</small></label>
+    <input id="gpPw" type="password" autocomplete="current-password" placeholder="Wachtwoord">
+    <label class="fld" style="margin-top:12px">Weergavenaam</label>
+    <input id="gpNaam" type="text" placeholder="bv. Marcus">
+    <div id="gpLinkErr" class="note warn" style="display:none;margin-top:8px"></div>
+    <div class="btnrow" style="margin-top:12px">
+      <button class="btn btn-gold" onclick="gpLinkProfile()">Koppelen</button>
+      <button class="btn btn-ghost" onclick="_gpLinkOpen=false;SCREENS.collection()">Annuleer</button>
+    </div>
+  </div>`;
+}
+// Toont het eigen wachtwoord — alleen mogelijk met een actieve sessie van het
+// gekoppelde Google-account (rules: studentSecrets via googleLinks). Zonder die
+// sessie sturen we door naar Google; na terugkomst klikt de leerling nogmaals.
+async function gpRevealPw(){
+  const ident=bmIdentLoad(); if(!ident) return;
+  const r=await ktPwReveal(ident.klascode, ident.leerlingcode);
+  const box=el("gpPwShown");
+  if(r.ok){ if(box) box.innerHTML=`Je wachtwoord: <b style="font-size:16px">${esc(r.pw)}</b>`; return; }
+  if(r.needGoogle){
+    toast("Log in met Google","Je wordt doorgestuurd. Klik daarna nogmaals op 'Toon mijn wachtwoord'.");
+    await bmGoogleSignIn({action:"login", returnScreen:"collection"});
+    return;
+  }
+  toast("Niet gelukt", r.error||"");
+}
+async function gpChangePw(){
+  const ident=bmIdentLoad(); if(!ident) return;
+  const oldPw=prompt("Huidig wachtwoord (laat leeg als je nog geen wachtwoord had):");
+  if(oldPw===null) return;
+  const nw=prompt("Nieuw wachtwoord (minstens "+KT_PW_MIN+" tekens):");
+  if(nw===null) return;
+  const r=await ktPwChange(ident.klascode, ident.leerlingcode, oldPw, nw);
+  if(!r.ok){ toast("Niet gewijzigd", r.error); return; }
+  toast("Wachtwoord gewijzigd","Gebruik vanaf nu je nieuwe wachtwoord.");
+}
+async function gpLinkProfile(){
+  if(typeof bmIdentDoLogin!=="function")return;
+  const klas=el("gpKlas")?.value, lcode=el("gpLcode")?.value, name=el("gpNaam")?.value, pw=el("gpPw")?.value;
+  const err=el("gpLinkErr");
+  if(err)err.style.display="none";
+  const r=await bmIdentDoLogin(klas,lcode,name,pw);
+  if(!r.ok){ if(err){err.textContent=r.error;err.style.display="";} return; }
+  _gpLinkOpen=false;
+  toast("Gekoppeld!","Je XP loopt nu gelijk op al je toestellen.");
+  SCREENS.collection();
+}
+
+function buyOrEquip(id){
+  const a=AVATARS.find(x=>x.id===id); if(!a)return;
+  if(P.owned.includes(id)){ P.avatar=id; saveProfile(); SCREENS.collection(); return; }
+  if(P.coins< a.cost){ toast("Niet genoeg munten","Win wedstrijden om munten te verdienen."); return; }
+  addCoins(-a.cost); P.owned.push(id); P.avatar=id; saveProfile(); checkAch(); beep("ach");
+  toast("Gekocht!", a.nm); SCREENS.collection();
+}
+
+
+/* ============================================================
+   DOCENTENPORTAAL — login · klasoverzicht · leerlingbeheer
+   ============================================================ */
+
+let _tpClasses = {};        // rauwe docent-labels (teachers/{uid}/classes), keyed by cid
+let _tpGroups = {};         // genormaliseerd, keyed by KLASCODE: {code, name, cid, count}
+let _tpCurrentClass = null; // actief geselecteerde klas — nu de KLASCODE
+let _tpRoster = {};         // {leerlingcode: identData} van de open klas
+let _tpIdentCounts = {};    // {KLASCODE: aantal leerlingen} uit identities
+let _tpKlasCivs = {};        // Total War: klascode → civId (/totalwar/klasCivs)
+let _tpApprovedKlascodes = []; // laatst geladen goedgekeurde Battle Mode-klascodes
+
+// Kies de juiste netwerkimplementatie (Firebase of in-memory demo)
+function teacherNet(){ return hasFirebase ? FBNet : DemoNet; }
+
+/* ---- SCHERM: inloggen ---- */
+SCREENS.teacherLogin = function(){
+  const demo = !hasFirebase;
+  if(teacherNet().isTeacherLoggedIn()){ goReplace("teacherPortal"); return; }
+  const remembered = localStorage.getItem("tpRemember")!=="0";
+  H(brand(true)+`
+  <div class="scrhead">
+    <button class="back" onclick="go('home')">${iconSVG("shield",20,"currentColor")}</button>
+    <h2>Docentenportaal</h2>
+  </div>
+  <div class="panel">
+    ${demo?`<div class="note warn" style="margin-bottom:14px">Firebase niet ingesteld — <b>demo-modus</b>. Elk wachtwoord werkt.</div>`:""}
+    <label class="fld">E-mailadres</label>
+    <input type="email" id="tpEmail" placeholder="jouw@email.nl" autocomplete="email" style="width:100%;box-sizing:border-box">
+    <label class="fld" style="margin-top:12px">Wachtwoord</label>
+    <input type="password" id="tpPw" autocomplete="current-password" style="width:100%;box-sizing:border-box"
+      onkeydown="if(event.key==='Enter')teacherDoLogin()">
+    <label style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:14px;cursor:pointer">
+      <input type="checkbox" id="tpRemember" ${remembered?"checked":""} style="width:16px;height:16px">
+      Onthoud mij op dit apparaat
+    </label>
+    <button class="btn btn-gold btn-block lg" style="margin-top:16px" onclick="teacherDoLogin()">Inloggen</button>
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="teacherDoGoogleLogin()">Inloggen met Google</button>
+    <div class="note" style="margin-top:4px">Alleen als je Google eerder aan dit docentaccount hebt gekoppeld (via het docentenportaal).</div>
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="go('teacherSignup')">Account aanmaken</button>
+    <button type="button" style="background:none;border:none;color:var(--muted);font-size:13px;text-decoration:underline;cursor:pointer;margin-top:10px;padding:0" onclick="teacherDoForgotPassword()">Wachtwoord vergeten?</button>
+  </div>
+  ${foot()}`);
+  setTimeout(()=>{ const e=el("tpEmail"); if(e)e.focus(); }, 120);
+  // Een lopende Google-koppeling/inlog-redirect wordt al bij app-init
+  // afgehandeld (certamen/index.html), vóórdat dit scherm ooit gerenderd
+  // wordt — hier dus geen aparte handleTeacherGoogleRedirect()-aanroep nodig.
+  if(!demo){
+    teacherNet().authReady().then(user=>{
+      if(user && _screen==="teacherLogin") goReplace("teacherPortal");
+    });
+  }
+};
+
+function teacherDoLogin(){
+  const email=(el("tpEmail")?.value||"").trim();
+  const pw=el("tpPw")?.value||"";
+  const remember=!!el("tpRemember")?.checked;
+  if(!email){ toast("E-mailadres vereist","Vul een e-mailadres in."); return; }
+  if(!pw){ toast("Wachtwoord vereist","Vul een wachtwoord in."); return; }
+  localStorage.setItem("tpRemember", remember?"1":"0");
+  teacherNet().loginTeacher(email,pw,remember)
+    .then(()=>go("teacherPortal"))
+    .catch(e=>toast("Inloggen mislukt",typeof e==="string"?e:(e?.message||"Controleer je gegevens.")));
+}
+
+function teacherDoGoogleLogin(){
+  teacherNet().loginTeacherWithGoogle?.()
+    .catch(e=>toast("Inloggen mislukt",typeof e==="string"?e:(e?.message||"")));
+}
+
+function teacherDoForgotPassword(){
+  const email=(el("tpEmail")?.value||"").trim();
+  if(!email){ toast("E-mailadres vereist","Vul eerst je e-mailadres in."); return; }
+  teacherNet().resetTeacherPassword(email)
+    .then(()=>toast("E-mail verstuurd","Resetlink verstuurd naar "+email+"."))
+    .catch(e=>toast("Mislukt",typeof e==="string"?e:(e?.message||"")));
+}
+
+/* ---- SCHERM: nieuw docentaccount aanmaken (komt op "pending" te staan) ---- */
+SCREENS.teacherSignup = function(){
+  const demo = !hasFirebase;
+  H(brand(true)+`
+  <div class="scrhead">
+    <button class="back" onclick="go('teacherLogin')">${iconSVG("shield",20,"currentColor")}</button>
+    <h2>Account aanmaken</h2>
+  </div>
+  <div class="panel">
+    ${demo?`<div class="note warn" style="margin-bottom:14px">Firebase niet ingesteld — registreren is hier niet beschikbaar.</div>`:""}
+    <div class="note" style="margin-bottom:14px">Na registreren moet de beheerder je account nog goedkeuren voordat je klassen kunt aanmaken.</div>
+    <label class="fld">E-mailadres</label>
+    <input type="email" id="tsEmail" placeholder="jouw@email.nl" autocomplete="email" style="width:100%;box-sizing:border-box">
+    <label class="fld" style="margin-top:12px">Wachtwoord</label>
+    <input type="password" id="tsPw" autocomplete="new-password" style="width:100%;box-sizing:border-box">
+    <label class="fld" style="margin-top:12px">Wachtwoord herhalen</label>
+    <input type="password" id="tsPw2" autocomplete="new-password" style="width:100%;box-sizing:border-box"
+      onkeydown="if(event.key==='Enter')teacherDoSignup()">
+    <button class="btn btn-gold btn-block lg" style="margin-top:16px" onclick="teacherDoSignup()">Registreren</button>
+  </div>
+  ${foot()}`);
+  setTimeout(()=>{ const e=el("tsEmail"); if(e)e.focus(); }, 120);
+};
+
+function teacherDoSignup(){
+  const email=(el("tsEmail")?.value||"").trim();
+  const pw=el("tsPw")?.value||"";
+  const pw2=el("tsPw2")?.value||"";
+  if(!email){ toast("E-mailadres vereist","Vul een e-mailadres in."); return; }
+  if(!pw || pw.length<6){ toast("Wachtwoord te kort","Kies een wachtwoord van minstens 6 tekens."); return; }
+  if(pw!==pw2){ toast("Wachtwoorden komen niet overeen",""); return; }
+  teacherNet().signupTeacher(email,pw)
+    .then(()=>{
+      H(brand(true)+`
+      <div class="scrhead">
+        <button class="back" onclick="go('home')">${iconSVG("shield",20,"currentColor")}</button>
+        <h2>Account aangemaakt</h2>
+      </div>
+      <div class="panel">
+        <div class="note">Je account is aangemaakt en wacht op goedkeuring door de beheerder. Je krijgt hier geen automatisch bericht van — neem contact op met de beheerder als je denkt dat het lang duurt.</div>
+        <button class="btn btn-gold btn-block" style="margin-top:16px" onclick="go('home')">Terug naar start</button>
+      </div>
+      ${foot()}`);
+    })
+    .catch(e=>toast("Registreren mislukt",typeof e==="string"?e:(e?.message||"Onbekende fout.")));
+}
+
+/* ---- SCHERM: klasoverzicht ----
+   Voordat de klas-tools getoond worden, wordt eerst teacherStatus gecheckt:
+   "pending"/"revoked"/ontbrekend blokkeert (zie CLAUDE.md § Firebase-rules —
+   rules weigeren klascodes/wordlists-writes toch al voor niet-approved
+   docenten, dit is de bijbehorende UI-laag). Gerbens eigen (admin-)account
+   hoeft niet door deze wachtrij. */
+let _tpIsAdmin = false;
+SCREENS.teacherPortal = function(){
+  if(!teacherNet().isTeacherLoggedIn()){ goReplace("teacherLogin"); return; }
+  H(brand(true)+`
+  <div class="scrhead">
+    <button class="back" onclick="go('home')">${iconSVG("shield",20,"currentColor")}</button>
+    <h2>Docentenportaal</h2>
+  </div>
+  <div class="note" style="text-align:center;padding:20px">Status controleren…</div>
+  ${foot()}`);
+  // reload(): ververst currentUser.providerData (bevat google.com na een koppeling) —
+  // anders kan een net gekoppeld account nog als "niet gekoppeld" getoond worden.
+  const refreshUser = hasFirebase ? (firebase.auth().currentUser?.reload?.()||Promise.resolve()).catch(()=>{}) : Promise.resolve();
+  Promise.all([teacherNet().isAdmin(), teacherNet().getTeacherStatus(), refreshUser]).then(([isAdmin, status])=>{
+    if(_screen!=="teacherPortal") return;
+    _tpIsAdmin = !!isAdmin;
+    const approved = isAdmin || (status && status.status==="approved");
+    if(!approved){ tpRenderPortalBlocked(status); return; }
+    tpRenderPortalContent();
+  });
+};
+
+// Afgewezen docent ("rejected", gezet door de beheerder via Afwijzen): geen
+// docent, dus meteen verder als leerling. Heeft dit toestel al een leerlingprofiel
+// dan loggen we alleen het docentaccount uit; anders vragen we de klascode (+
+// leerlingcode, wachtwoord, naam) en maken/koppelen we het leerlingprofiel.
+function tpRenderRejected(){
+  if(typeof bmIdentLoad==="function" && bmIdentLoad()){
+    teacherNet().logoutTeacher().then(()=>{ toast("Ingelogd als leerling","Je docentaanvraag was niet goedgekeurd; je speelt verder met je leerlingprofiel."); go("home"); });
+    return;
+  }
+  H(brand(true)+`
+  <div class="scrhead">
+    <button class="back" onclick="go('home')">${iconSVG("shield",20,"currentColor")}</button>
+    <h2>Verder als leerling</h2>
+    <button class="chip" style="margin-left:auto" onclick="teacherLogout()">Uitloggen</button>
+  </div>
+  <div class="panel">
+    <div class="note" style="margin-bottom:12px">Je aanvraag voor een docentaccount is niet goedgekeurd. Je kunt wel gewoon als leerling meedoen: vul de klascode van je docent in om meteen in de juiste klas te komen.</div>
+    <label class="fld">Klascode (van je docent)</label>
+    <input id="rjKlas" type="text" placeholder="bv. LATIJN3B" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+    <label class="fld" style="margin-top:12px">Leerlingcode (zelf kiezen)</label>
+    <input id="rjLcode" type="text" placeholder="bv. marcus42">
+    <label class="fld" style="margin-top:12px">Wachtwoord (minstens ${KT_PW_MIN} tekens)</label>
+    <input id="rjPw" type="password" autocomplete="new-password">
+    <label class="fld" style="margin-top:12px">Weergavenaam <small style="text-transform:none">(optioneel)</small></label>
+    <input id="rjNaam" type="text">
+    <div id="rjErr" class="note warn" style="display:none;margin-top:8px"></div>
+    <button class="btn btn-gold btn-block lg" style="margin-top:14px" onclick="tpRejectedToStudent()">Verder als leerling</button>
+  </div>
+  ${foot()}`);
+}
+async function tpRejectedToStudent(){
+  const err=el("rjErr"); if(err) err.style.display="none";
+  const r=await bmIdentDoLogin(el("rjKlas")?.value, el("rjLcode")?.value, el("rjNaam")?.value, el("rjPw")?.value);
+  if(!r.ok){ if(err){ err.textContent=r.error; err.style.display=""; } return; }
+  await teacherNet().logoutTeacher();
+  toast("Welkom!","Je speelt nu mee als leerling.");
+  go("home");
+}
+
+function tpRenderPortalBlocked(status){
+  const st=status && status.status;
+  if(st==="rejected"){ tpRenderRejected(); return; }
+  const msg = st==="revoked"
+    ? "Je docenttoegang is ingetrokken door de beheerder."
+    : "Je account wacht nog op goedkeuring door de beheerder. Je kunt pas klassen aanmaken zodra dat is gebeurd.";
+  H(brand(true)+`
+  <div class="scrhead">
+    <button class="back" onclick="go('home')">${iconSVG("shield",20,"currentColor")}</button>
+    <h2>Docentenportaal</h2>
+    <button class="chip" style="margin-left:auto" onclick="teacherLogout()">Uitloggen</button>
+  </div>
+  <div class="panel">
+    <div class="note warn">${esc(msg)}</div>
+  </div>
+  ${foot()}`);
+}
+
+function tpRenderPortalContent(){
+  const hasGoogle = !!(firebase.auth().currentUser?.providerData||[]).some(p=>p.providerId==="google.com");
+  H(brand(true)+`
+  <div class="scrhead">
+    <button class="back" onclick="go('home')">${iconSVG("shield",20,"currentColor")}</button>
+    <h2>Docentenportaal</h2>
+    ${hasGoogle
+      ? `<button class="chip" style="margin-left:auto;color:var(--ok,#8fbf7a)" onclick="teacherGoogleInfo()">✓ Google gekoppeld</button>`
+      : `<button class="chip" style="margin-left:auto" onclick="teacherDoLinkGoogle()">Koppel Google</button>`}
+    <button class="chip" onclick="teacherLogout()">Uitloggen</button>
+  </div>
+  <div id="tpClassList"><div class="note" style="text-align:center;padding:20px">Klassen laden…</div></div>
+  <button class="btn btn-gold btn-block" style="margin-top:10px" onclick="teacherAddClass()">+ Nieuwe klas</button>
+  <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="go('teacherStudentsBoard')">↔️ Leerlingen slepen tussen klassen</button>
+  <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="go('totalWarPreview')">🗺️ Total War — veldtochtkaart</button>
+  ${_tpIsAdmin?`<button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="go('adminOverview')">🛡️ Beheerdersoverzicht</button>`:""}
+  <div class="panel" style="margin-top:16px">
+    <label class="fld">Battle Mode — klascodes</label>
+    <div class="note" style="margin:2px 0 8px">Elke klas hierboven is óók een inlogcode. Leerlingen die de code invoeren komen automatisch in de bijbehorende klas. Hier kun je losse codes goedkeuren of verwijderen.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <input id="tpNewKlas" placeholder="Nieuwe code (bijv. LATIJN3B)" style="flex:1;min-width:140px;padding:8px 10px;background:var(--stone3);color:var(--cream);border:1px solid var(--stone4);border-radius:8px;font-size:14px;font-family:inherit;text-transform:uppercase"
+        oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')tpCreateKlascode()">
+      <button class="btn btn-gold" style="padding:8px 14px" onclick="tpCreateKlascode()">+ Aanmaken</button>
+    </div>
+    <div id="tpKlascodeList" style="margin-top:10px"><div class="note" style="padding:4px 0">Laden…</div></div>
+  </div>
+  <div class="panel" style="margin-top:16px">
+    <label class="fld">Total War — klas ↔ beschaving</label>
+    <div id="twKlasCivList" style="margin-top:6px"><div class="note" style="padding:4px 0">Laden…</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">
+      <select id="tpTwKlas" style="flex:1;min-width:140px;padding:8px 10px;border-radius:8px;border:1px solid var(--stone4);background:var(--stone3);color:var(--cream);font-size:14px;font-family:inherit">
+        <option value="">— kies een klas —</option>
+      </select>
+      <select id="tpTwCiv" style="padding:8px 10px;border-radius:8px;border:1px solid var(--stone4);background:var(--stone3);color:var(--cream);font-size:14px;font-family:inherit">
+        ${Object.entries(TW_CIVS).filter(([id])=>id!=="neutral").map(([id,c])=>`<option value="${id}">${esc(c.nm)}</option>`).join("")}
+      </select>
+      <button class="btn btn-gold" style="padding:8px 14px" onclick="tpAssignKlasCiv()">Koppel</button>
+    </div>
+  </div>
+  ${foot()}`);
+  tpLoadClasses();
+  tpLoadKlasCivs();
+}
+
+/* ---- Total War: klas ↔ beschaving-koppeling (totalwar/campaigns/{eigen uid}/
+   klasCivs, zie TOTAL_WAR.md §4/§7.1/§9 — many-to-one t.o.v. de letterlijke
+   docschema, want meerdere klascodes horen vaak bij dezelfde beschaving).
+   Sinds het multi-tenant Total War-systeem (CLAUDE.md § Firebase-rules)
+   altijd de EIGEN campagne van de ingelogde docent — nooit die van een
+   collega, ook al toont dit paneel alleen die docent se eigen klassen. ---- */
+function tpLoadKlasCivs(){
+  const cont=el("twKlasCivList"); if(!cont) return;
+  if(!initFirebase()){ cont.innerHTML=`<div class="note">Vereist Firebase.</div>`; return; }
+  const owner=teacherNet().getTeacherUid();
+  if(!owner){ cont.innerHTML=`<div class="note">Log eerst in.</div>`; return; }
+  fbDB.ref("totalwar/campaigns/"+owner+"/klasCivs").once("value")
+    .then(snap=>{ _tpKlasCivs=snap.val()||{}; tpRenderKlasCivs(); })
+    .catch(()=>{ cont.innerHTML=`<div class="note warn">Kon koppelingen niet laden.</div>`; });
+}
+
+function tpRenderKlasCivs(){
+  const cont=el("twKlasCivList"); if(!cont) return;
+  const entries=Object.entries(_tpKlasCivs||{});
+  if(!entries.length){
+    cont.innerHTML=`<div class="note" style="padding:4px 0">Nog geen klas aan een beschaving gekoppeld.</div>`;
+    return;
+  }
+  const q=s=>"'"+String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'")+"'";
+  cont.innerHTML=entries.map(([klas,civId])=>{
+    const civ=TW_CIVS[civId]||TW_CIVS.neutral;
+    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--stone4)">
+      <span style="flex:1"><b>${esc(klas)}</b> → ${esc(civ.nm)}</span>
+      <button class="chip" style="color:#e07060;border-color:rgba(90,18,12,.4)" onclick="tpUnassignKlasCiv(${q(klas)})">Ontkoppel</button>
+    </div>`;
+  }).join("");
+}
+
+async function tpAssignKlasCiv(){
+  const klas=(el("tpTwKlas")?.value||"").trim().toUpperCase();
+  const civId=el("tpTwCiv")?.value;
+  if(!klas){ toast("Klascode vereist","Vul een klascode in."); return; }
+  if(!initFirebase()){ toast("Firebase vereist",""); return; }
+  const owner=teacherNet().getTeacherUid();
+  if(!owner){ toast("Log eerst in",""); return; }
+  try{
+    const exists=await FBNet.validateKlascode(klas);
+    if(!exists){ toast("Onbekende klascode",klas+" bestaat niet in Battle Mode."); return; }
+    // Eerste klas↔beschaving-koppeling van deze docent is meteen ook zijn
+    // "Total War starten" — geen impliciete seed nodig op een ander scherm,
+    // en zonder seed zou de zo meteen aangeroepen twGrantFreshFlagshipIfUnowned()
+    // in een nog lege provincieboom schrijven.
+    _twOwner = owner;
+    await twEnsureRegistry();
+    await twEnsureCampaignSeeded();
+    await fbDB.ref("totalwar/campaigns/"+owner+"/klasCivs/"+klas).set(civId);
+    if(el("tpTwKlas")) el("tpTwKlas").value="";
+    toast("Gekoppeld",klas+" → "+(TW_CIVS[civId]?.nm||civId));
+    tpLoadKlasCivs();
+    // Een volk dat nog nergens eigenaar van is (nooit gekoppeld, of net
+    // ontkoppeld en nu weer gekoppeld) krijgt meteen zijn basisprovincie —
+    // geen opstand nodig voor een vers begin, zie twGrantFreshFlagshipIfUnowned().
+    if(typeof twGrantFreshFlagshipIfUnowned==="function") await twGrantFreshFlagshipIfUnowned(owner, civId);
+  }catch(e){ toast("Fout",typeof e==="string"?e:(e?.message||"")); }
+}
+
+async function tpUnassignKlasCiv(klas){
+  const owner=teacherNet().getTeacherUid();
+  if(!owner) return;
+  const civId=_tpKlasCivs && _tpKlasCivs[klas];
+  try{
+    await fbDB.ref("totalwar/campaigns/"+owner+"/klasCivs/"+klas).remove();
+    toast("Ontkoppeld",klas);
+    tpLoadKlasCivs();
+    // Was dit de laatste klas van dit volk, dan mag het geen provincie(s)
+    // blijven vasthouden — zie twReleaseCivIfUnassigned().
+    if(civId && typeof twReleaseCivIfUnassigned==="function") await twReleaseCivIfUnassigned(owner, civId);
+  }catch(e){ toast("Fout",typeof e==="string"?e:(e?.message||"")); }
+}
+
+// Laadt alles wat het portaaloverzicht nodig heeft in één keer: de docent-labels
+// (teachers/{uid}/classes), de ledenaantallen per klascode (uit identities) en de
+// lijst goedgekeurde codes. Bouwt daaruit _tpGroups (groep = klascode) en rendert
+// zowel de klassenlijst als de klascodelijst.
+function tpLoadClasses(){
+  return teacherNet().getClasses().then(cls=>{
+    _tpClasses=cls||{};
+    const ownCodes=Object.values(_tpClasses).map(c=>c.code||tpDeriveKlascode(c.className)).filter(Boolean);
+    return Promise.all([
+      teacherNet().getKlascodeCounts(ownCodes).catch(()=>({})),
+      teacherNet().getKlascodes().catch(()=>({approved:[],used:[]}))
+    ]);
+  }).then(([counts, kc])=>{
+    _tpIdentCounts=counts||{};
+    _tpApprovedKlascodes=(kc&&kc.approved)||[];
+    tpBuildGroups((kc&&kc.approved)||[], (kc&&kc.used)||[]);
+    tpPersistLegacyCodes();
+    tpRenderClasses();
+    tpRenderKlascodes();
+    tpReconcileClassKlascodes();
+  }).catch(e=>toast("Fout",typeof e==="string"?e:(e?.message||"Kon klassen niet laden")));
+}
+
+// Behouden als losse aanroep na klascode-acties: alles opnieuw laden en renderen.
+function tpLoadKlascodes(){ return tpLoadClasses(); }
+
+// Bouwt _tpGroups: één genormaliseerde groep per KLASCODE. Bron = docent-labels
+// (geven een leesbare naam + cid) plus alle codes die leden hebben, goedgekeurd
+// zijn of in gebruik zijn (die krijgen de code zelf als naam als er geen label is).
+function tpBuildGroups(approved, used){
+  const groups={};
+  const put=(code,name,cid)=>{
+    code=(code||"").toUpperCase(); if(!code) return;
+    if(!groups[code]) groups[code]={code, name:name||code, cid:cid||null, count:_tpIdentCounts[code]||0};
+    else {
+      if(name && groups[code].name===groups[code].code) groups[code].name=name;
+      if(cid && !groups[code].cid) groups[code].cid=cid;
+    }
+  };
+  Object.entries(_tpClasses||{}).forEach(([cid,cls])=>{
+    const code=(cls.code||tpDeriveKlascode(cls.className));
+    if(code) put(code, cls.className||code, cid);
+  });
+  [...new Set([...Object.keys(_tpIdentCounts||{}), ...(approved||[]), ...(used||[])])]
+    .forEach(code=>put(code, null, null));
+  _tpGroups=groups;
+}
+
+// Schrijft voor oudere docent-klassen (zonder expliciet code-veld) de afgeleide
+// code weg, zodat de koppeling met identities/{code} stabiel wordt en een latere
+// hernoeming de code niet meer verandert. Best-effort, stil.
+function tpPersistLegacyCodes(){
+  Object.entries(_tpClasses||{}).forEach(([cid,cls])=>{
+    if(!cls.code){ const code=tpDeriveKlascode(cls.className); if(code) teacherNet().setClassCode(cid,code).catch(()=>{}); }
+  });
+}
+
+function tpRenderClasses(){
+  const cont=el("tpClassList");
+  tpRenderKlasSelect();
+  if(!cont) return;
+  const groups=Object.values(_tpGroups||{}).sort((a,b)=>a.name.localeCompare(b.name));
+  if(!groups.length){
+    cont.innerHTML=`<div class="note" style="text-align:center;padding:20px">Nog geen klassen. Voeg een klas toe hieronder.</div>`;
+    return;
+  }
+  const q=s=>"'"+String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'")+"'";
+  cont.innerHTML=groups.map(g=>{
+    const count=g.count||0;
+    return `<div class="panel" style="margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <div style="flex:1;min-width:140px">
+        <div style="font-weight:700;font-size:16px">${esc(g.name)}</div>
+        <div class="note">Code ${esc(g.code)} · ${count} leerling${count!==1?"en":""}</div>
+      </div>
+      <button class="chip" onclick="tpOpenClass(${q(g.code)})">${iconSVG("helmet",13,"currentColor")} Leerlingen</button>
+      <button class="chip" onclick="tpRenameClass(${q(g.code)})">${iconSVG("column",13,"currentColor")} Hernoem</button>
+      <button class="chip" style="color:#e07060;border-color:rgba(90,18,12,.4)" onclick="tpDeleteClass(${q(g.code)})">✕</button>
+    </div>`;
+  }).join("");
+}
+
+// Haalt uit een klasnaam (bv. "Latijn 3B") een geldige Battle Mode-klascode
+// (bv. "LATIJN3B") — dezelfde regex als tpCreateKlascode(). null als de naam
+// geen bruikbare code oplevert (te kort/leeg na opschonen, of >12 tekens).
+function tpDeriveKlascode(nm){
+  const code=(nm||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+  return /^[A-Z0-9]{2,12}$/.test(code) ? code : null;
+}
+
+// Herstelt achteraf klassen die vóór deze koppeling al bestonden (of waarvan
+// de code nog niet was goedgekeurd) — zorgt dat elke gelabelde klas ook een
+// goedgekeurde inlogcode is, zonder bestaande klassen opnieuw aan te maken.
+function tpReconcileClassKlascodes(){
+  const approved=new Set(_tpApprovedKlascodes||[]);
+  const own=Object.values(_tpGroups||{}).filter(g=>g.cid);
+  const missing=[...new Set(own.filter(g=>!approved.has(g.code)).map(g=>g.code))];
+  if(missing.length){
+    Promise.all(missing.map(code=>teacherNet().createKlascode(code).catch(()=>{})))
+      .then(()=>tpLoadClasses());
+  }
+  // Claimt stilletjes het ownerUid van eigen, al goedgekeurde codes die nog
+  // "legacy" zijn (van vóór de per-docent-scheiding) — self-healing migratie
+  // naar het nieuwe model. Geen tpLoadClasses()-vervolg hier: dat zou bij elke
+  // portaallading een nieuwe reconcile-ronde triggeren (oneindige lus), terwijl
+  // het claimen zelf niets aan de zichtbare tellingen/labels verandert.
+  own.filter(g=>approved.has(g.code)).forEach(g=>{ teacherNet().createKlascode(g.code).catch(()=>{}); });
+}
+
+function teacherAddClass(){
+  const nm=(prompt("Naam van de nieuwe klas:")||"").trim();
+  if(!nm) return;
+  let code=tpDeriveKlascode(nm);
+  if(!code){
+    code=(prompt("Kies een korte inlogcode voor deze klas (2–12 letters/cijfers):","")||"").trim().toUpperCase();
+    if(!/^[A-Z0-9]{2,12}$/.test(code)){ toast("Ongeldige code","Gebruik 2–12 letters of cijfers, geen spaties."); return; }
+  }
+  // Klascode EERST claimen/aanmaken: sinds het ownerUid-model kan dit mislukken
+  // (code al in gebruik door een andere docent). Pas bij succes de klas-label
+  // aanmaken — anders blijft er een label achter dat naar een code wijst die
+  // deze docent niet beheert.
+  teacherNet().createKlascode(code)
+    .then(()=>{
+      const id="class_"+Date.now();
+      return teacherNet().saveClass(id,nm).then(()=>teacherNet().setClassCode(id,code));
+    })
+    .then(()=>{ toast("Klas aangemaakt",nm+" ("+code+")"); return tpLoadClasses(); })
+    .catch(e=>toast("Fout",typeof e==="string"?e:e?.message));
+}
+
+// Hernoemt alleen het leesbare label; de inlogcode blijft ongewijzigd zodat de
+// koppeling met de leerlingprofielen (identities/{code}) intact blijft.
+function tpRenameClass(code){
+  const g=_tpGroups[code]; if(!g) return;
+  const huidig=g.name;
+  const nm=(prompt("Nieuwe naam voor '"+huidig+"' (inlogcode "+code+" blijft gelijk):",huidig)||"").trim();
+  if(!nm||nm===huidig) return;
+  const cid=g.cid||("class_"+Date.now());
+  teacherNet().saveClass(cid,nm)
+    .then(()=>teacherNet().setClassCode(cid,code))
+    .then(()=>{ toast("Naam gewijzigd",nm); return tpLoadClasses(); })
+    .catch(e=>toast("Fout",typeof e==="string"?e:e?.message));
+}
+
+function tpDeleteClass(code){
+  const g=_tpGroups[code]; if(!g) return;
+  const nm=g.name, count=g.count||0;
+  const msg=count>0
+    ? "Klas '"+nm+"' ("+code+") heeft "+count+" leerling"+(count!==1?"en":"")+". Verwijderen wist de klascode én alle leerlingprofielen met hun voortgang. Doorgaan?"
+    : "Klas '"+nm+"' ("+code+") verwijderen?";
+  if(!confirm(msg)) return;
+  const finish=()=>{
+    const steps=[teacherNet().deleteKlascode(code).catch(()=>{})];
+    if(g.cid) steps.push(teacherNet().deleteClass(g.cid));
+    return Promise.all(steps)
+      .then(()=>{ toast("Klas verwijderd",nm); return tpLoadClasses(); })
+      .catch(e=>toast("Fout",typeof e==="string"?e:e?.message));
+  };
+  if(count>0){
+    teacherNet().getIdentities(code)
+      .then(idents=>Promise.all(Object.keys(idents||{}).map(lid=>teacherNet().deleteIdentity(code,lid).catch(()=>{}))))
+      .then(finish, finish);
+  } else finish();
+}
+
+function teacherLogout(){
+  teacherNet().logoutTeacher().then(()=>go("teacherLogin"));
+}
+
+function teacherDoLinkGoogle(){
+  toast("Doorsturen naar Google…","Kies het Google-account dat je wilt koppelen.");
+  Promise.resolve(teacherNet().linkTeacherGoogle?.())
+    .catch(e=>{
+      const code=e&&e.code;
+      const msg = code==="auth/provider-already-linked" ? "Er is al een Google-account aan dit docentaccount gekoppeld."
+        : code==="auth/credential-already-in-use" ? "Dit Google-account hoort al bij een ander account (bv. een leerlingprofiel). Gebruik een ander Google-account."
+        : (typeof e==="string"?e:(e?.message||"Onbekende fout."));
+      toast("Koppelen mislukt",msg);
+    });
+}
+function teacherGoogleInfo(){
+  const g=(firebase.auth().currentUser?.providerData||[]).find(p=>p.providerId==="google.com");
+  toast("Google gekoppeld", g&&g.email ? "Gekoppeld aan "+g.email+". Je kunt voortaan ook inloggen met Google." : "Je kunt voortaan ook inloggen met Google.");
+}
+
+/* ============================================================
+   BEHEERDERSOVERZICHT — alleen voor admins/{uid} (zie
+   database.rules.json en CLAUDE.md § Firebase-rules). Toont wie
+   docent is (en keurt goed/trekt in), en per docent hun klassen,
+   leerlingaantal, laatst actief en eigen woordenlijsten — bewust
+   zonder leerlingnamen/scores of woordenlijstinhoud te tonen.
+   ============================================================ */
+let _aoStatuses = {};   // {uid: {status,email,requestedAt}}
+let _aoKlascodes = {};  // {code: {created,ownerUid}}
+
+SCREENS.adminOverview = function(){
+  if(!teacherNet().isTeacherLoggedIn()){ goReplace("teacherLogin"); return; }
+  H(brand(true)+`
+  <div class="scrhead">
+    <button class="back" onclick="go('teacherPortal')">${iconSVG("shield",20,"currentColor")}</button>
+    <h2>Beheerdersoverzicht</h2>
+  </div>
+  <div id="aoContent"><div class="note" style="text-align:center;padding:20px">Laden…</div></div>
+  ${foot()}`);
+  teacherNet().isAdmin().then(isAdmin=>{
+    if(!isAdmin){ toast("Geen toegang","Dit overzicht is alleen voor de beheerder."); go("teacherPortal"); return; }
+    // Actuele stand van de skill-tree-schakelaar ophalen vóór het tekenen.
+    const flag=(typeof bmSkillTreesLoadFlag==="function")?bmSkillTreesLoadFlag():Promise.resolve();
+    flag.finally(()=>aoLoad());
+  });
+};
+
+function aoLoad(){
+  Promise.all([teacherNet().listTeacherStatuses(), teacherNet().listAllKlascodes()])
+    .then(([statuses, klascodes])=>{
+      _aoStatuses=statuses||{};
+      _aoKlascodes=klascodes||{};
+      aoRender();
+    })
+    .catch(e=>{
+      const cont=el("aoContent");
+      if(cont) cont.innerHTML=`<div class="note warn">Kon overzicht niet laden: ${esc(typeof e==="string"?e:(e?.message||""))}</div>`;
+    });
+}
+
+// Skill-trees aan/uit voor alle leerlingen (skilltree.js, config/skillTrees).
+function aoSkillTreesPanelHTML(){
+  if(typeof bmSkillTreesOn!=="function") return "";
+  const on=bmSkillTreesOn();
+  return `<div class="panel" style="margin-bottom:12px;border-color:${on?"var(--green)":"var(--hi-dim)"}">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <div style="font-weight:700">🌳 Skill-trees (Battle Mode, Boss Battle, Total War)</div>
+        <div class="note">${on?"<b>Aan</b> — leerlingen zien hun skill-trees in hun profiel en bij de klassekeuze.":"<b>Uit</b> — alleen jij ziet ze (om te testen). Leerlingen merken nog niets."}</div>
+      </div>
+      ${(on||BM_ST_ENGINE_READY)?`<button class="btn ${on?"btn-ghost":"btn-gold"}" onclick="aoToggleSkillTrees(${on?"false":"true"})">${on?"Uitzetten":"Aanzetten"}</button>`
+        :`<span class="pill" title="De effecten worden nog in de gevechten ingebouwd">⏳ Aanzetten kan zodra de effecten in de gevechten zitten</span>`}
+      <button class="chip" onclick="bmOpenSkillTree('hopliet','adminOverview')">Bekijken</button>
+    </div>
+  </div>`;
+}
+async function aoToggleSkillTrees(on){
+  if(on&&!confirm("Skill-trees aanzetten voor alle leerlingen?")) return;
+  try{ await bmSkillTreesSetEnabled(on); toast(on?"Skill-trees aan":"Skill-trees uit", on?"Leerlingen kunnen nu hun skill-trees invullen.":"Leerlingen zien de skill-trees niet meer."); }
+  catch(e){ toast("Niet gelukt","Kon de instelling niet opslaan: "+(e?.message||e)); }
+  aoRender();
+}
+
+function aoRender(){
+  const cont=el("aoContent"); if(!cont) return;
+  const uids=Object.keys(_aoStatuses||{});
+  if(!uids.length){ cont.innerHTML=aoSkillTreesPanelHTML()+`<div class="note">Nog geen docentaccounts geregistreerd.</div>`; return; }
+  const q=s=>"'"+String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'")+"'";
+  const statusLabel={pending:"In afwachting",approved:"Goedgekeurd",revoked:"Ingetrokken",rejected:"Afgewezen (verder als leerling)"};
+  const rows=uids.map(uid=>{
+    const s=_aoStatuses[uid]||{};
+    const codes=Object.entries(_aoKlascodes||{}).filter(([,kc])=>kc && kc.ownerUid===uid).map(([code])=>code);
+    return `<div class="panel" style="margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div style="flex:1;min-width:180px">
+          <div style="font-weight:700">${esc(s.email||uid)}</div>
+          <div class="note">${statusLabel[s.status]||s.status||"onbekend"} · aangevraagd ${s.requestedAt?new Date(s.requestedAt).toLocaleDateString("nl-NL"):"?"}</div>
+        </div>
+        ${s.status!=="approved"?`<button class="chip" onclick="aoSetStatus(${q(uid)},'approved')">Goedkeuren</button>`:""}
+        ${s.status==="pending"?`<button class="chip" style="color:#e07060;border-color:rgba(90,18,12,.4)" onclick="aoSetStatus(${q(uid)},'rejected')" title="Geen docent: bij de volgende login wordt om een klascode gevraagd, zodat diegene als leerling verder kan">Afwijzen</button>`:""}
+        ${s.status==="approved"?`<button class="chip" style="color:#e07060;border-color:rgba(90,18,12,.4)" onclick="aoSetStatus(${q(uid)},'revoked')">Intrekken</button>`:""}
+      </div>
+      <div id="aoKlas_${esc(uid)}" style="margin-top:8px">${codes.length?`<div class="note">Klassen laden…</div>`:`<div class="note">Nog geen klassen.</div>`}</div>
+    </div>`;
+  });
+  cont.innerHTML = aoSkillTreesPanelHTML() + rows.join("");
+  uids.forEach(uid=>{
+    const codes=Object.entries(_aoKlascodes||{}).filter(([,kc])=>kc && kc.ownerUid===uid).map(([code,kc])=>({code,created:kc.created}));
+    if(codes.length) aoRenderTeacherClasses(uid, codes);
+  });
+}
+
+// Per docent: klassenlijst met leerlingaantal (usedKlascodes), aanmaakdatum en
+// laatst actief (klascodeMeta/lastActive), plus aantal + titels van eigen
+// woordenlijsten — nooit de woorden zelf (zie CLAUDE.md § Firebase-rules).
+function aoRenderTeacherClasses(uid, codes){
+  const cont=el("aoKlas_"+uid); if(!cont) return;
+  Promise.all(codes.map(c=>
+    Promise.all([
+      teacherNet().getKlascodeCounts([c.code]).catch(()=>({})),
+      teacherNet().getKlascodeMeta(c.code).catch(()=>({}))
+    ]).then(([counts,meta])=>({...c, count:(counts&&counts[c.code])||0, lastActive:meta&&meta.lastActive}))
+  )).then(rows=>{
+    if(!el("aoKlas_"+uid)) return; // scherm intussen verlaten
+    cont.innerHTML = `<table style="width:100%;font-size:13px;border-collapse:collapse">
+      <tr class="note"><td>Klascode</td><td>Leerlingen</td><td>Aangemaakt</td><td>Laatst actief</td></tr>
+      ${rows.map(r=>`<tr>
+        <td>${esc(r.code)}</td><td>${r.count}</td>
+        <td>${r.created?new Date(r.created).toLocaleDateString("nl-NL"):"?"}</td>
+        <td>${r.lastActive?new Date(r.lastActive).toLocaleDateString("nl-NL"):"—"}</td>
+      </tr>`).join("")}
+    </table>`;
+  });
+  fbDB.ref("teachers/"+uid+"/wordlists").once("value").then(snap=>{
+    if(!snap.exists()) return;
+    const lists=Object.values(snap.val()||{});
+    if(!lists.length) return;
+    const extra=document.createElement("div");
+    extra.className="note";
+    extra.style.marginTop="6px";
+    extra.textContent="Eigen woordenlijsten ("+lists.length+"): "+lists.map(l=>(l.name||"?")+" ("+(l.lang==="el"?"Grieks":"Latijn")+")").join(", ");
+    const target=el("aoKlas_"+uid);
+    if(target) target.appendChild(extra);
+  }).catch(()=>{});
+}
+
+function aoSetStatus(uid, status){
+  teacherNet().setTeacherStatus(uid, status)
+    .then(()=>{ toast(status==="approved"?"Goedgekeurd":status==="rejected"?"Afgewezen":"Ingetrokken",""); aoLoad(); })
+    .catch(e=>toast("Fout",typeof e==="string"?e:(e?.message||"")));
+}
+
+// Rendert de klascodelijst mét ledenaantal per code (uit _tpIdentCounts). "Accounts"
+// opent de klas (leerlingenlijst uit identities); groep = klascode.
+function tpRenderKlascodes(){
+  const cont=el("tpKlascodeList"); if(!cont) return;
+  const approved=new Set(_tpApprovedKlascodes||[]);
+  const allCodes=[...new Set([...approved, ...Object.keys(_tpIdentCounts||{})])].sort();
+  if(!allCodes.length){
+    cont.innerHTML=`<div class="note">Nog geen klascodes. Maak er een aan hierboven.</div>`;
+    return;
+  }
+  cont.innerHTML=allCodes.map(code=>{
+    const isApproved=approved.has(code);
+    const count=_tpIdentCounts[code]||0;
+    return `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 0;border-bottom:0.5px solid var(--stone4)">
+      <div style="flex:1;font-weight:600">${esc(code)}
+        <span class="note" style="font-weight:400;margin-left:6px">${count} leerling${count!==1?"en":""}</span>
+        ${isApproved?`<span class="pill" style="font-size:11px;margin-left:6px">goedgekeurd</span>`:`<span class="pill" style="font-size:11px;margin-left:6px;background:var(--ox);border:none;color:var(--cream)">niet goedgekeurd</span>`}
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="chip" onclick="tpOpenClass('${esc(code)}')">${iconSVG("helmet",13,"currentColor")} Leerlingen</button>
+        ${isApproved
+          ?`<button class="chip" style="color:#e07060;border-color:rgba(90,18,12,.4)" onclick="tpDeleteKlascode('${esc(code)}')">Verwijder</button>`
+          :`<button class="chip" onclick="tpApproveKlascode('${esc(code)}')">Goedkeuren</button>`}
+        ${!isApproved&&!count
+          ?`<button class="chip" style="color:#e07060;border-color:rgba(90,18,12,.4)" title="Verwijdert alleen de losstaande vermelding — er is geen actieve klascode meer" onclick="tpCleanupUsedKlascode('${esc(code)}')">Opruimen</button>`
+          :""}
+      </div>
+    </div>`;
+  }).join("");
+}
+// Ruimt een niet-goedgekeurde klascode zonder leerlingen op die (door een
+// inmiddels gefixte bug) na verwijdering bleef terugkomen — zie
+// FBNet.cleanupUsedKlascode. Alleen voor lege, niet-goedgekeurde codes: een
+// goedgekeurde code hoort via tpDeleteKlascode te gaan (die ruimt dit ook
+// meteen mee op) en een code met leerlingen moet je bewust via 'Verwijder'
+// bij de klas zelf wissen, niet stilzwijgend hier.
+function tpCleanupUsedKlascode(code){
+  teacherNet().cleanupUsedKlascode(code)
+    .then(()=>{ toast("Opgeruimd",code); tpLoadKlascodes(); })
+    .catch(e=>toast("Mislukt",typeof e==="string"?e:(e?.message||"")));
+}
+
+// Vult de klas-dropdown van het Total War-koppelpaneel met de docent-eigen
+// klassen (_tpGroups). Waarde = de klascode (wat BM_IDENT.klascode écht bevat),
+// label = de leesbare klasnaam.
+function tpRenderKlasSelect(){
+  const sel=el("tpTwKlas"); if(!sel) return;
+  const cur=sel.value;
+  const entries=Object.values(_tpGroups||{}).sort((a,b)=>a.name.localeCompare(b.name));
+  sel.innerHTML=`<option value="">— kies een klas —</option>`+
+    entries.map(g=>`<option value="${g.code}">${esc(g.name)}</option>`).join("");
+  if(cur && entries.some(g=>g.code===cur)) sel.value=cur;
+}
+
+function tpCreateKlascode(){
+  const code=(el("tpNewKlas")?.value||"").trim().toUpperCase();
+  if(!code){ toast("Vul een code in",""); return; }
+  if(!/^[A-Z0-9]{2,12}$/.test(code)){ toast("Ongeldige code","Gebruik 2–12 letters of cijfers, geen spaties."); return; }
+  teacherNet().createKlascode(code)
+    .then(()=>{ toast("Klascode aangemaakt",code); if(el("tpNewKlas"))el("tpNewKlas").value=""; tpLoadKlascodes(); })
+    .catch(e=>toast("Mislukt",typeof e==="string"?e:(e?.message||"")));
+}
+
+function tpApproveKlascode(code){
+  teacherNet().createKlascode(code)
+    .then(()=>{ toast("Goedgekeurd",code); tpLoadKlascodes(); })
+    .catch(e=>toast("Mislukt",typeof e==="string"?e:(e?.message||"")));
+}
+
+function tpDeleteKlascode(code){
+  if(!confirm("Klascode '"+code+"' verwijderen? Leerlingen met deze code kunnen dan niet meer aanmelden.")) return;
+  teacherNet().deleteKlascode(code)
+    .then(()=>{ toast("Verwijderd",code); tpLoadKlascodes(); })
+    .catch(e=>toast("Mislukt",typeof e==="string"?e:(e?.message||"")));
+}
+
+/* ---- SCHERM: leerlingen in één klas (roster = identities/{code}) ---- */
+SCREENS.teacherClass = function(){
+  if(!teacherNet().isTeacherLoggedIn()){ goReplace("teacherLogin"); return; }
+  if(!_tpCurrentClass){ goReplace("teacherPortal"); return; }
+  const code=_tpCurrentClass;
+  const g=_tpGroups[code]||{code, name:code};
+  H(brand(true)+`
+  <div class="scrhead">
+    <button class="back" onclick="go('teacherPortal')">${iconSVG("shield",20,"currentColor")}</button>
+    <h2>${esc(g.name)}</h2>
+  </div>
+  <div class="note" style="margin:-4px 0 10px">Inlogcode: <b>${esc(code)}</b> <button class="chip" style="padding:2px 8px" title="Kopieer klascode" onclick="tpCopy('${esc(code)}')">Kopieer</button> — leerlingen die deze code invoeren komen automatisch in deze klas.</div>
+  <div id="tpMissedWords"></div>
+  <div id="tpChronicaStats"></div>
+  <div id="tpCastraLegio"></div>
+  <div id="tpCastraStats"></div>
+  <div id="tpCastraTD"></div>
+  <div id="tpStudentList"><div class="note" style="text-align:center;padding:16px">Laden…</div></div>
+  <div id="tpOtherApps"></div>
+  ${foot()}`);
+  tpLoadRoster();
+  tpRenderClassAnalytics();
+  tpRenderChronicaAnalytics();
+  tpRenderCastraAnalytics();
+  tpRenderCastraTD();
+  tpRenderCastraLegio();
+};
+
+// Weergavenamen voor de score-sync uit assets/site-auth.js (identities/{klas}/
+// {lid}/apps/{appId}). appId = "<mapnaam>-la"/"-gr", zie plan "site-brede
+// inlog": elke overige app op de site schrijft hier zelf zijn (score,detail).
+const APP_LABELS = {
+  "ludus-la":"Ludus (Latijn)", "agora-gr":"Agora (Grieks)",
+  "diagnosticum-la":"Diagnosticum (Latijn)",
+  "casus-la":"Casus (Latijn)", "casus-gr":"Casus (Grieks)",
+  "clausula-la":"Clausula (Latijn)", "clausula-gr":"Clausula (Grieks)",
+  "stamtijden-la":"Stamtijden (Latijn)", "stamtijden-gr":"Stamtijden (Grieks)",
+  "structura-la":"Structura (Latijn)", "structura-gr":"Structura (Grieks)",
+  "werkwoorden-la":"Werkwoorden (Latijn)", "werkwoorden-gr":"Werkwoorden (Grieks)",
+  "verba-la":"Verba (Latijn)", "verba-gr":"Verba (Grieks)",
+  "alfabet-gr":"Alfabet (Grieks)"
+};
+
+function tpOpenClass(code){
+  _tpCurrentClass=(code||"").toUpperCase();
+  go("teacherClass");
+}
+
+// Klasbrede "moeilijkste woorden deze maand" — cumulatief over alle Battle
+// Mode-gevechten van deze klas (zie bmSyncClassMissedWords() in battle.js),
+// dus niet gebonden aan één losse sessie zoals het analytics-scherm ná een
+// gevecht. _tpCurrentClass IS de klascode.
+function tpRenderClassAnalytics(){
+  const cont=el("tpMissedWords"); if(!cont) return;
+  const klas=_tpCurrentClass;
+  if(!klas || !initFirebase()){ cont.innerHTML=""; return; }
+  const month=new Date().toISOString().slice(0,7);
+  fbDB.ref("classAnalytics/"+klas+"/"+month).once("value").then(snap=>{
+    const words=Object.values(snap.val()||{}).sort((a,b)=>(b.c||0)-(a.c||0)).slice(0,10);
+    if(!words.length){
+      cont.innerHTML=`<div class="panel"><h3>Moeilijkste woorden deze maand</h3><div class="note">Nog geen gegevens — speel een Battle Mode-gevecht met deze klas.</div></div>`;
+      return;
+    }
+    cont.innerHTML=`<div class="panel"><h3>Moeilijkste woorden deze maand</h3>
+      <table class="bm-tbl"><thead><tr><th>Woord</th><th>Antwoord</th><th>Fout</th></tr></thead><tbody>
+      ${words.map(w=>`<tr><td>${esc(w.p)}</td><td>${esc(w.a||"")}</td><td>${w.c||0}×</td></tr>`).join("")}
+      </tbody></table></div>`;
+  }).catch(()=>{ cont.innerHTML=`<div class="panel"><div class="note warn">Kon klasanalyse niet laden.</div></div>`; });
+}
+
+// Chronica Classica-taalstatistieken (didactiek-audit #6/#9, 2026-07-30):
+// geaggregeerd per klas/maand, geschreven door spSyncPuzzleMistake()/
+// spSyncLeesvalOutcome() (singleplayer.js) — nooit gekoppeld aan een
+// individuele leerling, altijd klasbreed. Twee losse tabellen: leesvallen
+// (percentage goed/fout gelezen) en puzzels (aantal fouten + laatst gegeven
+// foute antwoord, zelfde vorm als tpRenderClassAnalytics hierboven).
+function tpRenderChronicaAnalytics(){
+  const cont=el("tpChronicaStats"); if(!cont) return;
+  const klas=_tpCurrentClass;
+  if(!klas || !initFirebase()){ cont.innerHTML=""; return; }
+  const month=new Date().toISOString().slice(0,7);
+  fbDB.ref("classAnalyticsChronica/"+klas+"/"+month).once("value").then(snap=>{
+    const rows=Object.values(snap.val()||{});
+    const leesvallen=rows.filter(r=>(r.goed||0)+(r.fout||0)>0)
+      .map(r=>({...r, pct: Math.round(100*(r.goed||0)/((r.goed||0)+(r.fout||0)))}))
+      .sort((a,b)=>a.pct-b.pct);
+    const puzzels=rows.filter(r=>(r.c||0)>0).sort((a,b)=>(b.c||0)-(a.c||0)).slice(0,10);
+    if(!leesvallen.length && !puzzels.length){
+      cont.innerHTML=`<div class="panel"><h3>Chronica Classica — taalstatistieken deze maand</h3><div class="note">Nog geen gegevens — speel Chronica Classica ingelogd met deze klascode.</div></div>`;
+      return;
+    }
+    const leesvalHTML = leesvallen.length ? `<h4 style="margin:12px 0 4px">Leesvallen — % goed gelezen</h4>
+      <table class="bm-tbl"><thead><tr><th>Leesval</th><th>Goed</th><th>Fout</th><th>%</th></tr></thead><tbody>
+      ${leesvallen.map(r=>`<tr><td>${esc(r.p)}</td><td>${r.goed||0}</td><td>${r.fout||0}</td><td>${r.pct}%</td></tr>`).join("")}
+      </tbody></table>` : "";
+    const puzzelHTML = puzzels.length ? `<h4 style="margin:12px 0 4px">Puzzels — meest fout beantwoord</h4>
+      <table class="bm-tbl"><thead><tr><th>Puzzel</th><th>Laatst gegeven antwoord</th><th>Fout</th></tr></thead><tbody>
+      ${puzzels.map(r=>`<tr><td>${esc(r.p)}</td><td>${esc(r.a||"")}</td><td>${r.c||0}×</td></tr>`).join("")}
+      </tbody></table>` : "";
+    cont.innerHTML=`<div class="panel"><h3>Chronica Classica — taalstatistieken deze maand</h3>${leesvalHTML}${puzzelHTML}</div>`;
+  }).catch(()=>{ cont.innerHTML=`<div class="panel"><div class="note warn">Kon Chronica-taalstatistieken niet laden.</div></div>`; });
+}
+
+// Castra Heroum — vertaalhulp (Latijn lezen), geaggregeerd per klas/maand. Geschreven door
+// castraHelpSync() (castra-latin.js); nooit gekoppeld aan een leerling. Woorden die veel
+// worden opgezocht zijn de woorden die de klas nog niet kent; zinnen die vaak worden
+// vertaald zijn te moeilijk of te nieuw.
+function tpRenderCastraAnalytics(){
+  const cont=el("tpCastraStats"); if(!cont) return;
+  const klas=_tpCurrentClass;
+  if(!klas || !initFirebase()){ cont.innerHTML=""; return; }
+  const month=new Date().toISOString().slice(0,7);
+  fbDB.ref("classAnalyticsCastra/"+klas+"/"+month).once("value").then(snap=>{
+    const rows=Object.values(snap.val()||{}).filter(r=>(r.c||0)>0);
+    const words=rows.filter(r=>r.k==="w").sort((a,b)=>b.c-a.c).slice(0,12);
+    const sents=rows.filter(r=>r.k==="s").sort((a,b)=>b.c-a.c).slice(0,8);
+    if(!words.length && !sents.length){
+      cont.innerHTML=`<div class="panel"><h3>Castra Heroum — vertaalhulp deze maand</h3><div class="note">Nog geen gegevens — speel Castra Heroum ingelogd met deze klascode.</div></div>`;
+      return;
+    }
+    const tbl=(title,list,col)=>list.length?`<h4 style="margin:12px 0 4px">${title}</h4>
+      <table class="bm-tbl"><thead><tr><th>${col}</th><th>Keer opgezocht</th></tr></thead><tbody>
+      ${list.map(r=>`<tr><td>${esc(r.p)}</td><td>${r.c}×</td></tr>`).join("")}</tbody></table>`:"";
+    cont.innerHTML=`<div class="panel"><h3>Castra Heroum — vertaalhulp deze maand</h3>
+      ${tbl("Woorden — meest opgezocht",words,"Woord")}${tbl("Zinnen — meest vertaald",sents,"Zin")}</div>`;
+  }).catch(()=>{ cont.innerHTML=`<div class="panel"><div class="note warn">Kon Castra-statistieken niet laden.</div></div>`; });
+}
+
+// Castra Heroum — tower defence-meetpunten voor de klastest, geaggregeerd per klas/maand (castra-metrics.js).
+function tpRenderCastraTD(){
+  const cont=el("tpCastraTD"); if(!cont) return;
+  const klas=_tpCurrentClass;
+  if(!klas || !initFirebase()){ cont.innerHTML=""; return; }
+  const month=new Date().toISOString().slice(0,7);
+  fbDB.ref("classAnalyticsCastraTD/"+klas+"/"+month).once("value").then(snap=>{
+    const D=snap.val()||{}, g=(k,f)=>((D[k]||{})[f]||0);
+    const mids=Object.keys(D).filter(k=>k.indexOf("m_")===0).map(k=>k.slice(2));
+    if(!mids.length){ cont.innerHTML=`<div class="panel"><h3>Castra Heroum — tower defence deze maand</h3><div class="note">Nog geen gegevens — speel een missie ingelogd met deze klascode.</div></div>`; return; }
+    const pct=(a,b)=>b>0?Math.round(100*a/b)+"%":"–";
+    const nm=id=>{ if(id==="weekly") return "Wekelijkse uitdaging"; const m=(typeof CASTRA_P_MISSIONS!=="undefined")?CASTRA_P_MISSIONS.find(x=>x.id===id):null; return m?m.nm:id; };
+    const order=(typeof CASTRA_P_MISSIONS!=="undefined")?CASTRA_P_MISSIONS.map(m=>m.id):mids;
+    const rows=mids.sort((a,b)=>order.indexOf(a)-order.indexOf(b)).map(id=>{
+      const k="m_"+id, s=g(k,"s"), w=g(k,"w"), l=g(k,"l"), a=g(k,"a"), done=w+l, v=g(k,"v"), r=g(k,"r");
+      return `<tr><td>${esc(nm(id))}</td><td>${s}</td><td>${pct(w,done)}</td><td>${done?Math.round(g(k,"t")/done*0.05/6)/10+" min":"–"}</td><td>${pct(a,s)}</td><td>${pct(v,v+r)}</td><td>${s?(g(k,"c")/s).toFixed(1):"–"}</td></tr>`; }).join("");
+    const grp=(pre,label,names)=>{ const ks=Object.keys(D).filter(k=>k.indexOf(pre)===0); if(!ks.length) return ""; return `<h4 style="margin:12px 0 4px">${label}</h4><table class="bm-tbl"><thead><tr><th>Naam</th><th>Gevechten</th><th>Gewonnen</th></tr></thead><tbody>${ks.map(k=>`<tr><td>${esc(names&&names[k.slice(pre.length)]||k.slice(pre.length))}</td><td>${g(k,"s")}</td><td>${pct(g(k,"w"),g(k,"s"))}</td></tr>`).join("")}</tbody></table>`; };
+    const edNames={}; if(typeof CASTRA_EDICTA!=="undefined") Object.keys(CASTRA_EDICTA).forEach(i=>edNames[i]=CASTRA_EDICTA[i].la+" ("+CASTRA_EDICTA[i].nl+")");
+    const roNames={}; if(typeof CASTRA_P_ROLES!=="undefined") Object.keys(CASTRA_P_ROLES).forEach(i=>roNames[i]=CASTRA_P_ROLES[i].la+" ("+CASTRA_P_ROLES[i].nl+")");
+    const types=["inf","rng","cav","sup","myth"].filter(t=>g("ty_"+t,"n")), totT=types.reduce((a,t)=>a+g("ty_"+t,"n"),0);
+    const syn=Object.keys(D).filter(k=>k.indexOf("y_")===0), cmd=Object.keys(D).filter(k=>k.indexOf("cmd_")===0);
+    const days=Object.keys(D).filter(k=>k.indexOf("d_")===0).sort(), ret=["new","d1","d2_6","d7"].map(k=>[k,g("ret_"+k,"n")]);
+    cont.innerHTML=`<div class="panel"><h3>Castra Heroum — tower defence deze maand</h3>
+      <table class="bm-tbl"><thead><tr><th>Missie</th><th>Gestart</th><th>Gewonnen</th><th>Duur (gem.)</th><th>Afgebroken</th><th>Ander team dan vorige poging</th><th>Bevelen per gevecht</th></tr></thead><tbody>${rows}</tbody></table>
+      ${grp("e_","Missieregels",edNames)}${grp("r_","Vijandrollen",roNames)}
+      ${(()=>{ const fbk=[["hard","te moeilijk"],["unclear","onduidelijk"],["setup","opstelling"],["long","te lang"],["other","anders"]], rowsFb=mids.filter(id=>fbk.some(f=>g("m_"+id,"fb_"+f[0]))); return rowsFb.length?`<h4 style="margin:12px 0 4px">Waarom een missie moeilijk was (optionele vraag na verlies)</h4><div class="note">${rowsFb.map(id=>esc(nm(id))+": "+fbk.filter(f=>g("m_"+id,"fb_"+f[0])).map(f=>f[1]+" "+g("m_"+id,"fb_"+f[0])).join(", ")).join("<br>")}</div>`:""; })()}
+      ${(()=>{ const ks=Object.keys(D).filter(k=>/^cmd(hp|d|w)_/.test(k)).sort(); return ks.length?`<h4 style="margin:12px 0 4px">Wanneer worden bevelen gegeven?</h4><div class="note">${ks.map(k=>k.replace("cmdhp_","levens ").replace("cmdd_","afstand voorste vijand ").replace("cmdw_","golf ").replace(/_/g," ")+": "+g(k,"n")+"×").join(" · ")}</div>`:""; })()}
+      ${(()=>{ const ctx=["school","home"].filter(c=>g("ctx_"+c,"n")), ss=Object.keys(D).filter(k=>k.indexOf("sess_")===0).sort(); return ctx.length||ss.length?`<h4 style="margin:12px 0 4px">Thuis of op school (vermoedelijk, op basis van tijdstip)</h4><div class="note">${ctx.map(c=>(c==="school"?"gevechten in schooltijd ":"gevechten daarbuiten ")+g("ctx_"+c,"n")).join(" · ")}${ss.length?"<br>Sessies: "+ss.map(k=>k.slice(5).replace("home","buiten schooltijd").replace("school","schooltijd").replace(/_/g," ")+" min: "+g(k,"n")).join(" · "):""}${g("act_battle","n")||g("act_hunt","n")?`<br>Activiteiten in sessies: ${g("act_battle","n")} gevechten, ${g("act_hunt","n")} jachten`:""}</div>`:""; })()}
+      ${(()=>{ const ks=Object.keys(D).filter(k=>k.indexOf("clue_")===0); if(!ks.length) return ""; const rn=r=>(typeof CASTRA_P_ROLES!=="undefined"&&CASTRA_P_ROLES[r])?CASTRA_P_ROLES[r].la+" ("+CASTRA_P_ROLES[r].nl+")":r; return `<h4 style="margin:12px 0 4px">Latijnse aanwijzingen bij een nieuwe vijand (eerste ontmoeting)</h4><table class="bm-tbl"><thead><tr><th>Vijandrol</th><th>Goed gelezen</th><th>Fout</th><th>Uitleg gevraagd</th><th>Overgeslagen</th></tr></thead><tbody>${ks.map(k=>`<tr><td>${esc(rn(k.slice(5)))}</td><td>${g(k,"ok")}</td><td>${g(k,"bad")}</td><td>${g(k,"help")}</td><td>${g(k,"skip")}</td></tr>`).join("")}</tbody></table><div class="note">Goed gelezen betekent dat de leerling de Latijnse zin zonder uitleg goed vertaalde (met woordhulp toegestaan).</div>`; })()}
+      ${types.length?`<h4 style="margin:12px 0 4px">Opstelling (aandeel per soort)</h4><div class="note">${types.map(t=>t+" "+pct(g("ty_"+t,"n"),totT)).join(" · ")}</div>`:""}
+      ${syn.length||cmd.length?`<h4 style="margin:12px 0 4px">Synergieën en bevelen</h4><div class="note">${syn.map(k=>k.slice(2)+": "+g(k,"n")+"×").concat(cmd.map(k=>k.slice(4)+": "+g(k,"n")+"×")).join(" · ")}</div>`:""}
+      ${days.length?`<h4 style="margin:12px 0 4px">Spelers per dag en terugkeer</h4><div class="note">${days.map(k=>k.slice(2)+"e: "+g(k,"n")).join(" · ")}<br>Eerste speeldag ${ret[0][1]} · terug na 1 dag ${ret[1][1]} · na 2–6 dagen ${ret[2][1]} · na 7+ dagen ${ret[3][1]} (tellingen, geen namen)</div>`:""}</div>`;
+  }).catch(()=>{ cont.innerHTML=`<div class="panel"><div class="note warn">Kon de tower defence-gegevens niet laden.</div></div>`; });
+}
+
+// Castra Heroum — Legio-evenement starten voor deze klas (castra-legio.js: castraLegioTeacher*).
+// Lobby -> de leerlingen melden zich ("Adsum!") in de principia -> "Start het gevecht" (10 s aftelling).
+let _tpLegioTimer = null;
+function tpRenderCastraLegio(){
+  const cont=el("tpCastraLegio"); if(!cont){ clearInterval(_tpLegioTimer); return; }
+  const klas=_tpCurrentClass;
+  if(!klas || !initFirebase() || typeof castraLegioTeacherCreate!=="function"){ cont.innerHTML=""; return; }
+  const draw=(ev,players)=>{
+    const n=Object.keys(players||{}).length;
+    let body;
+    if(!ev) body=`<div class="note">Geen evenement actief. Kies een evenement:</div><select id="tpLegioMis" style="min-height:40px;font-size:15px;margin:4px 0 8px;max-width:100%">${castraLegioMissionIds().map(id=>`<option value="${id}">${esc(CASTRA_LEGIO_MISSIONS[id].nm)} — ${esc(CASTRA_LEGIO_MISSIONS[id].nl)}</option>`).join("")}</select><br><button class="btn btn-gold" onclick="tpLegioDo('create')">Maak het evenement (lobby)</button>`;
+    else if(ev.status==="lobby") body=`<div class="note"><b>${esc(ev.name||"Legio")}</b> — lobby. Aangemeld: <b>${n}</b>${n?" ("+Object.values(players).map(p=>esc(p.nm)).join(", ")+")":""}</div>
+      <button class="btn btn-gold" ${n<1?"disabled":""} onclick="tpLegioDo('launch')">Start het gevecht (10 s aftelling)</button> <button class="btn" onclick="tpLegioDo('end')">Annuleer</button>`;
+    else body=`<div class="note"><b>${esc(ev.name||"Legio")}</b> — loopt (${ev.players||n} deelnemers). Het gevecht verloopt automatisch; leerlingen kunnen tot het eind meedoen.</div><button class="btn" onclick="tpLegioDo('end')">Beëindig en wis het evenement</button>`;
+    cont.innerHTML=`<div class="panel"><h3>Castra Heroum — Legio (klassenevenement)</h3>${body}</div>`;
+  };
+  const poll=()=>{
+    if(!el("tpCastraLegio")){ clearInterval(_tpLegioTimer); return; }
+    Promise.all([fbDB.ref("castraLegio/"+klas+"/event").once("value"), fbDB.ref("castraLegio/"+klas+"/players").once("value")])
+      .then(([e,p])=>draw(e.val(),p.val())).catch(()=>{ cont.innerHTML=`<div class="panel"><div class="note warn">Kon het Legio-evenement niet laden (ben je ingelogd als eigenaar van deze klas?).</div></div>`; });
+  };
+  clearInterval(_tpLegioTimer); poll(); _tpLegioTimer=setInterval(poll,4000);
+}
+function tpLegioDo(what){
+  const klas=_tpCurrentClass; if(!klas) return;
+  const p = what==="create" ? castraLegioTeacherCreate(klas,(el("tpLegioMis")||{}).value||"legio1") : what==="launch" ? castraLegioTeacherLaunch(klas) : castraLegioTeacherEnd(klas);
+  p.then(()=>tpRenderCastraLegio()).catch(e=>toast("Mislukt", String(e&&e.message||e)));
+}
+
+// Laadt de echte leerlingprofielen (identities/{code}) van de open klas.
+let _tpSecrets = {};        // {leerlingcode: wachtwoord} van de open klas (studentSecrets, alleen eigen klassen)
+function tpLoadRoster(){
+  const code=_tpCurrentClass;
+  return Promise.all([
+      teacherNet().getIdentities(code).catch(()=>({})), // "niet gevonden" = nog geen leden
+      teacherNet().getStudentSecrets(code)
+    ])
+    .then(([idents,secrets])=>{ _tpRoster=idents||{}; _tpSecrets=secrets||{}; tpRenderRoster(); tpRenderOtherApps(); })
+    .catch(()=>{ _tpRoster={}; _tpSecrets={}; tpRenderRoster(); tpRenderOtherApps(); });
+}
+
+// "Laatst actief" per leerling: expliciete lastActive-stempel (login, gevecht,
+// Training, score-sync) of — voor profielen van vóór die stempel bestond — de
+// nieuwste updatedAt van een app-score.
+function tpLastActive(s){
+  let t=s.lastActive||0;
+  Object.values(s.apps||{}).forEach(a=>{ if(a && a.updatedAt>t) t=a.updatedAt; });
+  return t;
+}
+function tpFormatAgo(ts){
+  if(!ts) return "nog nooit";
+  const d=Math.floor((Date.now()-ts)/86400000);
+  if(d<1) return "vandaag";
+  if(d===1) return "gisteren";
+  if(d<14) return d+" dagen geleden";
+  return new Date(ts).toLocaleDateString("nl-NL");
+}
+// Kopieert tekst naar het klembord (met terugval voor iPad/oudere browsers waar
+// navigator.clipboard ontbreekt of geweigerd wordt).
+function tpCopy(text){
+  const done=()=>toast("Gekopieerd",text);
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>tpCopyFallback(text,done));
+  } else tpCopyFallback(text,done);
+}
+function tpCopyFallback(text,done){
+  const ta=document.createElement("textarea");
+  ta.value=text; ta.setAttribute("readonly",""); ta.style.cssText="position:fixed;top:-1000px";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); done(); }catch(e){ toast("Kopiëren mislukt","Selecteer de code en kopieer 'm handmatig."); }
+  ta.remove();
+}
+function tpResetStudentPw(code,lid,nm){
+  if(!confirm("Nieuw wachtwoord voor '"+nm+"' genereren? Het oude wachtwoord werkt daarna niet meer.")) return;
+  teacherNet().resetStudentPassword(code,lid)
+    .then(pw=>{ toast("Nieuw wachtwoord voor "+nm, pw); return tpLoadRoster(); })
+    .catch(e=>toast("Mislukt",typeof e==="string"?e:(e?.message||"")));
+}
+
+// "Overige apps"-paneel: elke leerling in het al geladen _tpRoster kan een
+// "apps"-subtak hebben (identities/{klas}/{lid}/apps/{appId}: {score,detail,
+// updatedAt}), geschreven door assets/site-auth.js (KTScores.save) vanuit elke
+// losse app op de site. getIdentities() leest die al mee (hele subtree per
+// leerling), dus hier alleen renderen — geen extra Firebase-call nodig.
+function tpRenderOtherApps(){
+  const cont=el("tpOtherApps"); if(!cont) return;
+  const rows=[];
+  Object.entries(_tpRoster||{}).forEach(([lid,s])=>{
+    Object.entries(s.apps||{}).forEach(([appId,a])=>{
+      rows.push({name:s.name||lid, appId, label:APP_LABELS[appId]||appId, detail:a.detail||"", updatedAt:a.updatedAt||0});
+    });
+  });
+  if(!rows.length){ cont.innerHTML=""; return; }
+  rows.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+  cont.innerHTML=`<div class="panel"><h3>Overige apps</h3>
+    <table class="bm-tbl"><thead><tr><th>Leerling</th><th>App</th><th>Score</th><th>Laatst bijgewerkt</th></tr></thead><tbody>
+    ${rows.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(r.label)}</td><td>${esc(r.detail)}</td><td>${r.updatedAt?new Date(r.updatedAt).toLocaleDateString("nl-NL"):"—"}</td></tr>`).join("")}
+    </tbody></table></div>`;
+}
+
+function tpRenderRoster(){
+  const cont=el("tpStudentList"); if(!cont) return;
+  const code=_tpCurrentClass;
+  const entries=Object.entries(_tpRoster||{});
+  if(!entries.length){
+    cont.innerHTML=`<div class="note" style="text-align:center;padding:16px">Nog geen leerlingen. Geef de inlogcode <b>${esc(code)}</b> aan je leerlingen — wie hem invoert verschijnt hier automatisch.</div>`;
+    return;
+  }
+  // Andere klassen als verplaats-doel.
+  const others=Object.values(_tpGroups||{}).filter(g=>g.code!==code).sort((a,b)=>a.name.localeCompare(b.name));
+  const moveOpts=others.map(g=>`<option value="${esc(g.code)}">${esc(g.name)}</option>`).join("");
+  const q=s=>"'"+String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'")+"'";
+  cont.innerHTML=entries.map(([lid,s],i)=>{
+    const nm=s.name||lid;
+    const lv=s.level||1;
+    const selId="tpmv_"+i;
+    const pw=(_tpSecrets||{})[lid];
+    const la=tpLastActive(s);
+    return `<div class="panel" style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <div style="flex:1;min-width:130px">
+        <div style="font-weight:600">${esc(nm)}${s.admin?`<span class="pill" style="margin-left:6px;background:var(--hi);color:#000;border:none;font-size:11px">admin</span>`:""}</div>
+        <div class="note">Niveau ${lv}${s.coins?" · "+s.coins+" munten":""} · laatst actief: ${esc(tpFormatAgo(la))}</div>
+        <div class="note" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px">
+          code <b>${esc(lid)}</b>
+          <button class="chip" style="padding:2px 8px" title="Kopieer leerlingcode" onclick="tpCopy(${q(lid)})">Kopieer</button>
+          ${pw
+            ? `· wachtwoord <b>${esc(pw)}</b> <button class="chip" style="padding:2px 8px" title="Kopieer wachtwoord" onclick="tpCopy(${q(pw)})">Kopieer</button>`
+            : (s.pwHash ? `· wachtwoord onbekend (door leerling gewijzigd?)` : `· nog geen wachtwoord`)}
+          <button class="chip" style="padding:2px 8px" onclick="tpResetStudentPw(${q(code)},${q(lid)},${q(nm)})">${pw||s.pwHash?"Nieuw wachtwoord":"Wachtwoord instellen"}</button>
+        </div>
+      </div>
+      <button class="chip" onclick="tpRenameStudent(${q(code)},${q(lid)},${q(nm)})">${iconSVG("column",13,"currentColor")} Naam</button>
+      ${moveOpts?`
+      <select id="${selId}" style="padding:5px 8px;border-radius:7px;border:1px solid var(--stone4);background:var(--stone2);color:var(--fg);font-size:13px">
+        <option value="">Verplaats naar…</option>
+        ${moveOpts}
+      </select>
+      <button class="chip" onclick="tpMoveStudent(${q(code)},${q(lid)},'${selId}')">Verplaats</button>`:""}
+      ${s.admin
+        ?`<button class="chip" style="color:#e07060;border-color:rgba(90,18,12,.4)" onclick="tpRemoveAdmin(${q(code)},${q(lid)},${q(nm)})">Admin intrekken</button>`
+        :`<button class="chip" onclick="tpGrantAdmin(${q(code)},${q(lid)})">Maak admin</button>`}
+      <button class="chip" style="color:#e07060;border-color:rgba(90,18,12,.4)" onclick="tpDeleteStudent(${q(code)},${q(lid)},${q(nm)})">✕ Verwijder</button>
+    </div>`;
+  }).join("");
+}
+
+function tpRenameStudent(code,lid,cur){
+  const nm=(prompt("Nieuwe getoonde naam voor '"+cur+"' (inlogcode blijft gelijk):",cur)||"").trim();
+  if(!nm||nm===cur) return;
+  if(nm.length>60){ toast("Te lang","Gebruik maximaal 60 tekens."); return; }
+  teacherNet().renameIdentity(code,lid,nm)
+    .then(()=>{ toast("Naam gewijzigd",nm); return tpLoadRoster(); })
+    .catch(e=>toast("Mislukt",typeof e==="string"?e:(e?.message||"")));
+}
+
+function tpDeleteStudent(code,lid,nm){
+  if(!confirm("Leerling '"+nm+"' verwijderen? Dit wist het profiel en de voortgang.")) return;
+  teacherNet().deleteIdentity(code,lid)
+    .then(()=>{ toast("Verwijderd",nm); return tpLoadRoster(); })
+    .catch(e=>toast("Fout",typeof e==="string"?e:e?.message));
+}
+
+function tpMoveStudent(code,lid,selId){
+  const sel=el(selId); const toCode=sel?.value;
+  if(!toCode){ toast("Kies een klas","Selecteer een doelklas in het uitklapmenu."); return; }
+  const s=_tpRoster[lid]||{};
+  const doelNaam=_tpGroups[toCode]?.name||toCode;
+  const warn=s.googleUid?"\n\nLet op: deze leerling heeft een Google-koppeling. Die gaat bij het verplaatsen verloren en moet opnieuw gekoppeld worden.":"";
+  if(!confirm("'"+(s.name||lid)+"' verplaatsen naar "+doelNaam+" ("+toCode+")?"+warn)) return;
+  teacherNet().moveIdentity(code,toCode,lid)
+    .then(()=>{ toast("Verplaatst",(s.name||lid)+" → "+doelNaam); return tpLoadRoster(); })
+    .catch(e=>toast("Fout",typeof e==="string"?e:(e?.message||"")));
+}
+
+function tpGrantAdmin(code,lid){
+  teacherNet().grantAdmin(code,lid)
+    .then(()=>{ toast("Admin ingesteld",""); return tpLoadRoster(); })
+    .catch(e=>toast("Mislukt",typeof e==="string"?e:(e?.message||"")));
+}
+
+function tpRemoveAdmin(code,lid,nm){
+  if(!confirm("Admin-status intrekken van '"+nm+"'?")) return;
+  teacherNet().removeAdminFlag(code,lid)
+    .then(()=>{ toast("Admin ingetrokken",nm); return tpLoadRoster(); })
+    .catch(e=>toast("Mislukt",typeof e==="string"?e:(e?.message||"")));
+}
+
+/* ---- SCHERM: alle leerlingen naast elkaar, slepen tussen klasgroepen ----
+   Los van tpMoveStudent (dropdown op het per-klas-scherm): hier zie je alle
+   klassen als kolommen naast elkaar en sleep je een leerling-kaartje van de
+   ene kolom naar de andere. Werkt ook voor leerlingen die oorspronkelijk met
+   een andere klascode hadden ingelogd — het verplaatst gewoon hun
+   identities/{klas}/{lid}-record, ongeacht welke code ze ooit gebruikten.
+   Pointer Events (niet HTML5 drag-and-drop) zodat het ook op iPad werkt. */
+let _tpBoardRosters={};
+
+function tpLoadStudentsBoard(){
+  const cont=el("tpBoardCols");
+  if(cont) cont.innerHTML=`<div class="note" style="text-align:center;padding:20px">Laden…</div>`;
+  return tpLoadClasses().then(()=>{
+    const codes=Object.keys(_tpGroups||{});
+    return Promise.all(codes.map(code=>
+      teacherNet().getIdentities(code).then(r=>({code,r})).catch(()=>({code,r:{}}))
+    ));
+  }).then(results=>{
+    _tpBoardRosters={};
+    results.forEach(({code,r})=>{ _tpBoardRosters[code]=r||{}; });
+    tpRenderStudentsBoard();
+  }).catch(e=>toast("Fout",typeof e==="string"?e:(e?.message||"Kon leerlingen niet laden")));
+}
+
+function tpRenderStudentsBoard(){
+  const cont=el("tpBoardCols"); if(!cont) return;
+  const groups=Object.values(_tpGroups||{}).sort((a,b)=>a.name.localeCompare(b.name));
+  if(!groups.length){
+    cont.innerHTML=`<div class="note" style="text-align:center;padding:20px">Nog geen klassen. Maak er eerst een aan in het klasoverzicht.</div>`;
+    return;
+  }
+  cont.innerHTML=groups.map(g=>{
+    const roster=_tpBoardRosters[g.code]||{};
+    const entries=Object.entries(roster).sort((a,b)=>(a[1].name||a[0]).localeCompare(b[1].name||b[0]));
+    const chips=entries.length?entries.map(([lid,s])=>{
+      const nm=s.name||lid, lv=s.level||1;
+      return `<div class="tpBoardChip" data-lid="${esc(lid)}" data-code="${esc(g.code)}"
+        style="padding:8px 10px;background:var(--stone3);border:1px solid var(--stone4);border-radius:8px;cursor:grab;touch-action:none;user-select:none">
+        <div style="font-weight:600;font-size:13px">${esc(nm)}${s.admin?` <span class="pill" style="background:var(--hi);color:#000;border:none;font-size:10px">admin</span>`:""}</div>
+        <div class="note" style="font-size:11px">Niv ${lv} · ${esc(lid)}</div>
+      </div>`;
+    }).join(""):`<div class="note" style="font-size:12px;padding:6px 2px">Leeg</div>`;
+    return `<div class="panel tpBoardCol" data-code="${esc(g.code)}" style="min-width:210px;max-width:250px;flex:0 0 auto">
+      <div style="font-weight:700;margin-bottom:2px">${esc(g.name)}</div>
+      <div class="note" style="margin-bottom:8px">Code ${esc(g.code)} · ${entries.length} leerling${entries.length!==1?"en":""}</div>
+      <div class="tpBoardList" style="min-height:36px;display:flex;flex-direction:column;gap:6px">${chips}</div>
+    </div>`;
+  }).join("");
+  tpBoardBindDrag();
+}
+
+function tpBoardBindDrag(){
+  const cont=el("tpBoardCols"); if(!cont) return;
+  cont.querySelectorAll(".tpBoardChip").forEach(chip=>{
+    chip.addEventListener("pointerdown", tpBoardDragStart);
+  });
+}
+
+function tpBoardDragStart(ev){
+  if(ev.button!==undefined && ev.button!==0) return;
+  ev.preventDefault();
+  const chip=ev.currentTarget;
+  const fromCode=chip.dataset.code, lid=chip.dataset.lid;
+  const rect=chip.getBoundingClientRect();
+  const ghost=chip.cloneNode(true);
+  Object.assign(ghost.style,{
+    position:"fixed", left:rect.left+"px", top:rect.top+"px", width:rect.width+"px",
+    pointerEvents:"none", opacity:"0.92", zIndex:"9999",
+    boxShadow:"0 6px 18px rgba(0,0,0,.45)", cursor:"grabbing"
+  });
+  document.body.appendChild(ghost);
+  chip.style.opacity="0.3";
+  const offX=ev.clientX-rect.left, offY=ev.clientY-rect.top;
+  let curCol=null;
+
+  function move(e){
+    ghost.style.left=(e.clientX-offX)+"px";
+    ghost.style.top=(e.clientY-offY)+"px";
+    ghost.style.display="none";
+    const under=document.elementFromPoint(e.clientX,e.clientY);
+    ghost.style.display="";
+    const col=under?under.closest(".tpBoardCol"):null;
+    if(curCol!==col){
+      if(curCol) curCol.style.outline="";
+      if(col) col.style.outline="2px solid var(--hi)";
+      curCol=col;
+    }
+  }
+  function finish(){
+    document.removeEventListener("pointermove",move);
+    document.removeEventListener("pointerup",finish);
+    document.removeEventListener("pointercancel",finish);
+    ghost.remove();
+    chip.style.opacity="";
+    if(curCol) curCol.style.outline="";
+    const toCode=curCol?curCol.dataset.code:null;
+    if(toCode && toCode!==fromCode) tpBoardDoMove(fromCode,toCode,lid);
+  }
+  document.addEventListener("pointermove",move);
+  document.addEventListener("pointerup",finish);
+  document.addEventListener("pointercancel",finish);
+}
+
+function tpBoardDoMove(fromCode,toCode,lid){
+  const s=(_tpBoardRosters[fromCode]||{})[lid]||{};
+  const doelNaam=_tpGroups[toCode]?.name||toCode;
+  const warn=s.googleUid?" Let op: de Google-koppeling van deze leerling gaat hierbij verloren.":"";
+  if(!confirm("'"+(s.name||lid)+"' verplaatsen naar "+doelNaam+" ("+toCode+")?"+warn)) return;
+  teacherNet().moveIdentity(fromCode,toCode,lid)
+    .then(()=>{
+      toast("Verplaatst",(s.name||lid)+" → "+doelNaam);
+      if(_tpBoardRosters[fromCode]) delete _tpBoardRosters[fromCode][lid];
+      if(!_tpBoardRosters[toCode]) _tpBoardRosters[toCode]={};
+      _tpBoardRosters[toCode][lid]=s;
+      tpRenderStudentsBoard();
+    })
+    .catch(e=>{ toast("Fout",typeof e==="string"?e:(e?.message||"")); tpRenderStudentsBoard(); });
+}
+
+/* ---- SCHERM: alle leerlingen, kolommen per klas ---- */
+SCREENS.teacherStudentsBoard = function(){
+  if(!teacherNet().isTeacherLoggedIn()){ goReplace("teacherLogin"); return; }
+  H(brand(true)+`
+  <div class="scrhead">
+    <button class="back" onclick="go('teacherPortal')">${iconSVG("shield",20,"currentColor")}</button>
+    <h2>Leerlingen slepen</h2>
+  </div>
+  <div class="note" style="margin:-4px 0 10px">Sleep een leerling naar een andere kolom om 'm naar die klas te verplaatsen — ook als de leerling oorspronkelijk met een andere klascode had ingelogd.</div>
+  <div id="tpBoardCols" style="display:flex;gap:12px;overflow-x:auto;padding-bottom:10px"></div>
+  ${foot()}`);
+  tpLoadStudentsBoard();
+};
+

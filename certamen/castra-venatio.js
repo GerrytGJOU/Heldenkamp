@@ -1,0 +1,178 @@
+/* ============================================================================
+   CASTRA HEROUM — VENATIO (jagen)
+   ----------------------------------------------------------------------------
+   Poort: porta decumana. Regio Latium (andere regio's staan op slot).
+   Loop: Venare -> Latijns verkenningsbericht -> kies welke soldaat je stuurt
+   (het bericht noemt het type vijand in het Latijn: wie niet leest, kiest blind)
+   -> kort beurtgevecht (Oppugna / Defende) -> buit -> vijand opnemen in het kamp.
+   Zonder soldaat vecht de dux zelf. Ontwerp: CASTRA_HEROUM.md (Venatio).
+   Data/teksten: castra-data.js, castra-latin.js. Laadt NA castra.js.
+   ============================================================================ */
+
+const CASTRA_V_BAL = {
+  hurtMinutesLoss: 10,        // gewond na verlies
+  hurtMinutesWin: 3,          // lichte blessure na winst met veel schade
+  typeAdv: 1.5, typeDis: 0.75,
+  defendTakes: 0.5, maxRounds: 12,
+  xpWin: 10, xpPerEnemyLvl: 1.5,
+  lootAes: [8,16], lootFrumentum: [6,12],
+  dux: { vita:44, impetus:10, tutela:8, celeritas:6, ambitus:1 },
+  wildMult: 1.0,              // wilde vijanden in Latium iets zwakker dan een geworven soldaat
+};
+let CASTRA_V = null;
+let CASTRA_V_PENDING = false;   // ontmoeting uit de wereld: start direct bij het verkenningsbericht   // { region, terrain, enemy, enemyStats, mine, ... }
+
+function castraWeightedPick(list, rng){
+  const tot = list.reduce((a,x)=>a+x.w,0); let r = rng()*tot;
+  for(const x of list){ r-=x.w; if(r<=0) return x; }
+  return list[list.length-1];
+}
+function castraIsHurt(s){ return (s.hurtUntil||0) > castraNow(); }
+function castraHurtMin(s){ return Math.ceil(((s.hurtUntil||0)-castraNow())/60000); }
+function castraTypeMult(att, def){
+  const A = CASTRA_TYPES[att], D = CASTRA_TYPES[def];
+  if(A && A.beats===def) return CASTRA_V_BAL.typeAdv;
+  if(D && D.beats===att) return CASTRA_V_BAL.typeDis;
+  return 1;
+}
+
+// Maak een wilde vijand voor deze regio/terrein: tier 60/28/10/2% (begrensd door het praetorium-level),
+// volk uit de regio, vorm gewogen op het terrein, level passend bij de tier (castraWildPick, castra-troops.js).
+// Gedwongen ontmoeting met een vaste vijand (baas of kampioen); force = { form, lvl, boss }.
+function castraForcedEncounter(regionId, terrainId, force){
+  const V = castraMakeEncounter(regionId, terrainId);
+  const e = castraRollSoldier(force.form); e.lvl = force.lvl;
+  const st = castraStats(e); Object.keys(st).forEach(k=>{ st[k] = Math.max(1, Math.round(st[k]*CASTRA_V_BAL.wildMult)); });
+  V.enemy = e; V.stats = st; V.stranger = false; V.boss = force.boss || null;
+  return V;
+}
+function castraMakeEncounter(regionId, terrainId){
+  const reg = CASTRA_VENATIO[regionId];
+  const rng = castraRng((CASTRA.seed ^ 0x51ed270b)>>>0); CASTRA.seed = (CASTRA.seed + 7)>>>0;
+  const terrain = (terrainId && reg.terrains.find(t=>t.id===terrainId)) || reg.terrains[Math.floor(rng()*reg.terrains.length)];
+  const pick = castraWildPick(reg, terrain, rng);
+  const e = castraRollSoldier(pick.form.id);
+  if(typeof castraCodexSee==="function") castraCodexSee(pick.form.id);
+  e.lvl = pick.lvl;
+  const st = castraStats(e);
+  Object.keys(st).forEach(k=>{ st[k] = Math.max(1, Math.round(st[k]*CASTRA_V_BAL.wildMult)); });
+  return { region:regionId, terrain, enemy:e, stats:st, stranger: pick.form.volk!=="myt" && pick.form.volk!==castraMainFolk(reg, terrain) };
+}
+
+/* ---------- scherm ---------- */
+SCREENS.castraVenatio = function(){
+  document.body.classList.remove("greek");
+  if(!CASTRA) castraLoad();
+  if(CASTRA_V_PENDING && CASTRA_V){ CASTRA_V_PENDING = false; castraVRender("scout"); return; }
+  CASTRA_V = null;
+  castraVRender("kies");
+};
+
+function castraVBack(){ const w = CASTRA_V && CASTRA_V.fromWorld; CASTRA_V=null; go(w ? "castraWorld" : "castraHome"); }
+
+function castraVRender(stage){
+  const reg = CASTRA_VENATIO.latium;
+  const head = `<div class="scrhead"><button class="back" onclick="castraVLeave()">${iconSVG("shield",20,"currentColor")}</button><h2>🏹 ${castraLa("venatio_titel")}</h2></div>`;
+  let body = "";
+  if(stage==="kies"){
+    body = `<div class="panel"><div style="font-size:17px;margin-bottom:8px">${castraLa("venatio_intro")}</div>
+      <button class="tile" onclick="castraVStart('latium')"><span class="ic">${iconSVG("eagle",44,"currentColor")}</span>
+        <h3>${esc(reg.nm)}</h3><p>${castraLa("venare")}</p></button>
+      ${CASTRA_REGIONS.filter(r=>r.id!=="latium").map(r=>`<div class="tile" style="opacity:.45;cursor:default"><span class="ic">🔒</span><h3>${esc(r.nm)}</h3><p>${castraLa("clausum")}</p></div>`).join("")}
+    </div>${castraVSoldierStrip()}`;
+  } else if(stage==="scout"){
+    const V = CASTRA_V, tl = CASTRA_TYPE_LA[castraLine(V.enemy.line).type];
+    const ing = V.enemy.ingenium;
+    const la = `${V.terrain.la} ${tl.pl} adsunt. Hostis ${ing} est.${V.stranger?" "+CASTRA_LA.peregrinus.la:""}`;
+    const nl = `${V.terrain.nl} zijn ${tl.nl_pl}. De vijand is ${CASTRA_INGENIUM_NL[ing]||ing}.${V.stranger?" "+CASTRA_LA.peregrinus.nl:""}`;
+    const healthy = (typeof castraPartyHealthy==="function") ? castraPartyHealthy() : CASTRA.soldiers.filter(s=>!castraIsHurt(s) && !s.job);   // alleen je contubernium (castra-party.js)
+    const cards = healthy.map(s=>{
+      const st = castraStats(s), t = CASTRA_TYPE_LA[castraLine(s.line).type];
+      return `<button class="tile" onclick="castraVFight('${s.id}')"><span class="ic">${castraLine(s.line).type==="cav"?"🐎":castraLine(s.line).type==="rng"?"🏹":"🛡️"}</span>
+        <h3>${s.insignis?"✨ ":""}${esc(castraSoldierName(s))} <small>${castraLaText("gradus")} ${s.lvl}</small></h3>
+        <p><b>${esc(t.sg)}</b> · ${CASTRA_STATS.slice(0,3).map(x=>x.nm.slice(0,3)+" "+st[x.id]).join(" · ")}</p>${typeof castraHpHTML==="function" ? `<p>${castraHpHTML(s, 80)}</p>` : ""}</button>`;
+    }).join("");
+    const hurt = CASTRA.soldiers.filter(castraIsHurt).map(s=>`<div class="note">🩹 ${esc(castraSoldierName(s))} — ${castraLaText("vulneratus").replace("Miles tuus","").trim()} (${castraHurtMin(s)} min)</div>`).join("");
+    body = `<div class="panel"><div style="font-size:15px;opacity:.9">${castraLa("explorator")}</div>
+      <div style="font-size:19px;margin:6px 0 10px">${castraLaHTML(la, nl, "scout")}</div>
+      <div style="font-size:17px;margin-bottom:6px">${castraLa("quem_mittis")}</div>
+      ${cards || `<div class="note" style="font-size:15px">${castraLa("nullus_miles")}</div>`}
+      <button class="btn btn-gold" style="margin-top:8px" onclick="castraVFight('dux')">${healthy.length?"Dux ipse":"Pugna!"}</button>
+      ${hurt}</div>`;
+  } else if(stage==="battle"){
+    body = castraVBattleHTML();
+  } else if(stage==="result"){
+    body = castraVResultHTML();
+  }
+  H(brand(true)+head+`<div id="castraVBody">${body}</div>${foot()}`);
+}
+
+function castraVSoldierStrip(){
+  const n = CASTRA.soldiers.length;
+  return `<div class="note" style="margin-top:8px">${castraLaText("milites")}: ${n} / ${castraBarracksCap()}</div>`;
+}
+
+function castraVStart(regionId){
+  CASTRA_V = castraMakeEncounter(regionId);
+  CASTRA_V.log = []; CASTRA_V.round = 0;
+  castraVRender("scout");
+}
+
+/* ---------- gevecht ---------- */
+function castraVFight(sid){
+  const V = CASTRA_V; if(!V) return;
+  let mine;
+  if(sid==="dux"){
+    mine = { id:"dux", dux:true, line:"rom_hastatus", lvl:1, xp:0, indoles:{}, ingenium:"fortis", name:"Dux", hurtUntil:0 };
+    V.myStats = { ...CASTRA_V_BAL.dux };
+    V.myType = "inf";
+  } else {
+    mine = CASTRA.soldiers.find(s=>s.id===sid); if(!mine) return;
+    V.myStats = castraStats(mine);
+    V.myType = castraLine(mine.line).type;
+  }
+  V.mine = mine;
+  V.myHp = V.myMax = V.myStats.vita;
+  V.enHp = V.enMax = V.stats.vita;
+  V.enType = castraLine(V.enemy.line).type;
+  V.log = []; V.round = 0; V.over = null; V.dmgTaken = 0;
+  castraFsprProbe([[mine.line,"battle_back"],[V.enemy.line,"battle_front"]], ()=>{ if(CASTRA_V===V && !V.over) castraVRender("battle"); });
+}
+function castraVBar(cur,max,col){
+  const p = Math.max(0, Math.round(100*cur/max));
+  return `<div style="height:12px;background:#1b150e;border:1px solid #4a3d2c;border-radius:6px;overflow:hidden"><div style="width:${p}%;height:100%;background:${col}"></div></div><small>${Math.max(0,cur)} / ${max}</small>`;
+}
+/* (De oudere versies van castraVBattleHTML, castraVTurn en castraVResultHTML, en het werven na de winst, zijn vervangen door het beurtgevecht in castra-moves.js en verwijderd.) */
+/* ---------- afloop ---------- */
+function castraVFinish(){
+  const V = CASTRA_V, soldier = V.mine.dux ? null : CASTRA.soldiers.find(s=>s.id===V.mine.id);
+  V.loot = null; V.leveled = false; V.trace = null;
+  if(soldier){
+    if(V.over==="lose") castraHurtSoldier(soldier, CASTRA_V_BAL.hurtMinutesLoss);
+    // (een zware winst kost nu levenspunten die blijven, zie castra-hp.js; geen aparte gewond-timer meer)
+  }
+  if(V.over==="win"){
+    const rng = castraRng((CASTRA.seed ^ 0x2545f491)>>>0); CASTRA.seed = (CASTRA.seed+3)>>>0;
+    const r = (rng2)=>rng2[0]+Math.floor(rng()*(rng2[1]-rng2[0]+1));
+    const aes = r(CASTRA_V_BAL.lootAes), fru = r(CASTRA_V_BAL.lootFrumentum), cap = castraWalletCap();
+    CASTRA.res.aes = Math.min(cap, CASTRA.res.aes+aes);
+    CASTRA.res.frumentum = Math.min(cap, CASTRA.res.frumentum+fru);
+    CASTRA.res.gloria += 1; if(typeof castraPxpAdd==="function") castraPxpAdd(6);
+    V.loot = { aes, fru };
+    if(V.boss && typeof castraBossWon==="function") castraBossWon(V);
+    if(soldier){
+      soldier.xp += Math.round(castraCardXp(typeof castraXpWild==="function" ? castraXpWild(V, soldier) : CASTRA_V_BAL.xpWin + Math.floor(CASTRA_V_BAL.xpPerEnemyLvl*V.enemy.lvl)) * (100 + (typeof castraAffinityPct==="function" ? castraAffinityPct(soldier) : 0)) / 100);   // klasse-affiniteit (crossmode.js)
+      const before = soldier.lvl; castraLevelUp(soldier); V.leveled = soldier.lvl > before;
+    }
+    V.quests = (typeof castraQuestOnWin==="function") ? castraQuestOnWin(V) : [];
+    const reg = CASTRA_VENATIO[V.region];
+    // Spoor naar een held: kans per winst, met een garantie na 5 winsten zonder spoor ("pity").
+    const left = reg.traces.filter(h=>!(CASTRA.traces&&CASTRA.traces[h]));
+    const pity = CASTRA.tracePity||0;
+    if(left.length && (rng() < reg.traceChance || pity >= 5)){
+      const h = left[Math.floor(rng()*left.length)]; (CASTRA.traces||(CASTRA.traces={}))[h]=1; V.trace = h; CASTRA.tracePity = 0;
+    } else if(left.length) CASTRA.tracePity = pity+1;
+  }
+  castraSave();
+}
+function castraSoldierLvl(s){ const r = CASTRA.soldiers.find(x=>x.id===s.id); return r ? r.lvl : s.lvl; }

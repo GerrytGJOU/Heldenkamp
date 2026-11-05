@@ -1,0 +1,853 @@
+/* ============================================================================
+   CERTAMEN — app-logica
+   ============================================================================ */
+"use strict";
+
+/* ---------- mini helpers ---------- */
+const app = document.getElementById("app");
+// Vervangt de scherminhoud. Scrollt NIET automatisch naar boven, zodat een
+// in-place herrender (bv. een optie aanklikken) de scrollpositie behoudt.
+// Echte navigatie scrollt wel naar boven via go().
+function H(html){ app.innerHTML = html; }
+function el(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function rand(n){ return Math.floor(Math.random()*n); }
+function pick(a){ return a[rand(a.length)]; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=rand(i+1); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
+function nowMs(){ return Date.now(); }
+function norm(s){ return String(s||"").toLowerCase().trim().replace(/[.,;:!?'"()]/g,"").replace(/\s+/g," "); }
+function code4(){ const A="ABCDEFGHJKLMNPQRSTUVWXYZ"; let s=""; for(let i=0;i<4;i++)s+=A[rand(A.length)]; return s; }
+function uid(){ return "p"+Math.random().toString(36).slice(2,9); }
+
+/* ---------- vocab: filtering & categories ---------- */
+const CATS = [
+  {id:"all",  nm:"Alle woorden", tags:null},
+  {id:"verb", nm:"Werkwoorden",  tags:["verb"]},
+  {id:"subst",nm:"Zelfst. nw.",  tags:["subst"]},
+  {id:"adj",  nm:"Bijv. nw.",    tags:["adj"]},
+  {id:"adv",  nm:"Bijwoorden",   tags:["adv"]},
+  {id:"pron", nm:"Voornaamw.",   tags:["pron"]},
+  {id:"prep", nm:"Voorzetsels",  tags:["prep"]},
+  {id:"conj", nm:"Voegwoorden",  tags:["cj","vw"]},
+];
+function posMatch(w, catId){
+  const c = CATS.find(x=>x.id===catId);
+  if(!c || !c.tags) return true;
+  const pos = String(w.pos||"").toLowerCase();
+  return c.tags.some(t=>pos.includes(t));
+}
+// Some frequency entries are stem-form stubs ("pf. sum: zijn") — skip those as quiz words.
+function usable(w){
+  if(!w.la || !w.nl) return false;
+  if(/^(pf|ppp|inf|imp)\./i.test(w.nl.trim())) return false;
+  return true;
+}
+function catCount(list, catId){ return list.filter(w=>usable(w)&&posMatch(w,catId)).length; }
+function baseList(lang){ return lang==="el" ? VOCAB_EL : VOCAB_LA; }
+
+function buildPool(draft){
+  if(draft.source==="custom"){
+    // Een opgeslagen Eigen Lijst (zie wordlists.js) levert de woorden al kant-
+    // en-klaar aan via customWords; customText blijft als fallback bestaan
+    // voor eventuele oudere aanroepen die nog los tekst doorgeven.
+    if(draft.customWords && draft.customWords.length) return draft.customWords.map(w=>({la:w.la, nl:w.nl, pos:w.pos||""}));
+    return parseCustom(draft.customText);
+  }
+  let list = baseList(draft.lang).filter(usable);
+  const lo = Math.min(draft.fromN, draft.toN), hi = Math.max(draft.fromN, draft.toN);
+  list = list.filter(w => (w.f||0) >= lo && (w.f||0) <= hi);
+  if(draft.cat && draft.cat!=="all") list = list.filter(w=>posMatch(w, draft.cat));
+  // keep only what we need for the quiz
+  return list.map(w=>({la:w.la, nl:w.nl, pos:w.pos||""}));
+}
+function parseCustom(text){
+  const out=[];
+  (text||"").split(/\r?\n/).forEach(line=>{
+    line=line.trim(); if(!line) return;
+    const m = line.split(/\s*(?:=|:|—|–|\t|;)\s*/);
+    if(m.length>=2){ const la=m[0].trim(); const nl=m.slice(1).join(" / ").trim(); if(la&&nl) out.push({la,nl,pos:""}); }
+  });
+  return out;
+}
+function ansText(w){ return cleanNL(w.nl); }
+function cleanNL(nl){ return String(nl||"").split(/\s*\|\s*|\s*;\s*/)[0].replace(/^\d+\.\s*/,"").trim(); }
+// Alle losse betekenissen van een woord (op ; | / , en het "…-lemma"-hintdeel na
+// het | of de haakjes weggelaten). Wordt gebruikt om te voorkomen dat een
+// afleider gekozen wordt die zélf ook een juist antwoord op de vraag is.
+function senseSet(nl){
+  return new Set(
+    String(nl||"")
+      .split(/\s*[;|\/,]\s*/)
+      .map(s => norm(s.replace(/^\d+\.\s*/,"")))
+      .filter(Boolean)
+  );
+}
+
+// Gewogen trekking i.p.v. uniform random: woorden die eerder in deze sessie
+// fout beantwoord zijn, krijgen extra kans om terug te komen (gespreide
+// herhaling binnen de kernmodus/Vrij Oefenen — zie BATTLE_MODE.md voor de
+// vergelijkbare, los ontwikkelde bmPersonalPool() in Battle Mode/Boss Battle).
+// weightFn(word) levert een extra gewicht (0 = geen bonus) bovenop de
+// standaard kans van elk woord.
+function pickWeighted(pool, weightFn){
+  if(!weightFn) return pick(pool);
+  let total=0;
+  const weights=pool.map(w=>{ const wt=1+Math.max(0,weightFn(w)||0); total+=wt; return wt; });
+  let r=Math.random()*total;
+  for(let i=0;i<pool.length;i++){ r-=weights[i]; if(r<=0) return pool[i]; }
+  return pool[pool.length-1];
+}
+// Anti-herhaling, Certamen-breed (op verzoek, 2026-09-30 — in Boss Battle
+// kregen leerlingen vaak meerdere keren kort na elkaar hetzelfde woord, want
+// elke trekking was puur willekeurig zonder geheugen). Elk "kanaal" (één
+// leerling in één modus: "bm:"+pid voor Battle/Boss, "game", "fp", "tr",
+// "sprace") onthoudt zijn laatst gevraagde woorden; die worden uit de
+// trekking gehouden zolang de pool dat toelaat. Het venster schaalt met de poolgrootte (max. de
+// helft van het aantal unieke woorden, plafond RECENT_MAX), zodat een korte
+// eigen lijst nooit vastloopt maar ook daar geen woord direct terugkomt.
+// Aanvullend op — niet in plaats van — de gewogen herhaling van foute woorden:
+// een gemist woord komt nog steeds vaker terug, alleen niet meteen.
+const RECENT_MAX = 15;
+const RECENT_Q = {};
+// Werkwoordsvormen (verbquiz.js) op vorm, vocab op lemma (.la; Chronica-
+// entries heten .woord). Firebase-veilig, want de sleutel wordt ook gebruikt
+// als pad in identities/{klas}/{lid}/hardWords en rooms/…/players/{pid}/hard.
+function recentKeyOf(w){
+  // Naamvallen (casusquiz.js): per woord en — bij "kies de vorm"-items — per cel.
+  const k = w.soort==="nv" ? "n:"+(w.taal||"")+":"+w.lemmaId+":"+(w.t==="k"?w.cas+w.num+":":"")+w.vorm
+          : w.vorm!=null ? "v:"+(w.taal||"")+":"+w.vorm : "w:"+(w.la!=null?w.la:w.woord);
+  return k.replace(/[.#$\[\]\/]/g,"_").substring(0,80);
+}
+
+// Moeilijke woorden per speler, óver sessies heen (op verzoek, 2026-09-30).
+// Eén score per woord (1..HW_MAX_SCORE): fout = +2, goed = −1, bij 0 valt het
+// woord uit de lijst — na een paar keer goed is een woord dus weer "gewoon".
+// Opslag: bij een gekoppelde leerling in de identiteit zelf
+// (identities/{klas}/{lid}/hardWords, lokaal gespiegeld in BM_IDENT/de
+// localStorage-identiteit, zelfde patroon als syncXpDelta) zodat het over
+// toestellen heen meegaat; zonder identiteit in een eigen localStorage-sleutel.
+// Gebruikt in álle Certamen-modi: pickFresh() hieronder trekt met kans
+// HW_SHARE een woord uit de moeilijke woorden die in de huidige pool zitten
+// (gewogen naar score), en anders gewoon willekeurig. Zo komen ze merkbaar
+// vaker terug, onafhankelijk van hoe groot de pool is — maar nooit meteen
+// opnieuw, want de recent-uitsluiting geldt ook voor hen.
+const HW_LOCAL_KEY = "certamen_hard_words";
+const HW_MAX_SCORE = 6, HW_MAX_WORDS = 150, HW_SHARE = 0.3;
+function hwIdent(){
+  const id = (typeof profileIdentity==="function") ? profileIdentity() : null;
+  return (id && id.klascode && id.leerlingcode) ? id : null;
+}
+function hwMap(){
+  const id = hwIdent();
+  if(id) return id.hardWords || {};
+  try{ return JSON.parse(localStorage.getItem(HW_LOCAL_KEY)||"{}")||{}; }catch(e){ return {}; }
+}
+// Registreert een antwoord; geeft de nieuwe score terug (0 = niet meer moeilijk).
+function hwNote(q, ok){
+  if(!q) return 0;
+  const key = q.key || recentKeyOf(q);
+  const map = {...hwMap()};
+  const prev = map[key]||0;
+  const next = ok ? Math.max(0, prev-1) : Math.min(HW_MAX_SCORE, prev+2);
+  if(next===prev) return next;
+  const changes = {};
+  if(next>0){ map[key]=next; changes[key]=next; } else { delete map[key]; changes[key]=null; }
+  // Lijst begrenzen: de makkelijkste moeilijke woorden vallen er als eerste af.
+  const keys = Object.keys(map);
+  if(keys.length>HW_MAX_WORDS){
+    keys.filter(k=>k!==key).sort((a,b)=>map[a]-map[b]).slice(0,keys.length-HW_MAX_WORDS)
+      .forEach(k=>{ delete map[k]; changes[k]=null; });
+  }
+  const id = hwIdent();
+  if(id){
+    if(typeof bmIdentSave==="function") bmIdentSave({...id, hardWords:map});
+    if(typeof BM_IDENT!=="undefined" && BM_IDENT && BM_IDENT.leerlingcode===id.leerlingcode) BM_IDENT.hardWords=map;
+    try{
+      if(typeof hasFirebase!=="undefined" && hasFirebase && typeof initFirebase==="function" && initFirebase() && typeof fbDB!=="undefined" && fbDB)
+        fbDB.ref("identities/"+id.klascode+"/"+id.leerlingcode+"/hardWords").update(changes).catch(()=>{});
+    }catch(e){}
+  } else {
+    try{ localStorage.setItem(HW_LOCAL_KEY, JSON.stringify(map)); }catch(e){}
+  }
+  return next;
+}
+
+// chanOrOpts: kanaalnaam (string), of {chan, hard} — hard = een eigen
+// moeilijke-woordenkaart (Battle Mode: die van de betreffende leerling, niet
+// van de docent die de vragen trekt), null = geen moeilijke-woordenvoorrang.
+// Zonder `hard` wordt die van de speler op dit toestel gebruikt.
+function pickFresh(pool, chanOrOpts, weightFn){
+  const o = typeof chanOrOpts==="string" ? {chan:chanOrOpts} : (chanOrOpts||{});
+  const chan = o.chan;
+  const hard = o.hard!==undefined ? o.hard : hwMap();
+  if(!pool.length) return pickWeighted(pool, weightFn);
+  let avail = pool, recent = null;
+  if(chan){
+    recent = RECENT_Q[chan] || (RECENT_Q[chan] = []);
+    const uniq = new Set(pool.map(recentKeyOf)).size;
+    const win = Math.min(RECENT_MAX, Math.floor(uniq/2));
+    const excl = new Set(recent.slice(Math.max(0, recent.length-win)));
+    if(win>0){ const f = pool.filter(w=>!excl.has(recentKeyOf(w))); if(f.length) avail = f; }
+  }
+  let w = null;
+  if(hard && Math.random()<HW_SHARE){
+    const hs = avail.filter(x=>hard[recentKeyOf(x)]>0);
+    if(hs.length) w = pickWeighted(hs, x=>hard[recentKeyOf(x)]-1);
+  }
+  if(!w) w = pickWeighted(avail, weightFn);
+  if(recent){ recent.push(recentKeyOf(w)); if(recent.length>RECENT_MAX) recent.shift(); }
+  return w;
+}
+function makeQuestion(pool, weightFn, distractorPool, chan){
+  const w = pickFresh(pool, chan, weightFn);
+  const correct = ansText(w);
+  const qSenses = senseSet(w.nl);
+  const opts=[correct];
+  // Een afleider mag niet: (a) tekstueel gelijk zijn aan een reeds gekozen optie,
+  // (b) een van de betekenissen van het vraagwoord zijn, of (c) het juiste
+  // antwoord als een van zíjn eigen betekenissen hebben. Zo verschijnt er nooit
+  // een afleider die óók goed zou zijn (bv. inquio "zeggen" bij dico "zeggen, spreken").
+  const conflicts = (x) => {
+    const a = ansText(x);
+    if(opts.some(o=>norm(o)===norm(a))) return true;
+    if(qSenses.has(norm(a))) return true;
+    if(senseSet(x.nl).has(norm(correct))) return true;
+    return false;
+  };
+  // Afleiders komen uit distractorPool (default: pool) — apart van `pool`
+  // omdat een aanroeper `pool` soms al versmald heeft (bv. Battle Mode se
+  // adaptieve pool, bmPersonalPool() in battle.js, met dubbele entries). Zonder
+  // dit derde argument zou een kleine, versmalde `pool` (bv. nog maar 1 woord
+  // over) ook de afleiders opdrogen — dan blijft er geen bruikbare afleider
+  // meer over en valt de vraag terug op de "…"-placeholder hieronder.
+  const fullPool = distractorPool || pool;
+  const samePos = w.pos ? fullPool.filter(x=>x.pos===w.pos) : fullPool;
+  const distPool = samePos.length >= 4 ? samePos : fullPool;
+  for(const x of shuffle(distPool)){
+    if(!conflicts(x)){ opts.push(ansText(x)); if(opts.length>=4) break; }
+  }
+  // Te weinig bruikbare afleiders binnen dezelfde woordsoort? Verbreed naar de
+  // hele pool, nog steeds zonder óók-juiste afleiders toe te laten.
+  if(opts.length<4 && distPool!==fullPool){
+    for(const x of shuffle(fullPool)){
+      if(!conflicts(x)){ opts.push(ansText(x)); if(opts.length>=4) break; }
+    }
+  }
+  while(opts.length<2) opts.push("…");
+  const shuffled = shuffle(opts);
+  return { la:w.la, pos:w.pos, key:recentKeyOf(w), options:shuffled, correctIdx: shuffled.findIndex(o=>norm(o)===norm(correct)) };
+}
+
+/* ============================================================================
+   AVATARS, MEDALS, ACHIEVEMENTS, PROFIEL (localStorage per leerling)
+   ============================================================================ */
+const AVATARS = [
+  {id:"helmet", nm:"Helm",     cost:0,    icon:"helmet"},
+  {id:"laurel", nm:"Lauwer",   cost:0,    icon:"laurel"},
+  {id:"shield", nm:"Schild",   cost:0,    icon:"shield"},
+  {id:"owl",    nm:"Uil",      cost:80,   icon:"owl"},
+  {id:"horse",  nm:"Paard",    cost:80,   icon:"horse"},
+  {id:"amphora",nm:"Amfoor",   cost:120,  icon:"amphora"},
+  {id:"trident",nm:"Drietand", cost:150,  icon:"trident"},
+  {id:"eagle",  nm:"Adelaar",  cost:200,  icon:"eagle"},
+  {id:"crown",  nm:"Kroon",    cost:400,  icon:"crown"},
+];
+const COLORS = ["#c0392b","#2e6fb0","#e0b15a","#3f9d52","#8e44ad","#d35400","#16a085","#c44569","#2c89c9","#e08e3b"];
+
+/* ---- XP-niveaus en rangen (10 niveaus) ---- */
+const XP_LEVELS = [
+  {level:1,  xp:0,    rank:"Tiro"},
+  {level:2,  xp:100,  rank:"Miles"},
+  {level:3,  xp:250,  rank:"Optio"},
+  {level:4,  xp:500,  rank:"Signifer"},
+  {level:5,  xp:900,  rank:"Aquilifer"},
+  {level:6,  xp:1400, rank:"Centurio"},
+  {level:7,  xp:2100, rank:"Praefectus"},
+  {level:8,  xp:3000, rank:"Tribunus"},
+  {level:9,  xp:4200, rank:"Legatus"},
+  {level:10, xp:6000, rank:"Imperator"},
+];
+function calcLevel(xp){
+  let cur=XP_LEVELS[0];
+  for(const l of XP_LEVELS){if((xp||0)>=l.xp)cur=l;else break;}
+  const next=XP_LEVELS.find(l=>l.level===cur.level+1)||null;
+  const prog=next?Math.min(1,((xp||0)-cur.xp)/(next.xp-cur.xp)):1;
+  return{...cur,next,progress:prog,prestige:next?null:calcPrestige(xp)};
+}
+
+/* ---- Legioensterren: XP-vooruitgang ná niveau 10 (Imperator) ----
+   Voorkomt een harde eindstreep — een gemotiveerde leerling loopt nooit
+   "klaar", maar de stap is bewust iets groter dan niveau 9→10 (1800 XP),
+   zodat het als prestige aanvoelt i.p.v. als een snelle formaliteit. */
+const PRESTIGE_XP_STEP = 3000;
+function calcPrestige(xp){
+  const base = XP_LEVELS[XP_LEVELS.length-1].xp; // 6000
+  const over = Math.max(0,(xp||0)-base);
+  const stars = Math.floor(over/PRESTIGE_XP_STEP);
+  const intoNext = over-stars*PRESTIGE_XP_STEP;
+  return { stars, xpForNext: base+(stars+1)*PRESTIGE_XP_STEP, progress: intoNext/PRESTIGE_XP_STEP };
+}
+// Herbruikbare XP-balkweergave: normale niveauvoortgang, of — op niveau 10 —
+// Legioenster-voortgang i.p.v. een dode "max bereikt"-tekst. Gebruikt door
+// SCREENS.collection (games.js) en SCREENS.battleProfile (battle.js).
+function xpBarInfo(lv){
+  if(lv.next) return { pct:Math.round(lv.progress*100), label:"→ "+lv.next.xp+" XP voor "+(lv.next.title||lv.next.rank), starSuffix:"" };
+  const p=lv.prestige||calcPrestige(0);
+  const label = p.stars>0
+    ? "★"+p.stars+" · → "+p.xpForNext+" XP voor ★"+(p.stars+1)
+    : "→ "+p.xpForNext+" XP voor eerste Legioenster ★";
+  return { pct:Math.round(p.progress*100), label, starSuffix: p.stars>0?" ★"+p.stars:"" };
+}
+
+/* ---- Data-gedreven achievement-definities ---- */
+const _BM_CLS_IDS = ["hopliet","spartaan","boogschutter","cavalerie","priester","centurio","genie","verkenner"];
+const _BM_CLS_NMS = {hopliet:"Hopliet",spartaan:"Voorvechter",boogschutter:"Boogschutter",cavalerie:"Cavalerie",priester:"Priester",centurio:"Bevelvoerder",genie:"Genie",verkenner:"Verkenner"};
+const ACHIEVEMENTS_DEF = [
+  // Algemeen
+  {id:"eerste_stap",    nm:"Eerste stap",      ds:"Speel voor het eerst Certamen",               icon:"helmet", cat:"algemeen"},
+  {id:"woordenkenner",  nm:"Woordenkenner",     ds:"100 vragen goed beantwoord",                  icon:"owl",    cat:"algemeen"},
+  {id:"taalmeester",    nm:"Taalmeester",       ds:"500 vragen goed beantwoord",                  icon:"crown",  cat:"algemeen"},
+  {id:"veelzijdig",     nm:"Veelzijdig",        ds:"Alle vier de modi gespeeld",                  icon:"amphora",cat:"algemeen"},
+  {id:"veteraan_all",   nm:"Veteraan",          ds:"50 spellen gespeeld",                         icon:"eagle",  cat:"algemeen"},
+  {id:"snelle_geest",   nm:"Snelle geest",      ds:"10 vragen op rij goed beantwoord",            icon:"torch",  cat:"algemeen"},
+  // Touwtrekken
+  {id:"eerste_bloed",   nm:"Eerste bloed",      ds:"Je eerste Touwtrekken gewonnen",              icon:"shield", cat:"klassiek"},
+  {id:"anker",          nm:"Ankerman/-vrouw",   ds:"5 Touwtrekkens gewonnen",                    icon:"laurel", cat:"klassiek"},
+  // Marathon
+  {id:"doorzetter",     nm:"Doorzetter",        ds:"Eerste Marathon gespeeld",                    icon:"horse",  cat:"klassiek"},
+  {id:"finisher",       nm:"Finisher",          ds:"Eerste Marathon gewonnen",                    icon:"laurel", cat:"klassiek"},
+  // Snelvuur
+  {id:"vonk",           nm:"Vonk",              ds:"Eerste Snelvuur gespeeld",                    icon:"torch",  cat:"klassiek"},
+  {id:"bliksem",        nm:"Bliksem",           ds:"Eerste plek in Snelvuur",                     icon:"star",   cat:"klassiek"},
+  {id:"ontembaar",      nm:"Ontembaar",         ds:"Drie keer eerste plek in Snelvuur",           icon:"crown",  cat:"klassiek"},
+  // Battle Mode — algemeen
+  {id:"eerste_gevecht", nm:"Eerste gevecht",    ds:"Eerste Battle Mode gespeeld",                 icon:"helmet", cat:"battle", mode:"battle"},
+  {id:"overwinnaar",    nm:"Overwinnaar",        ds:"Eerste Battle Mode gewonnen",                 icon:"laurel", cat:"battle", mode:"battle"},
+  {id:"scholar",        nm:"Scholar",           ds:"≥90% accuratesse in een gevecht (min. 5 vr.)",icon:"owl",    cat:"battle", mode:"battle"},
+  {id:"onbreekbaar",    nm:"Onbreekbaar",       ds:"Gewonnen zonder health-verlies van je team",  icon:"shield", cat:"battle", mode:"battle"},
+  {id:"strateeg",       nm:"Strateeg",          ds:"5 verschillende klassen gespeeld",            icon:"column", cat:"battle", mode:"battle"},
+  {id:"commandant",     nm:"Commandant",        ds:"Alle 8 klassen minstens één keer gespeeld",   icon:"eagle",  cat:"battle", mode:"battle"},
+  {id:"combokunstenaar",nm:"Combokunstenaar",   ds:"10 combo-abilities uitgevoerd",               icon:"trident",cat:"battle", mode:"battle"},
+  {id:"legendarisch",   nm:"Legendarisch",      ds:"Niveau 10 (Imperator) bereikt",              icon:"crown",  cat:"battle", mode:"battle"},
+  // Klasse-mastery (ster 3 en ster 5, voor alle 8 klassen)
+  ..._BM_CLS_IDS.flatMap(c=>[
+    {id:"vet_"+c,  nm:"Veteraan "+_BM_CLS_NMS[c],  ds:"Ster 3 bereikt als "+_BM_CLS_NMS[c],  icon:"helmet", cat:"mastery", mode:"battle"},
+    {id:"mees_"+c, nm:"Meester "+_BM_CLS_NMS[c],   ds:"Ster 5 bereikt als "+_BM_CLS_NMS[c],  icon:"crown",  cat:"mastery", mode:"battle"},
+  ]),
+  {id:"grootmeester",   nm:"Grootmeester",       ds:"Alle 8 klassen op 5★ beheersing",              icon:"crown",  cat:"mastery", mode:"battle"},
+  // Boss Battle
+  {id:"eerste_baas",    nm:"Baasoverwinnaar",    ds:"Je eerste baasgevecht gewonnen",              icon:"shield",  cat:"boss", mode:"battle"},
+  {id:"baas_trio",      nm:"Drie Monsters",      ds:"Hydra, Cycloop en Minotaurus elk verslagen",  icon:"trident", cat:"boss", mode:"battle"},
+  {id:"baas_heroic",    nm:"Heroïsch",           ds:"Een baas verslagen op Heroic",                icon:"torch",   cat:"boss", mode:"battle"},
+  {id:"baas_legendary", nm:"Legendarische Jacht",ds:"Een baas verslagen op Legendary",             icon:"crown",   cat:"boss", mode:"battle"},
+  {id:"eenling",        nm:"Eenling",            ds:"Een baas alleen verslagen",                   icon:"star",    cat:"boss", mode:"battle"},
+  // Total War / Training Mode
+  {id:"eerste_training",nm:"Thuisfront",         ds:"Je eerste Training Mode-sessie",              icon:"amphora", cat:"totalwar", mode:"battle"},
+  {id:"drie_sporen",    nm:"Alleskunner",        ds:"Bijgedragen aan garnizoen, muur én toren",    icon:"column",  cat:"totalwar", mode:"battle"},
+  {id:"steenhouwer",    nm:"Steenhouwer",        ds:"100 bouwpunten bijgedragen aan Total War",    icon:"helmet",  cat:"totalwar", mode:"battle"},
+  {id:"bouwmeester",    nm:"Bouwmeester",        ds:"1000 bouwpunten bijgedragen aan Total War",   icon:"eagle",   cat:"totalwar", mode:"battle"},
+  {id:"belegeraar",     nm:"Belegeraar",         ds:"Een belegering gewonnen als aanvaller",       icon:"shield",  cat:"totalwar", mode:"battle"},
+  // Vlaggenschipprovincies (TOTAL_WAR.md §3.7) — 11× verovering + 11× Legacy
+  // (ononderbroken vastgehouden), gedeeld door alle leerlingen van de
+  // beschaving, zie trCheckFlagshipAchievements() in training.js.
+  {id:"flagship_conquest_italia",               nm:"Verovering: Rome",       ds:"Rome, hart van het Rijk, veroverd",                    icon:"laurel", cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_italia",                 nm:"Heerser van Rome",       ds:"4 weken onafgebroken heerser van Rome",                icon:"laurel", cat:"totalwar", mode:"battle"},
+  {id:"flagship_conquest_gallia_lugdunensis",   nm:"Verovering: Lugdunum",   ds:"Lugdunum, hoofdstad van Gallië, veroverd",             icon:"column", cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_gallia_lugdunensis",     nm:"Heerser van Lugdunum",   ds:"4 weken onafgebroken heerser van Lugdunum",            icon:"column", cat:"totalwar", mode:"battle"},
+  {id:"flagship_conquest_germania_inferior",    nm:"Verovering: Colonia",    ds:"Colonia, bolwerk aan de Rijn, veroverd",               icon:"shield", cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_germania_inferior",      nm:"Heerser van Colonia",    ds:"4 weken onafgebroken heerser van Colonia",             icon:"shield", cat:"totalwar", mode:"battle"},
+  {id:"flagship_conquest_achaea",               nm:"Verovering: Athene",     ds:"Athene, bakermat van de filosofie, veroverd",          icon:"owl",    cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_achaea",                 nm:"Heerser van Athene",     ds:"4 weken onafgebroken heerser van Athene",              icon:"owl",    cat:"totalwar", mode:"battle"},
+  {id:"flagship_conquest_syria",                nm:"Verovering: Antiochië",  ds:"Antiochië, de derde stad van het Rijk, veroverd",      icon:"amphora",cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_syria",                  nm:"Heerser van Antiochië",  ds:"4 weken onafgebroken heerser van Antiochië",           icon:"amphora",cat:"totalwar", mode:"battle"},
+  {id:"flagship_conquest_africa_proconsularis", nm:"Verovering: Carthago",   ds:"Carthago, Rome's oude rivaal, veroverd",               icon:"trident",cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_africa_proconsularis",   nm:"Heerser van Carthago",   ds:"4 weken onafgebroken heerser van Carthago",            icon:"trident",cat:"totalwar", mode:"battle"},
+  {id:"flagship_conquest_aegyptus",             nm:"Verovering: Alexandrië", ds:"Alexandrië, stad van de grote bibliotheek, veroverd",  icon:"star",   cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_aegyptus",               nm:"Heerser van Alexandrië", ds:"4 weken onafgebroken heerser van Alexandrië",          icon:"star",   cat:"totalwar", mode:"battle"},
+  {id:"flagship_conquest_britannia",            nm:"Verovering: Londinium",  ds:"Londinium, poort tot Britannia, veroverd",             icon:"horse",  cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_britannia",              nm:"Heerser van Londinium",  ds:"4 weken onafgebroken heerser van Londinium",           icon:"horse",  cat:"totalwar", mode:"battle"},
+  {id:"flagship_conquest_dacia",                nm:"Verovering: Dacië",      ds:"Dacië, Trajanus' beroemdste verovering, ingenomen",    icon:"crown",  cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_dacia",                  nm:"Heerser van Dacië",      ds:"4 weken onafgebroken heerser van Dacië",               icon:"crown",  cat:"totalwar", mode:"battle"},
+  {id:"flagship_conquest_asia",                 nm:"Verovering: Ephesus",    ds:"Ephesus, stad van het wereldwonder, veroverd",         icon:"torch",  cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_asia",                   nm:"Heerser van Ephesus",    ds:"4 weken onafgebroken heerser van Ephesus",             icon:"torch",  cat:"totalwar", mode:"battle"},
+  {id:"flagship_conquest_judea",                nm:"Verovering: Jeruzalem",  ds:"Jeruzalem, heilige stad, veroverd",                    icon:"eagle",  cat:"totalwar", mode:"battle"},
+  {id:"flagship_legacy_judea",                  nm:"Heerser van Jeruzalem",  ds:"4 weken onafgebroken heerser van Jeruzalem",           icon:"eagle",  cat:"totalwar", mode:"battle"},
+  // Comeback-eerbewijs (TOTAL_WAR.md §5.7): een volledig uitgeroeide beschaving die zich hersteld heeft
+  {id:"tw_wederopstanding",                     nm:"Wederopstanding",        ds:"Je beschaving werd volledig verslagen en heeft zich hersteld", icon:"torch", cat:"totalwar", mode:"battle"},
+  // Langetermijn (spreiding belonen, niet snelheid)
+  {id:"week_vol",       nm:"Wekelijkse Discipline",ds:"Op 5 verschillende dagen binnen 1 week gespeeld", icon:"torch", cat:"algemeen"},
+  {id:"dertig_dagen",   nm:"Vaste Klant",        ds:"In totaal op 30 verschillende dagen gespeeld", icon:"laurel", cat:"algemeen"},
+  // Geheimen — nm/ds tonen "???" tot ontgrendeld (zie a.secret&&!got in de
+  // renderfuncties in battle.js), onthullen daarna hun echte naam/voorwaarde.
+  // geheim_groot/geheim_heal zijn nu mode:"battle" (voorheen ctx.largeGame/
+  // ctx.healOnly, die nooit ergens gezet werden — dus nooit te behalen; fix:
+  // gecontroleerd in bmCheckAchievements(), battle.js, met echte matchdata).
+  {id:"geheim_rij",   nm:"Onfeilbare Reeks", ds:"20 vragen op rij goed beantwoord, in élke spelmodus", icon:"star", secret:true, cat:"geheim"},
+  {id:"geheim_groot", nm:"Massale Slag",     ds:"Meegevochten in een Battle Mode-gevecht met minstens 12 spelers", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"geheim_heal",  nm:"Levensbron",       ds:"Minstens 40 HP genezen in één gevecht", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"geheim_norage",nm:"IJzeren Kalmte",   ds:"Een baasgevecht gewonnen zonder dat de baas ooit in Rage ging", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_ciceronianus",nm:"Ciceronianus",         ds:"5x op rij snel én correct geantwoord (laatste 5 sec.) in één gevecht", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_laconisch",   nm:"Laconische Breviteit", ds:"Een gevecht gewonnen als Voorvechter zonder ooit een vaardigheid te gebruiken", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_feniks",      nm:"Feniks",               ds:"Herrezen in Heldenmodus én MVP geworden van het winnende team", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  // Batch 2 — bewust soms "vreemd/onlogisch": puur-toeval-eerbewijzen naast
+  // de gebruikelijke skill-gebaseerde. trait_balans/trait_stijlvol_verlies
+  // zijn host-granted (bmCheckHostTraits(), battle.js) — niet zelf te
+  // detecteren door de speler. trait_zondagsrust/trait_eenzame_bouwer zijn
+  // bewust NIET mode:"battle": ze ontstaan puur in Training Mode (en
+  // eenzame_bouwer vereist juist dat er nooit Battle Mode gespeeld is), dus
+  // horen in het algemene, lokale checkAch()-systeem, net als geheim_rij.
+  {id:"trait_exacte_nul",       nm:"Exacte Nul",             ds:"Een gevecht gewonnen met precies 0 AP over na de laatste ronde", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_drieling",         nm:"Drieling",               ds:"3 gevechten op rij gewonnen met exact dezelfde hoeveelheid HP over", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_balans",           nm:"Perfect in Balans",      ds:"Een gevecht dat eindigde in een exact gelijkspel — beide legers op hetzelfde moment op 0 HP", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_stijlvol_verlies", nm:"Verlies met Stijl",      ds:"De meeste schade van het hele gevecht toegebracht, maar toch verloren", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_stille_kracht",    nm:"Stille Kracht",          ds:"Een gevecht gewonnen zonder zelf één vraag goed te hebben beantwoord", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_middelmatig",      nm:"Bewust Middelmatig",     ds:"Alle 8 klassen gespeeld zonder ooit boven 1★ mastery te komen", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_pacifist",         nm:"Pacifistische Priester", ds:"Een gevecht gewonnen als Priester zonder ooit een aanvals-vaardigheid te gebruiken", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_nachtwacht",       nm:"Nachtwacht",             ds:"Een gevecht gespeeld tussen middernacht en 5 uur 's ochtends", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_marathonzitting",  nm:"Marathonzitting",        ds:"3 volledige gevechten binnen 1 uur gespeeld", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_draaideur",        nm:"Draaideur",              ds:"6 keer van klasse gewisseld vóórdat het gevecht begon", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_volledige_cirkel", nm:"De Volledige Cirkel",    ds:"Alle 8 klassen voor het eerst gespeeld in exact alfabetische volgorde", icon:"star", secret:true, cat:"geheim", mode:"battle"},
+  {id:"trait_zondagsrust",      nm:"Zondagsrust Doorbroken", ds:"Trainingspunten verdiend op een zondag", icon:"star", secret:true, cat:"geheim"},
+  {id:"trait_eenzame_bouwer",   nm:"Eenzame Bouwer",         ds:"Op 5 verschillende dagen getraind zonder ooit een gevecht te spelen", icon:"star", secret:true, cat:"geheim"},
+];
+// Volgorde = ook de weergavevolgorde op het profielscherm en in de
+// avatar-editor (zie battle-data.js: BM_AVATAR_PARTS.goud).
+const ACH_CATEGORIES = {
+  algemeen: "Algemeen",
+  klassiek: "Klassieke Spellen",
+  chronica: "Chronica Classica",
+  battle:   "Battle Mode",
+  mastery:  "Klasse-mastery",
+  boss:     "Boss Battle",
+  totalwar: "Total War",
+  geheim:   "Geheimen",
+};
+// Compleet-check voor een eerbewijs-categorie (bv. voor het "gouden"
+// avatar-onderdeel per categorie, zie bmIsUnlocked() in battle.js) —
+// achievedIds moet zowel P.achievements als BM_IDENT.achievements bevatten,
+// want die twee arrays samen dekken alle categorieën.
+function achCategoryComplete(cat, achievedIds){
+  const items = ACHIEVEMENTS_DEF.filter(a=>a.cat===cat);
+  return items.length>0 && items.every(a=>achievedIds.includes(a.id));
+}
+// Groepeert een lijst eerbewijs-items per categorie (ACH_CATEGORIES-volgorde)
+// in ingeklapte <details>-secties — voorkomt dat het profielscherm één lange
+// ononderbroken tegelmuur wordt naarmate er meer eerbewijzen bijkomen.
+// renderItem(a) levert de HTML voor één item; leeg gebleven categorieën
+// worden overgeslagen.
+function achGroupsHTML(items, achievedIds, renderItem){
+  return Object.keys(ACH_CATEGORIES).map(cat=>{
+    const inCat = items.filter(a=>a.cat===cat);
+    if(!inCat.length) return "";
+    const gotN = inCat.filter(a=>achievedIds.includes(a.id)).length;
+    const complete = gotN===inCat.length;
+    return `<details style="margin-bottom:8px">
+      <summary class="eyebrow l" style="cursor:pointer;list-style:revert">${complete?"⭐ ":""}${ACH_CATEGORIES[cat]} (${gotN}/${inCat.length})</summary>
+      <div class="achgrid" style="margin-top:8px">${inCat.map(renderItem).join("")}</div>
+    </details>`;
+  }).join("");
+}
+
+/* ---- Profiel (localStorage) ---- */
+const PKEY = "certamen_profile_v2";
+function loadProfile(){
+  const def = {
+    name:"", color:COLORS[0], avatar:"helmet",
+    coins:0, owned:["helmet","laurel","shield"],
+    achievements:[], xp:0, level:1, rank:"Tiro",
+    stats:{
+      totalCorrect:0, totalWrong:0, currentStreak:0, bestStreak:0, totalCombos:0,
+      tournamentsPlayed:0, tournamentsWon:0,
+      marathonsPlayed:0,   marathonsWon:0,
+      snelvuurPlayed:0,    snelvuurWon:0,
+      battlesPlayed:0,     battlesWon:0,
+      totalDamage:0,       totalHealing:0,
+      playDates:[], // ISO-datums (YYYY-MM-DD), gededupliceerd — voor week_vol/dertig_dagen
+      trainingPlayDates:[], // idem, maar uitsluitend Training Mode — voor trait_eenzame_bouwer
+      lastWinMargins:[],       // laatste 3 eigen restant-HP bij winst — voor trait_drieling
+      recentBattleTimestamps:[] // ms-timestamps van recent afgeronde gevechten — voor trait_marathonzitting
+    }
+  };
+  try{
+    const v2=localStorage.getItem(PKEY);
+    if(v2){
+      const p=JSON.parse(v2);
+      if(!p.stats) p.stats=def.stats;
+      else p.stats=Object.assign({},def.stats,p.stats);
+      return Object.assign({},def,p);
+    }
+    // Migreer van v1
+    const v1=localStorage.getItem("certamen_profile_v1");
+    if(v1){
+      const o=JSON.parse(v1);
+      def.coins=o.coins||0; def.owned=o.owned||def.owned;
+      def.avatar=o.avatar||def.avatar; def.name=o.name||"";
+      def.color=o.color||def.color;
+      def.stats.totalCorrect=o.correct||0;
+      def.stats.bestStreak=o.bestStreak||0;
+      if(o.gamesPlayed?.touwtrekken) def.stats.tournamentsPlayed=1;
+      if(o.gamesPlayed?.marathon)    def.stats.marathonsPlayed=1;
+      if(o.gamesPlayed?.snelvuur)    def.stats.snelvuurPlayed=1;
+      def.xp=Math.min(500,(o.correct||0)*2+(o.wins||0)*10);
+      const lv=calcLevel(def.xp); def.level=lv.level; def.rank=lv.rank;
+    }
+    return def;
+  }catch(e){ return def; }
+}
+function saveProfile(){ try{ localStorage.setItem(PKEY, JSON.stringify(P)); }catch(e){} }
+let P = loadProfile();
+
+// skipSync=true: gebruik dit als de aanroeper de gedeelde Firebase-identiteit
+// AL zelf heeft bijgewerkt (bv. bmAwardBattle/bmBuyPart, die hun eigen
+// transaction/update gebruiken) — anders zou de winst/uitgave daar dubbel
+// worden verwerkt. n mag negatief zijn (spenden) i.t.t. addXP.
+function addCoins(n, skipSync){
+  if(!n) return;
+  P.coins=(P.coins||0)+n; if(P.coins<0)P.coins=0; saveProfile();
+  if(!skipSync) syncCoinsDelta(n);
+}
+// skipSync=true: gebruik dit als de aanroeper de gedeelde Firebase-identiteit
+// AL zelf heeft bijgewerkt (bv. bmAwardBattle, dat zijn eigen transaction
+// gebruikt) — anders zou de xp-winst daar dubbel worden opgeteld.
+function addXP(n, skipSync){
+  if(!n||n<=0) return;
+  recordPlayDay();
+  P.xp=(P.xp||0)+n;
+  const lv=calcLevel(P.xp);
+  if(lv.level>(P.level||1)){
+    P.level=lv.level; P.rank=lv.rank;
+    setTimeout(()=>toast("Niveau omhoog!","Je bent nu "+lv.rank+" (niveau "+lv.level+")",medalSVG("crown",34)),400);
+  } else { P.level=lv.level; P.rank=lv.rank; }
+  saveProfile();
+  if(!skipSync) syncXpDelta(n);
+}
+
+/* ============================================================================
+   PROFIELSYNC BUITEN BATTLE MODE
+   ----------------------------------------------------------------------------
+   Het algemene profiel (P, dit bestand) is standaard puur lokaal (localStorage)
+   en synct dus NIET vanzelf tussen toestellen — dat gold ook voor XP totdat
+   dit hier werd toegevoegd. In plaats van een tweede identiteitssysteem te
+   bouwen, hergebruiken we de identiteit die Battle Mode al heeft (klascode +
+   zelf gekozen leerlingcode, /identities/{klas}/{lcode} in Firebase RTDB) —
+   zie battle.js: bmIdentLoad/bmIdentSave/bmIdentGet/bmIdentDoLogin. Zodra een
+   leerling die identiteit heeft (via Battle Mode aangemaakt, of hier gekoppeld),
+   loopt P.xp automatisch gelijk met identities/{klas}/{lcode}.xp op elk
+   toestel. Geen identiteit gekoppeld? Dan werkt alles gewoon lokaal, zoals
+   voorheen — koppelen is nooit verplicht.
+   ============================================================================ */
+function profileIdentity(){ return (typeof bmIdentLoad==="function") ? bmIdentLoad() : null; }
+function profileIsLinked(){ const id=profileIdentity(); return !!(id&&id.klascode&&id.leerlingcode); }
+
+// Verhoog xp lokaal én (indien gekoppeld) in de gedeelde Firebase-identiteit
+// via een transaction (voorkomt verloren updates bij bijna-gelijktijdig
+// schrijven vanaf twee toestellen/tabbladen — zie battle.js: bmAwardBattle).
+function syncXpDelta(n){
+  if(!n) return;
+  const id=profileIdentity(); if(!id||!id.klascode||!id.leerlingcode) return;
+  if(typeof hasFirebase==="undefined"||!hasFirebase) return;
+  try{
+    if(typeof initFirebase==="function") initFirebase();
+    if(typeof fbDB==="undefined"||!fbDB) return;
+    fbDB.ref("identities/"+id.klascode+"/"+id.leerlingcode+"/xp").transaction(cur=>(cur||0)+n);
+    if(typeof bmIdentSave==="function") bmIdentSave({...id, xp:(id.xp||0)+n});
+    if(typeof BM_IDENT!=="undefined"&&BM_IDENT) BM_IDENT.xp=(BM_IDENT.xp||0)+n;
+  }catch(e){}
+}
+
+// Zelfde patroon als syncXpDelta, maar voor munten — en P.coins/BM_IDENT.coins
+// zijn sinds deze wijziging dezelfde portemonnee (identities/{klas}/{lcode}/coins):
+// muntjes uit Snelvuur/Marathon/Touwtrekken/Training Mode zijn dus ook
+// besteedbaar in de Battle Mode-avatarshop en omgekeerd. n mag negatief zijn
+// (spenden); nooit onder 0 in Firebase.
+function syncCoinsDelta(n){
+  if(!n) return;
+  const id=profileIdentity(); if(!id||!id.klascode||!id.leerlingcode) return;
+  if(typeof hasFirebase==="undefined"||!hasFirebase) return;
+  try{
+    if(typeof initFirebase==="function") initFirebase();
+    if(typeof fbDB==="undefined"||!fbDB) return;
+    fbDB.ref("identities/"+id.klascode+"/"+id.leerlingcode+"/coins").transaction(cur=>Math.max(0,(cur||0)+n));
+    if(typeof bmIdentSave==="function") bmIdentSave({...id, coins:Math.max(0,(id.coins||0)+n)});
+    if(typeof BM_IDENT!=="undefined"&&BM_IDENT) BM_IDENT.coins=Math.max(0,(BM_IDENT.coins||0)+n);
+  }catch(e){}
+}
+
+// Haal de nieuwste xp uit Firebase en werk P.xp bij als dit toestel achterloopt
+// (bv. na spelen op een ander toestel terwijl dit toestel/tabblad al open stond).
+// rerenderScreen: alleen herrenderen als de speler nog op dat scherm staat.
+async function syncProfileFromCloud(rerenderScreen){
+  const id=profileIdentity(); if(!id||!id.klascode||!id.leerlingcode) return;
+  if(typeof bmIdentGet!=="function") return;
+  try{
+    if(typeof initFirebase==="function") initFirebase();
+    const d=await bmIdentGet(id.klascode,id.leerlingcode);
+    let changed=false;
+    if(d && typeof d.xp==="number" && d.xp!==P.xp){
+      P.xp=d.xp;
+      const lv=calcLevel(P.xp); P.level=lv.level; P.rank=lv.rank;
+      if(typeof BM_IDENT!=="undefined"&&BM_IDENT) BM_IDENT.xp=d.xp;
+      changed=true;
+    }
+    if(d && typeof d.coins==="number" && d.coins!==P.coins){
+      P.coins=d.coins;
+      if(typeof BM_IDENT!=="undefined"&&BM_IDENT) BM_IDENT.coins=d.coins;
+      changed=true;
+    }
+    if(changed){
+      saveProfile();
+      if(rerenderScreen && typeof _screen!=="undefined" && _screen===rerenderScreen
+         && typeof SCREENS!=="undefined" && SCREENS[rerenderScreen]) SCREENS[rerenderScreen]();
+    }
+  }catch(e){}
+}
+/* ---- Speeldag-tracking (week_vol/dertig_dagen) — bewust op kalenderdagen,
+   niet op sessies of antwoorden, zodat deze eerbewijzen alleen behaald worden
+   door over tijd te spreiden, niet door in één avond te grinden. Aangeroepen
+   vanuit addXP() (elke XP-gevende actie in elke modus telt als "gespeeld"). ---- */
+function recordPlayDay(){
+  const today=new Date().toISOString().slice(0,10);
+  const arr=P.stats.playDates||(P.stats.playDates=[]);
+  if(arr[arr.length-1]!==today){
+    arr.push(today);
+    if(arr.length>60) P.stats.playDates=arr.slice(-60); // cap groei, ruim boven de dertig_dagen-drempel
+    saveProfile();
+  }
+}
+function distinctDaysWithinLast(days){
+  const arr=P.stats.playDates||[]; if(!arr.length) return 0;
+  const cutoff=Date.now()-days*86400000;
+  return arr.filter(d=>{ const t=Date.parse(d+"T00:00:00Z"); return !isNaN(t)&&t>=cutoff; }).length;
+}
+function checkAch(ctx={}){
+  const got=[], s=P.stats;
+  const add=(id,cond)=>{ if(cond&&!P.achievements.includes(id)){ P.achievements.push(id); got.push(id); } };
+  const allP=s.tournamentsPlayed+s.marathonsPlayed+s.snelvuurPlayed+s.battlesPlayed;
+  add("eerste_stap",   allP>=1);
+  add("woordenkenner", s.totalCorrect>=100);
+  add("taalmeester",   s.totalCorrect>=500);
+  add("veelzijdig",    s.tournamentsPlayed>=1&&s.marathonsPlayed>=1&&s.snelvuurPlayed>=1&&s.battlesPlayed>=1);
+  add("veteraan_all",  allP>=50);
+  add("snelle_geest",  s.bestStreak>=10);
+  add("eerste_bloed",  s.tournamentsWon>=1);
+  add("anker",         s.tournamentsWon>=5);
+  add("doorzetter",    s.marathonsPlayed>=1);
+  add("finisher",      s.marathonsWon>=1);
+  add("vonk",          s.snelvuurPlayed>=1);
+  add("ontembaar",     s.snelvuurWon>=3);
+  add("eerste_gevecht",s.battlesPlayed>=1);
+  add("overwinnaar",   s.battlesWon>=1);
+  add("combokunstenaar",s.totalCombos>=10);
+  add("legendarisch",  (P.level||1)>=10);
+  add("bliksem",       ctx.isFirst&&ctx.mode==="snelvuur");
+  add("geheim_rij",    s.bestStreak>=20);
+  add("trait_zondagsrust",    !!ctx.sunday);
+  add("trait_eenzame_bouwer", (s.trainingPlayDates||[]).length>=5&&s.battlesPlayed===0);
+  add("week_vol",      distinctDaysWithinLast(7)>=5);
+  add("dertig_dagen",  (s.playDates||[]).length>=30);
+  if(got.length){
+    saveProfile();
+    // Eenmalige munten-bonus, geen passief effect buiten Battle Mode (geen
+    // AP-/schild-economie om aan te haken in de klassieke spellen).
+    if(got.includes("geheim_rij")) addCoins(15);
+    if(got.includes("trait_zondagsrust")) addCoins(10);
+    if(got.includes("trait_eenzame_bouwer")) addCoins(15);
+    got.forEach((id,i)=>setTimeout(()=>{ const a=ACHIEVEMENTS_DEF.find(x=>x.id===id); if(a)toastAch(a); },i*900));
+  }
+}
+
+/* ---------- icon / medal art ---------- */
+function iconSVG(name, size, color){
+  const s=size||40, c=color||"var(--hi)";
+  const W=`<svg viewBox="0 0 48 48" width="${s}" height="${s}" xmlns="http://www.w3.org/2000/svg">`;
+  const P2={
+    back:`<path d="M30 12L18 24l12 12" fill="none" stroke=""+c+"" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`,
+    helmet:`<path d="M11 30c0-10 5-17 13-17s13 7 13 17v2H26l-1-6-2 6h-3l-2-6-1 6H11z" fill="${c}"/><path d="M22 10c1-2 4-2 5 0l1 4h-7z" fill="${c}" opacity=".7"/>`,
+    laurel:`<path d="M24 8v30" stroke="${c}" stroke-width="2.5" fill="none"/><path d="M24 14c-5-3-9-2-11 1 4 0 7 1 11 4zM24 14c5-3 9-2 11 1-4 0-7 1-11 4zM24 22c-5-3-9-2-11 1 4 0 7 1 11 4zM24 22c5-3 9-2 11 1-4 0-7 1-11 4z" fill="${c}"/>`,
+    shield:`<path d="M24 9c5 2 11 3 11 3v9c0 9-5 14-11 17-6-3-11-8-11-17v-9s6-1 11-3z" fill="${c}"/><path d="M24 16v18M16 22h16" stroke="rgba(0,0,0,.35)" stroke-width="2"/>`,
+    owl:`<circle cx="24" cy="24" r="13" fill="${c}"/><circle cx="19" cy="22" r="4" fill="#15110a"/><circle cx="29" cy="22" r="4" fill="#15110a"/><circle cx="19" cy="22" r="1.6" fill="#fff"/><circle cx="29" cy="22" r="1.6" fill="#fff"/><path d="M22 27l2 2 2-2z" fill="#15110a"/>`,
+    horse:`<path d="M14 36c0-9 4-14 9-16l-2-6 6 3c4 2 7 6 7 13v6h-4v-5l-3 2v3h-4v-4l-3 2v2z" fill="${c}"/>`,
+    amphora:`<path d="M19 12h10l-2 4c3 2 5 6 5 11s-3 9-8 9-8-4-8-9 2-9 5-11z" fill="${c}"/><path d="M18 14c-2 1-3 3-2 5M30 14c2 1 3 3 2 5" stroke="${c}" stroke-width="2" fill="none"/>`,
+    trident:`<path d="M24 10v28" stroke="${c}" stroke-width="3"/><path d="M16 12v6c0 3 3 4 8 4s8-1 8-4v-6" stroke="${c}" stroke-width="3" fill="none"/><path d="M16 12l-2-3M32 12l2-3" stroke="${c}" stroke-width="3"/>`,
+    eagle:`<path d="M24 14l-3 5h6zM12 22c6-4 9-2 12 3 3-5 6-7 12-3-4 0-7 2-12 8-5-6-8-8-12-8z" fill="${c}"/><path d="M21 28h6l-2 9h-2z" fill="${c}"/>`,
+    crown:`<path d="M12 32l-2-14 8 6 6-10 6 10 8-6-2 14z" fill="${c}"/><rect x="12" y="32" width="24" height="5" rx="1.5" fill="${c}" opacity=".75"/>`,
+    column:`<rect x="16" y="12" width="16" height="4" fill="${c}"/><rect x="18" y="16" width="12" height="18" fill="${c}"/><rect x="14" y="34" width="20" height="4" fill="${c}"/><path d="M20 16v18M24 16v18M28 16v18" stroke="rgba(0,0,0,.3)" stroke-width="1.4"/>`,
+    torch:`<path d="M24 10c4 5 7 8 7 12a7 7 0 01-14 0c0-3 2-5 4-8 .5 2 1.5 2.5 2 1 .5-3-1-4 1-5z" fill="${c}"/><rect x="22" y="28" width="4" height="10" rx="1.5" fill="${c}" opacity=".7"/>`,
+    star:`<path d="M24 10l4 9 10 1-7 7 2 10-9-5-9 5 2-10-7-7 10-1z" fill="${c}"/>`,
+    tent:`<path d="M24 9l16 27H8z" fill="${c}"/><path d="M24 20l-6 16h12z" fill="rgba(0,0,0,.35)"/><path d="M24 9v-3l5 2-5 1z" fill="${c}" opacity=".7"/><rect x="6" y="36" width="36" height="3" rx="1.5" fill="${c}" opacity=".75"/>`,
+  };
+  return W+(P2[name]||P2.helmet)+`</svg>`;
+}
+function medalSVG(name, size){
+  const s=size||64;
+  const ring=`<defs><radialGradient id="rg" cx="38%" cy="32%" r="75%"><stop offset="0%" stop-color="#f6dd8e"/><stop offset="45%" stop-color="#d4af37"/><stop offset="100%" stop-color="#9c7c1f"/></radialGradient></defs>
+    <circle cx="24" cy="24" r="22" fill="url(#rg)" stroke="#7a5410" stroke-width="1.5"/>`;
+  return `<svg viewBox="0 0 48 48" width="${s}" height="${s}" xmlns="http://www.w3.org/2000/svg">${ring}${iconInner(name)}</svg>`;
+}
+function iconInner(name){
+  // dark icon centred inside the gold medal
+  const c="#5a3a0c";
+  const raw = iconSVG(name, 30, c);
+  // extract the inner paths, place with translate
+  const inner = raw.replace(/^<svg[^>]*>/,"").replace(/<\/svg>$/,"");
+  return `<g transform="translate(9,9) scale(0.625)">${inner}</g>`;
+}
+function avatarHTML(av, color, size){
+  const a = AVATARS.find(x=>x.id===av) || AVATARS[0];
+  const s=size||30;
+  return `<span style="width:${s}px;height:${s}px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:${color||"#888"}">${iconSVG(a.icon, Math.round(s*0.7), "#fff")}</span>`;
+}
+
+/* ---------- sound (lichte WebAudio beeps, geen extra library) ---------- */
+let AC=null;
+function ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return AC; }
+function beep(kind){
+  const a=ac(); if(!a) return;
+  const o=a.createOscillator(), g=a.createGain(); o.connect(g); g.connect(a.destination);
+  const t=a.currentTime; let f=440;
+  if(kind==="good"){ f=660; } else if(kind==="bad"){ f=200; } else if(kind==="win"){ f=520; } else if(kind==="ach"){ f=760; }
+  o.frequency.setValueAtTime(f,t); o.type = kind==="bad"?"sawtooth":"triangle";
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.16,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+.22);
+  o.start(t); o.stop(t+.24);
+  if(kind==="good"||kind==="win"||kind==="ach"){ const o2=a.createOscillator(),g2=a.createGain(); o2.connect(g2);g2.connect(a.destination);
+    o2.frequency.setValueAtTime(f*1.5,t+.1);o2.type="triangle";g2.gain.setValueAtTime(.0001,t+.1);g2.gain.exponentialRampToValueAtTime(.12,t+.12);g2.gain.exponentialRampToValueAtTime(.0001,t+.3);o2.start(t+.1);o2.stop(t+.32); }
+}
+document.addEventListener("pointerdown",function once(){ ac(); document.removeEventListener("pointerdown",once); },{once:true});
+
+/* ---------- toast & overlay ---------- */
+let toastT;
+// Zichtbare duur schaalt mee met de tekstlengte (basis 3200ms + ~55ms per
+// teken van de boodschap, met een plafond van 9000ms) — een korte quiz-
+// melding als "Juist!" blijft snel weg, maar een langere NPC-reactie
+// (Clementia/Severitas/Neutraal, spSceneReaction) krijgt genoeg tijd om
+// uitgelezen te worden. Het kruisje (toastDismiss) laat de speler 'm ook
+// altijd zelf al eerder wegklikken. Leerlingfeedback (2026-08-13): reacties
+// verdwenen voordat ze uitgelezen konden worden.
+function toast(title, msg, medal){
+  el("toastM").innerHTML = medal || iconSVG("star",34,"var(--hi)");
+  el("toastT").textContent = title; el("toastN").textContent = msg;
+  const t=el("toast"); t.classList.add("show"); clearTimeout(toastT);
+  const duur = Math.min(9000, 3200 + (msg||"").length*55);
+  toastT=setTimeout(()=>t.classList.remove("show"),duur);
+}
+function toastDismiss(){
+  clearTimeout(toastT);
+  el("toast").classList.remove("show");
+}
+/* ---- Eerbewijs-ontgrendel-popup (groter/duidelijker dan de gewone toast,
+   met een lichtgloed achter het medaillon). Wachtrij zodat meerdere
+   gelijktijdig ontgrendelde eerbewijzen na elkaar getoond worden i.p.v.
+   overlappend. Gebruikt door checkAch() (alle spelmodi) en bmAwardBattle()/
+   bmCheckAchievements() (Battle Mode-specifieke eerbewijzen, incl. traits). ---- */
+let _achPopQueue=[], _achPopBusy=false, _achPopT=null;
+function toastAch(a){
+  if(!a)return;
+  _achPopQueue.push(a);
+  if(!_achPopBusy) _achPopNext();
+}
+function _achPopNext(){
+  const a=_achPopQueue.shift();
+  const bg=el("achpopBg");
+  if(!a||!bg){ _achPopBusy=false; return; }
+  _achPopBusy=true;
+  beep("ach");
+  el("achpopM").innerHTML=medalSVG(a.icon,64);
+  el("achpopN").textContent=a.nm;
+  el("achpopD").textContent=a.ds;
+  bg.classList.add("show");
+  clearTimeout(_achPopT);
+  _achPopT=setTimeout(_achPopDismiss,3200);
+}
+function _achPopDismiss(){
+  const bg=el("achpopBg"); if(!bg||!bg.classList.contains("show"))return;
+  clearTimeout(_achPopT);
+  bg.classList.remove("show");
+  setTimeout(_achPopNext,400);
+}
+// .onclick weer op null: een aanroeper die #overlay-elk-klik-sluit-gedrag
+// wil (bv. twShowGarrisonZoom(), totalwar.js) zet die hier zelf op — zonder
+// deze reset zou die handler blijven hangen en per ongeluk ook een LATERE,
+// ongerelateerde overlay (bv. het marathon-podium in games.js) laten sluiten
+// op een klik buiten de eigen knoppen.
+function closeOverlay(){ const ov=el("overlay"); ov.classList.remove("show"); ov.onclick=null; }
+
+
+/* ============================================================================
+   ROUTER + GLOBALE STATE
+   ============================================================================ */
+let CODE=null, PID=null, ROLE=null, POOL=[], META=null;
+let unsubState=null, unsubPlayers=null, botTimer=null, freezeTimer=null;
+let STATE={}, PLAYERS={};
+let DRAFT = { game:"touwtrekken", lang:"la", source:"freq", fromN:1, toN:100, cat:"all", customText:"",
+  target:15, penalty:"back", freezeSec:4 };
+let myStreak=0;
+let BM_UNSUBS=[], BM_PHASE_TIMER=null, _bmTicking=false, _bmFormHash="";
+// Rangorde op het slagveld (bmContribCompare in battle.js), één keer per ronde
+// vastgezet. Zou hij bij elke wijziging herberekend worden, dan schoven de
+// poppetjes tijdens de vraagfase heen en weer terwijl leerlingen antwoorden.
+let _bmRankRound=-1, _bmRankMap={};
+// true op het spelerscherm: het slagveld toont dan alleen de eigen held.
+// De volledige opstelling staat op het projectorscherm in de klas.
+let BM_FIELD_SOLO=false;
+let BM_MY_CORRECT=0, BM_MY_WRONG=0, BM_MY_DMG=0, BM_MY_HEAL=0; // voor XP/stats na gevecht
+let BM_AV_EDIT=null;                 // werkkopie in de avatar-editor
+
+function cleanup(){
+  if(unsubState){unsubState();unsubState=null;}
+  if(unsubPlayers){unsubPlayers();unsubPlayers=null;}
+  if(botTimer){clearInterval(botTimer);botTimer=null;}
+  if(freezeTimer){clearInterval(freezeTimer);freezeTimer=null;}
+  BM_UNSUBS.forEach(u=>{try{u();}catch(e){}});BM_UNSUBS=[];
+  if(BM_PHASE_TIMER){clearInterval(BM_PHASE_TIMER);BM_PHASE_TIMER=null;}_bmTicking=false;
+}
+function leaveAll(){ cleanup(); CODE=null;PID=null;ROLE=null;POOL=[];META=null;STATE={};PLAYERS={}; }
+
+/* ---------- brand + footer ---------- */
+function brand(showCoins){
+  return `<div class="brand">
+    <span class="mark"><img src="../assets/favicons/certamen/logo-192.png" width="48" height="48" style="display:block;border-radius:50%" alt=""></span>
+    <div><div class="t">CERTAMEN</div><div class="s">Klassieke Talen Arena</div></div>
+    ${showCoins?`<button class="coins" onclick="go('collection')"><span>${iconSVG("amphora",16,"var(--hi)")}</span><b>${P.coins}</b> <small>munten</small></button>`:""}
+  </div>`;
+}
+function foot(){ return `<div class="foot">© Gerben de Jong · 2026 · ${hasFirebase?"":"Oefenmodus — Firebase niet ingesteld"}</div>`; }
+
+/* ====================== SCHERMEN ====================== */
+const SCREENS = {};
+let _screen='home';
+let _screenStack=[]; // navigatiegeschiedenis binnen de app, voor goBack()
+function go(name){
+  if(_screen && _screen!==name) _screenStack.push(_screen);
+  _screen=name; cleanup(); document.body.classList.toggle("greek", themeFor(name)==="greek"); SCREENS[name](); window.scrollTo(0,0);
+}
+// Terug naar het vorige scherm i.p.v. altijd naar het hoofdmenu — gebruikt
+// door de vaste "Terug naar portaal"-pijl linksboven (index.html) zodat die
+// overal één stap terug gaat, niet meteen de hele app verlaat. Geen push
+// naar _screenStack hier: anders zou "vooruit" na "terug" weer hetzelfde
+// scherm terugzetten i.p.v. gewoon leeg te raken.
+function goBack(){
+  const prev=_screenStack.pop();
+  const target=(prev && SCREENS[prev]) ? prev : "home";
+  if(!prev || !SCREENS[prev]) _screenStack=[];
+  _screen=target; cleanup(); document.body.classList.toggle("greek", themeFor(target)==="greek"); SCREENS[target](); window.scrollTo(0,0);
+}
+// Voor schermen die zichzelf meteen bij het renderen doorsturen (bv.
+// teacherLogin die al-ingelogde docenten automatisch naar teacherPortal
+// stuurt): dit VERVANGT het huidige scherm i.p.v. het (nogmaals) op de stack
+// te zetten. Zonder dit belandt zo'n doorstuur-scherm zelf in de historie —
+// en omdat het bij elk bezoek weer meteen doorstuurt, ping-pongt de globale
+// "Terug naar portaal"-pijl (index.html, gebruikt goBack()) daar oneindig
+// tussen (leerlingfeedback 2026-09-09: docent kwam niet weg uit het
+// klassenoverzicht).
+function goReplace(name){
+  _screen=name; cleanup(); document.body.classList.toggle("greek", themeFor(name)==="greek"); SCREENS[name](); window.scrollTo(0,0);
+}
+function themeFor(name){
+  // marathon-gerelateerde schermen krijgen het Griekse thema
+  if((ROLE==="host" && DRAFT.game==="marathon") || (META && META.game==="marathon")) {
+    if(["hostLobby","hostGame","playerLobby","playerGame","result"].includes(name)) return "greek";
+  }
+  if(name==="hostSettings" && DRAFT.game==="marathon") return "greek";
+  return "roman";
+}

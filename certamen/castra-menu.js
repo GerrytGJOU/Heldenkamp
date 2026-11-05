@@ -1,0 +1,359 @@
+/* ============================================================================
+   CASTRA HEROUM — HOOFDMENU IN POKÉMON-STIJL
+   ----------------------------------------------------------------------------
+   Knop ☰ rechtsboven op de kampkaart opent een wit menuvak met zwarte rand en
+   ▶-cursor (zoals het startmenu van de Pokémon-spellen). Onderdelen:
+     Codex      de boomkaart van alle vormen (castra-codex.js)
+     Milites    je team: sprite, naam, level, XP-balk, gezondheid, klasse, stats
+     Heroes     je helden met level en fides
+     Sacculus   grondstoffen, opslag en bouwoverzicht
+     Opus       je lopende opdracht (tutorial / heldenopdracht)
+     <naam>     spelerskaart: naam, roem, regio's, missies, codex-voortgang
+     Servare    handmatig opslaan
+     Exeo       terug naar het portaal
+   Namen in het Latijn met Nederlandse uitleg. Laadt NA castra-codex.js en castra-tutorial.js.
+   ============================================================================ */
+
+const CASTRA_MENU_ITEMS = [
+  { id:"codex",  la:"Codex",    nl:"all soldiers and heroes", unl:"codex" },
+  { id:"milites",la:"Soldaten",  nl:"your team" },
+  { id:"heroes", la:"Helden",   nl:"your heroes" },
+  { id:"mundus", la:"Kaart",   nl:"world map" },
+  { id:"vergelijk",la:"Vergelijk", nl:"compare", unl:"vergelijk" },
+  { id:"sacculus",la:"Rugzak",nl:"supplies" },
+  { id:"tabulae",la:"Kaarten",  nl:"cards with bonuses", unl:"tabulae" },
+  { id:"opus",   la:"Opdracht",     nl:"task" },
+  { id:"profiel",la:"",         nl:"your card" },          // la = naam van de speler
+  { id:"servare",la:"Opslaan",  nl:"save" },
+  { id:"restart",la:"Restart",  nl:"start over" },          // bewust Nederlands/Engels, geen Latijn
+  { id:"exeo",   la:"Exeo",     nl:"terug naar het portaal" },
+];
+/* Indeling (2026-11-04): vijf vaste knoppen in de onderbalk (castraNavHTML), de rest onder ☰ ("meer"), en
+   opslaan, geluid, uitleg, opnieuw beginnen en afsluiten in het submenu Systema. Andere bestanden voegen nog steeds
+   gewoon items toe aan CASTRA_MENU_ITEMS; wat hier niet genoemd staat komt onder ☰. */
+const CASTRA_MENU_NAV = ["milites","heroes","mundus","opus","sacculus"];
+const CASTRA_MENU_SYS = ["servare","faq","sonus","restart","exeo"];
+const CASTRA_MENU_ICON = { milites:"🛡️", heroes:"⭐", mundus:"🗺️", opus:"📜", sacculus:"🎒", servare:"💾", faq:"📖", sonus:"🔊", restart:"🔄", exeo:"🚪" };
+// Onderdelen die onder een ander onderdeel hangen: Contubernium en Labor bij Milites, Insignia bij Tabulae.
+const CASTRA_MENU_SUB = { party:"milites", labor:"milites", insignia:"tabulae" };
+let CASTRA_MENU = { open:false, view:null, parent:null };
+// Is de onderbalk in beeld? Zo niet (andere schermen, of full-screen) dan staan de vijf knoppen gewoon in de lijst.
+function castraNavShown(){ return !!document.getElementById("cgNav") && !document.body.classList.contains("castra-immersive"); }
+function castraMenuList(){
+  const nav = castraNavShown();
+  return CASTRA_MENU_ITEMS.filter(it=>!CASTRA_MENU_SYS.includes(it.id) && !CASTRA_MENU_SUB[it.id] && !(nav && CASTRA_MENU_NAV.includes(it.id)))
+    .concat([{ id:"systema", la:"Instellingen", nl:"save, sound, help, quit" }]);
+}
+
+function castraMenuBtn(wrapId){
+  wrapId = wrapId || "castraWrap";
+  const old = document.getElementById("castraMenuBtn"); if(old && old.parentNode && old.parentNode.id===wrapId) return; if(old) old.remove();
+  if(!document.getElementById(wrapId)) return;
+  const wrap = document.getElementById(wrapId);
+  const b = document.createElement("button");
+  b.id = "castraMenuBtn"; b.setAttribute("aria-label","Menu");
+  b.style.cssText = "position:absolute;top:6px;right:6px;z-index:60;min-width:44px;min-height:44px;font-size:22px;line-height:1;background:linear-gradient(var(--parch,#efe1b9),var(--parch2,#e4d2a1));color:var(--parch-ink,#2b1d0e);border:3px solid var(--parch-edge,#4a3416);border-radius:8px;box-shadow:0 0 0 2px var(--parch-gold,#c9a24a);cursor:pointer;font-family:inherit";
+  b.textContent = "☰";
+  b.onclick = ev=>{ ev.stopPropagation(); castraMenuToggle(); };
+  b.onpointerdown = ev=>ev.stopPropagation();
+  wrap.appendChild(b);
+}
+function castraMenuToggle(){ if(CASTRA_MENU.open) castraMenuClose(); else castraMenuOpen(); }
+function castraMenuClose(){
+  CASTRA_MENU.open = false; CASTRA_MENU.view = null; CASTRA_MENU.parent = null;
+  const m = document.getElementById("castraMenu"); if(m) m.remove();
+  if(CASTRA_MENU.esc){ document.removeEventListener("keydown", CASTRA_MENU.esc); CASTRA_MENU.esc = null; }
+}
+// Esc of "‹ terug": eerst het detailvak sluiten, daarna het hele menu.
+function castraMenuBack(){ if(CASTRA_MENU.view){ CASTRA_MENU.view = CASTRA_MENU.parent; CASTRA_MENU.parent = null; castraMenuRender(); } else castraMenuClose(); }
+function castraMenuOpen(){
+  castraMenuClose(); CASTRA_MENU.open = true;
+  const m = document.createElement("div"); m.id = "castraMenu";
+  m.style.cssText = "position:fixed;inset:0;z-index:9980;background:rgba(0,0,0,.45);display:flex;justify-content:flex-end;align-items:flex-start;padding:8px;box-sizing:border-box";
+  m.onclick = ev=>{ if(ev.target===m) castraMenuClose(); };
+  CASTRA_MENU.esc = ev=>{ if(ev.key==="Escape"){ ev.preventDefault(); castraMenuBack(); } };
+  document.addEventListener("keydown", CASTRA_MENU.esc);
+  document.body.appendChild(m);
+  castraMenuRender();
+}
+// Menuvak (rechts) en, als er een onderdeel open is, het detailvak ernaast.
+function castraMenuRender(){
+  const m = document.getElementById("castraMenu"); if(!m) return;
+  const name = castraPlayerName() || "Dux";
+  const box = "background:linear-gradient(var(--parch,#efe1b9),var(--parch2,#e4d2a1));color:var(--parch-ink,#2b1d0e);border:4px solid var(--parch-edge,#4a3416);border-radius:10px;box-shadow:0 0 0 2px var(--parch-gold,#c9a24a),0 6px 20px rgba(0,0,0,.5);font-family:inherit";
+  const list = castraMenuList();
+  const items = list.map(it=>{
+    const on = CASTRA_MENU.view===it.id, la = it.id==="profiel" ? name : it.la, lock = it.unl && typeof castraUnlocked==="function" && !castraUnlocked(it.unl), lu = lock ? castraUnlockDef(it.unl) : null;
+    return `<div role="button" tabindex="0" onclick="castraMenuPick('${it.id}')" style="padding:8px 10px 8px 22px;font-size:20px;cursor:pointer;position:relative;min-height:44px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;${on?"background:rgba(120,80,20,.18)":""}">
+      <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);visibility:${on?"visible":"hidden"}" class="castra-cur">▶</span>
+      <b>${lock?"🔒 ":""}${esc(la)}</b><small style="opacity:.6;font-size:11px">${lock?"vanaf niveau "+lu.lvl:esc(it.nl)}</small></div>`;
+  }).join("");
+  const xbtn = "min-width:40px;min-height:40px;font-size:20px;line-height:1;background:var(--parch2,#e9d9ac);color:var(--parch-ink,#2b1d0e);border:2px solid var(--parch-edge,#4a3416);border-radius:8px;cursor:pointer;font-family:inherit";
+  const detail = CASTRA_MENU.view ? `<div id="castraMenuView" style="${box};flex:1;min-width:0;max-width:560px;max-height:calc(100vh - 16px);overflow:auto;padding:0 12px 10px;margin-right:8px;pointer-events:auto">
+      <div style="position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;background:var(--parch2,#ecdcb0);border-bottom:1px solid var(--parch-line,#c2a96f);margin-bottom:6px">
+        <button onclick="castraMenuBack()" style="${xbtn};padding:0 12px;font-size:15px" aria-label="Terug naar het menu">‹ Menu</button>
+        <button onclick="castraMenuClose()" style="${xbtn}" aria-label="Sluiten" title="Sluiten (Esc)">✕</button></div>
+      ${castraMenuView(CASTRA_MENU.view)}</div>` : "";
+  m.innerHTML = `<div style="display:flex;align-items:flex-start;width:100%;justify-content:flex-end;pointer-events:none">${detail}
+    <div style="${box};flex:0 0 190px;width:190px;padding:4px 0;pointer-events:auto;max-height:calc(100vh - 16px);overflow:auto">
+      <div style="display:flex;justify-content:flex-end;padding:2px 6px 0"><button onclick="castraMenuClose()" style="${xbtn};min-width:36px;min-height:36px;font-size:18px" aria-label="Menu sluiten" title="Sluiten (Esc)">✕</button></div>${items}</div></div>`;
+  m.querySelectorAll("[role=button]").forEach((n,i)=>{
+    n.onmouseenter = ()=>m.querySelectorAll(".castra-cur").forEach((c,j)=>c.style.visibility = (j===i || list[j].id===CASTRA_MENU.view) ? "visible" : "hidden");
+  });
+}
+function castraMenuPick(id){
+  { const it = CASTRA_MENU_ITEMS.find(x=>x.id===id); if(it && it.unl && typeof castraUnlocked==="function" && !castraUnlocked(it.unl)){ castraLockedToast(it.unl); return; } }
+  if(id==="codex"){ castraMenuClose(); castraCodexOpen(); return; }
+  if(id==="mundus"){ castraMenuClose(); castraGeoMapOpen(); return; }
+  if(id==="servare"){ castraSave(); castraToastLa("recte", "💾 Opgeslagen"); castraMenuClose(); return; }
+  if(id==="exeo"){ castraMenuClose(); castraLeave(); return; }
+  CASTRA_MENU.parent = (CASTRA_MENU.view==='systema' && id!=='systema') ? 'systema' : (CASTRA_MENU_SUB[id] && CASTRA_MENU.view===CASTRA_MENU_SUB[id]) ? CASTRA_MENU_SUB[id] : null;
+  CASTRA_MENU.view = id; CASTRA_MENU.rs = 0; castraMenuRender();
+}
+
+/* ---------- onderdelen ---------- */
+const CASTRA_MV_ROW = "display:flex;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--parch-line,#c2a96f)";
+function castraMenuBar(cur, max, col){
+  const p = Math.max(0, Math.min(100, Math.round(100*cur/Math.max(1,max))));
+  return `<div style="height:8px;background:#d3bf8c;border:1px solid var(--parch-edge,#4a3416);border-radius:5px;overflow:hidden"><div style="width:${p}%;height:100%;background:${col}"></div></div>`;
+}
+// Portretfoto van de vorm (assets/sprites-forms/<vorm>_portrait.png); ontbreekt die, dan de td-sprite, anders de avatar.
+function castraMenuSprite(formId, look){
+  if(castraFsprHas(formId,"portrait")===undefined && !castraMenuSprite._busy){   // één keer controleren en daarna het menu vernieuwen
+    castraMenuSprite._busy = true;
+    castraFsprProbe([[formId,"portrait"]], ()=>{ castraMenuSprite._busy = false; if(typeof CASTRA_MENU!=="undefined" && CASTRA_MENU.open) castraMenuRender(); });
+  }
+  const inner = castraFsprHas(formId,"portrait")===true ? castraFsprHTML(formId,"portrait",56,"")
+    : castraFsprHas(formId,"td")===true ? castraFsprHTML(formId,"td",52,"") : castraAvatarHTML(look,"down",1,52);
+  return `<div style="flex:0 0 56px;width:56px;height:56px;position:relative">${inner}</div>`;
+}
+function castraMenuView(id){
+  if(id==="systema") return castraMenuSystem();
+  if(id==="milites") return castraMenuTeam() + castraMenuSubLinks("milites");
+  if(id==="heroes") return castraMenuHeroes();
+  if(id==="sacculus") return castraMenuBag();
+  if(id==="tabulae") return castraCardsView() + castraMenuSubLinks("tabulae");
+  if(id==="vergelijk") return castraMenuCompare();
+  if(id==="mundus") return castraGeoMapView();
+  if(id==="opus") return castraMenuQuest();
+  if(id==="profiel") return castraMenuProfile();
+  if(id==="restart") return castraMenuRestart();
+  return "";
+}
+function castraMenuTeam(){
+  const list = CASTRA.soldiers || [];
+  const cap = castraSoldierCap();
+  const rows = list.map(s=>{
+    const f = castraLine(s.line), st = castraStats(s), hurt = castraIsHurt(s), need = castraXpToNext(s.lvl);
+    const ing = CASTRA_INGENIA.find(i=>i.id===s.ingenium), sel = CASTRA_MENU.sel===s.id;
+    const det = sel ? `<div style="font-size:13px;margin-top:4px">${CASTRA_STATS.map(x=>`${esc(x.nm)} <b>${st[x.id]}</b>`).join(" · ")}<br>Aanleg: ${CASTRA_STATS.map(x=>`${esc(x.nm.slice(0,3))} ${s.indoles[x.id]||0}`).join(" ")}${ing?` · Karakter: ${esc(ing.nm)}`:""}<br>${typeof cxCompBtn==="function"?cxCompBtn("s",s.id):""}</div>` : "";
+    return `<div style="${CASTRA_MV_ROW};cursor:pointer;flex-wrap:nowrap" onclick="CASTRA_MENU.sel=${JSON.stringify(sel?null:s.id)};castraMenuRender()">
+      ${castraMenuSprite(s.line, castraFormLook(f))}
+      <div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:6px"><b>${s.insignis?"✨ ":""}${esc(castraSoldierName(s))}</b><span>Lv ${s.lvl}${s.lvl>=cap?" (max)":""}</span></div>
+        <div style="font-size:12px;opacity:.7">${castraClassBadge(f,true)} ${esc(castraFolkNm(s.line))} · tier ${f.tier}${hurt?` · 🩹 ${castraHurtMin(s)} min`:""}${typeof castraHpHTML==="function" && !hurt ? " · "+castraHpHTML(s, 50) : ""}${s.trainUntil?" · 🏋️":""}${s.job?" · ⚒️":""}${(typeof castraPartyHas==="function" && castraPartyHas(s.id))?" · 🎖️":""}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:3px"><small style="width:24px">${esc(CASTRA_STATS[0].nm.slice(0,3))}</small><div style="flex:1">${castraMenuBar(hurt?0:st.vita, st.vita, hurt?"#c33":"#3a3")}</div><b style="font-size:12px;width:64px;text-align:right">${hurt?0:st.vita}/${st.vita}</b></div>
+        <div style="display:flex;align-items:center;gap:6px"><small style="width:24px">XP</small><div style="flex:1">${castraMenuBar(s.xp, need, "#38c")}</div><b style="font-size:12px;width:64px;text-align:right">${s.xp}/${need}</b></div>
+        <div style="font-size:12px;opacity:.8">${typeof castraMvXpLine==="function"?castraMvXpLine(s, cap):""}</div>
+        ${det}${sel?castraSkillsHTML(s,"s",s.id)+(typeof castraMvMenuHTML==="function"?castraMvMenuHTML(s):""):""}</div></div>`;
+  }).join("") || `<div class="note">Nog geen soldaten. <small>No soldiers yet.</small></div>`;
+  return `<h3 style="margin:0 0 6px">Soldaten <small>${list.length} / ${castraBarracksCap()}</small></h3>${typeof castraContMenuHTML==="function"?castraContMenuHTML():""}${rows}`;
+}
+function castraMenuHeroes(){
+  const have = CASTRA.heroes || [];
+  const rows = have.map(h=>{
+    const d = CASTRA_HERO_DATA[h.id], st = castraHeroStats(h), cap = castraHeroCap(h), need = castraXpToNext(h.lvl);
+    const hsel = CASTRA_MENU.hsel===h.id;
+    return `<div style="${CASTRA_MV_ROW};cursor:pointer" onclick="CASTRA_MENU.hsel=${hsel?'null':JSON.stringify(h.id)};castraMenuRender()">
+      <div style="flex:0 0 56px;width:56px;height:56px;position:relative">${castraHeroSprHTML(h,"portrait",56,castraHeroSprHTML(h,"td_idle",52,castraHeroSprHTML(h,"td",52,castraAvatarHTML(d.look,"down",1,52))))}</div>
+      <div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between"><b>${esc(d.nm)}</b><span>Lv ${h.lvl} / ${cap}</span></div>
+        <div style="font-size:12px;opacity:.7">${esc(CASTRA_TYPE_LA[d.type].sg)} · ${esc((CASTRA_VENATIO[d.region]||{nm:d.region}).nm)}${h.assigned?` · leidt ${esc(castraBuilding(h.assigned).nm)}`:""}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:3px"><small style="width:30px">Fides</small><div style="flex:1">${castraMenuBar(h.fides||0,100,"#d4a017")}</div><b style="font-size:12px;width:40px;text-align:right">${h.fides||0}</b></div>
+        <div style="display:flex;align-items:center;gap:6px"><small style="width:30px">XP</small><div style="flex:1">${castraMenuBar(h.xp,need,"#38c")}</div><b style="font-size:12px;width:40px;text-align:right">${h.xp}/${need}</b></div>
+        <div style="font-size:12px;opacity:.8">${typeof castraMvXpLine==="function"?castraMvXpLine({ lvl:h.lvl, xp:h.xp }, cap):""}</div>
+        <div style="font-size:12px;margin-top:2px">${CASTRA_STATS.map(x=>`${esc(x.nm.slice(0,3))} ${st[x.id]}`).join(" · ")}</div>${hsel?castraSkillsHTML({ hero:true, h },"h",h.id)+(typeof castraHeroEvoMenuHTML==="function"?castraHeroEvoMenuHTML(h):"")+(typeof castraMvMenuHTML==="function"?castraMvMenuHTML(castraHeroAsUnit(h)):"")+(typeof cxCompBtn==="function"?cxCompBtn("h",h.id):""):"<div style=\"font-size:12px;opacity:.6;margin-top:2px\">🎓 "+castraSkillIds({ hero:true, h }).length+" / 4 artes — tik voor details</div>"}</div></div>`;
+  }).join("") || `<div class="note">Nog geen helden. <small>No heroes yet: look for traces during the hunt and talk to them.</small></div>`;
+  return `<h3 style="margin:0 0 6px">Helden <small>${have.length} / ${Object.keys(CASTRA_HERO_DATA).length}</small></h3>${rows}`;
+}
+function castraMenuBag(){
+  const cap = castraWalletCap();
+  const res = CASTRA_RES.map(r=>`<div style="${CASTRA_MV_ROW}"><span style="font-size:24px;width:32px;text-align:center">${r.icon}</span><div style="flex:1"><b>${esc(r.nm)}</b> <small style="opacity:.6">${esc(r.nl)}</small></div><b>${CASTRA.res[r.id]||0}</b>${r.id!=="gloria"?`<small style="opacity:.6"> / ${cap}</small>`:""}</div>`).join("");
+  const bld = CASTRA_BUILDINGS.filter(b=>b.phase===1 && !b.fixed).map(b=>`<span style="display:inline-block;margin:2px 6px 2px 0;font-size:13px">${b.icon||"🏠"} ${esc(b.nm)} <b>${castraLvl(b.id)||"🔨"}</b></span>`).join("");
+  const its = Object.keys(CASTRA.items||{}).filter(k=>CASTRA.items[k] && CASTRA_ITEMS[k]).map(k=>`<span style="display:inline-block;margin:2px 8px 2px 0;font-size:15px">${CASTRA_ITEMS[k].icon} ${esc(CASTRA_ITEMS[k].nm)} <small style="opacity:.6">${esc(CASTRA_ITEMS[k].nl)}</small></span>`).join("");
+  return `<h3 style="margin:0 0 6px">Rugzak <small>supplies</small></h3>${res}<h4 style="margin:10px 0 2px">Spullen <small>items</small></h4><div>${its||"<small style='opacity:.6'>Nog geen voorwerpen. Zoek ze in de regio's (✨).</small>"}</div><h4 style="margin:10px 0 2px">Gebouwen <small>buildings</small></h4><div>${bld}</div>`;
+}
+function castraMenuQuest(){
+  const T = CASTRA.tut, out = [];
+  if(T && T.step===1) out.push(CASTRA_TUT_TEXT.bar1);
+  if(T && T.step===2) out.push(CASTRA_TUT_TEXT.bar2);
+  (typeof castraWobjOpus==="function" ? castraWobjOpus() : []).forEach(t=>out.push(t));
+  Object.keys(CASTRA.quests||{}).forEach(id=>{
+    if(typeof castraHero==="function" && castraHero(id)) return;            // al in je heroum
+    const d = CASTRA_HERO_DATA[id]; if(!d || !CASTRA.quests[id].acc) return;
+    const s = typeof castraStepOf==="function" ? castraStepOf(id) : null; if(s && s.hud) out.push({ la:s.hud.la, nl:d.nm+": "+s.hud.nl });
+  });
+  const html = out.map((t,i)=>`<div style="${CASTRA_MV_ROW};display:block"><div style="font-size:17px">${castraLaHTML(t.la, t.nl, "menu_opus"+i)}</div><div style="font-size:13px;opacity:.75">${esc(t.nl)}</div></div>`).join("");
+  return `<h3 style="margin:0 0 6px">Opdracht <small>task</small></h3>${html || `<div class="note">Geen opdracht. <small>No active task: talk to a hero in the regions.</small></div>`}`;
+}
+function castraMenuProfile(){
+  const name = castraPlayerName() || "Dux";
+  const seen = Object.keys(CASTRA.codex||{}).length, tot = CASTRA_FORM_LIST.length;
+  const open = Object.keys(CASTRA_WORLDS).filter(id=>castraRegionOpen(id)).length;
+  const done = CASTRA_P_MISSIONS.filter(m=>castraPMissionDone(m.id)).length;
+  const rows = [
+    ["Roem", `🏆 ${CASTRA.res.gloria||0}`],
+    ["Soldaten", `${(CASTRA.soldiers||[]).length} / ${castraBarracksCap()}`],
+    ["Helden", `${(CASTRA.heroes||[]).length} / ${Object.keys(CASTRA_HERO_DATA).length}`],
+    ["Regio's open", `${open} / ${Object.keys(CASTRA_WORLDS).length}`],
+    ["Missies gewonnen", `${done} / ${CASTRA_P_MISSIONS.length}`],
+    ["Codex", `${seen} / ${tot} vormen`],
+  ];
+  const av = (typeof BM_IDENT!=="undefined" && BM_IDENT && BM_IDENT.avatar) ? `<div style="flex:0 0 96px;width:96px;height:96px;position:relative">${castraAvatarHTML(BM_IDENT.avatar,"down",1,96)}</div>` : "";
+  const ti = typeof castraTitle==="function" ? castraTitle() : null, stars = Object.keys(CASTRA.coll||{}).filter(k=>k[0]==="v").length;
+  const lv = typeof castraPLevelInfo==="function" ? castraPLevelInfo() : null;
+  const lvHtml = lv ? `<div style="margin:2px 0 8px"><div style="display:flex;justify-content:space-between;font-size:14px"><b>Castra-niveau ${lv.L}</b><span style="opacity:.7">${lv.x - lv.a} / ${lv.b - lv.a} XP</span></div>${castraMenuBar(lv.x-lv.a, lv.b-lv.a, "#d4a017")}<div style="font-size:12px;opacity:.8;margin-top:2px">${lv.next?`Volgende ontgrendeling op niveau ${lv.next.lvl}: <b>${esc(lv.next.la)}</b> (${esc(lv.next.nl)})`:"Alles is ontgrendeld."}</div></div>` : "";
+  return `<h3 style="margin:0 0 2px">${esc(name)}</h3><div style="font-size:14px;margin-bottom:6px;color:#7a2a14"><b>${ti?esc(ti.title):"—"}</b> <small>${ti?"("+esc(ti.nl)+")":""}</small>${stars?` · ⭐ ${stars}`:""}</div>${lvHtml}<div style="display:flex;gap:12px;align-items:center">${av}<div style="flex:1">${rows.map(r=>`<div style="display:flex;justify-content:space-between;padding:3px 0;border-top:1px solid var(--parch-line,#c2a96f)"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")}</div></div>`;
+}
+
+// Knoppen onderaan een onderdeel naar zijn onderdelen (zie CASTRA_MENU_SUB)
+function castraMenuSubLinks(parent){
+  const its = CASTRA_MENU_ITEMS.filter(it=>CASTRA_MENU_SUB[it.id]===parent); if(!its.length) return "";
+  return `<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">${its.map(it=>{
+    const lock = it.unl && typeof castraUnlocked==="function" && !castraUnlocked(it.unl);
+    return `<button class="btn" style="min-height:44px" onclick="castraMenuPick('${it.id}')">${lock?"🔒 ":""}${esc(it.la)} <small style="opacity:.65">${esc(it.nl)}</small></button>`; }).join("")}</div>`;
+}
+
+/* ---------- Systema: de technische knoppen bij elkaar ---------- */
+function castraMenuSystem(){
+  const rows = CASTRA_MENU_SYS.map(id=>CASTRA_MENU_ITEMS.find(x=>x.id===id)).filter(Boolean).map(it=>
+    `<div role="button" tabindex="0" onclick="castraMenuPick('${it.id}')" style="${CASTRA_MV_ROW};cursor:pointer;min-height:48px"><span style="font-size:24px;width:34px;text-align:center">${CASTRA_MENU_ICON[it.id]||"•"}</span><div style="flex:1"><b style="font-size:18px">${esc(it.la)}</b><br><small style="opacity:.65">${esc(it.nl)}</small></div><span style="opacity:.5">›</span></div>`).join("");
+  return `<h3 style="margin:0 0 6px">Instellingen <small>settings and quitting</small></h3>${rows}`;
+}
+
+/* ---------- onderbalk: de vijf vaakst gebruikte onderdelen (door castra-stage.js onder de kaart gezet) ---------- */
+function castraNavBadge(id){
+  if(id!=="opus" || typeof castraQuestState!=="function" || typeof CASTRA_QDEFS==="undefined") return "";
+  try{ return CASTRA_QDEFS.some(q=>{ const s = castraQuestState(q); return s==="READY" || s==="AVAILABLE"; }) ? "❗" : ""; }catch(e){ return ""; }
+}
+function castraNavHTML(){
+  return CASTRA_MENU_NAV.map(id=>{
+    const it = CASTRA_MENU_ITEMS.find(x=>x.id===id); if(!it) return "";
+    const lock = it.unl && typeof castraUnlocked==="function" && !castraUnlocked(it.unl), bd = castraNavBadge(id);
+    return `<button class="cgn" data-nav="${id}" onclick="castraNavPick('${id}')" aria-label="${esc(it.la)}"><span class="ic">${lock?"🔒":CASTRA_MENU_ICON[id]}</span><span class="lb">${esc(it.la)}</span>${bd?`<span class="bd">${bd}</span>`:""}</button>`;
+  }).join("");
+}
+function castraNavPick(id){
+  if(id==="mundus"){ castraMenuPick(id); return; }
+  castraMenuOpen(); castraMenuPick(id);
+}
+function castraNavRefresh(){ const n = document.getElementById("cgNav"); if(n){ const h = castraNavHTML(); if(n.dataset.h!==h){ n.dataset.h = h; n.innerHTML = h; } } }
+
+/* ---------- Restart (alles wissen en opnieuw beginnen, met tutorial) ---------- */
+function castraMenuRestart(){
+  const step = CASTRA_MENU.rs || 0;
+  const list = "soldaten, helden, gebouwen, grondstoffen, behaalde missies, codex en je tutorial-voortgang";
+  if(step===0) return `<h3 style="margin:0 0 6px">Restart</h3>
+    <p style="font-size:15px">Wil je Castra Heroum <b>helemaal opnieuw beginnen</b>? Dan begin je weer met het tutorial en een leeg kamp.</p>
+    <p style="font-size:14px;opacity:.8">Je verliest: ${list}.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn btn-gold" style="min-height:44px" onclick="castraMenuPick('systema')">Nee, terug</button>
+      <button class="btn" style="min-height:44px" onclick="CASTRA_MENU.rs=1;castraMenuRender()">Ja, opnieuw beginnen…</button></div>`;
+  return `<h3 style="margin:0 0 6px;color:#8a1c10">Weet je het zeker?</h3>
+    <p style="font-size:15px"><b>Dit kan niet ongedaan worden gemaakt.</b> Alles wat je met ${esc(castraPlayerName()||"je profiel")} in Castra Heroum hebt opgebouwd wordt gewist, ook in de cloud-opslag van je profiel.</p>
+    <p style="font-size:13px;opacity:.8">Je Battle Mode-profiel, avatar en munten blijven gewoon bestaan.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn btn-gold" style="min-height:44px" onclick="castraMenuPick('systema')">Annuleren</button>
+      <button class="btn" style="min-height:44px;border-color:#8a1c10;color:#8a1c10" onclick="castraRestartNow()">Ja, alles wissen</button></div>`;
+}
+function castraRestartNow(){
+  castraDlgClose(true); CASTRA_WORLD_BUILT = {};
+  CASTRA = castraNewState();
+  CASTRA.help = { words:{}, sentences:{} }; CASTRA.traces = {};
+  castraSave(); castraSync();                  // meteen ook naar de cloud, anders haalt een herlaad de oude save terug
+  castraMenuClose();
+  go("castraHome");
+}
+
+// Arte aan/uit zetten vanuit het menu (soldaat of held).
+function castraMenuSkill(kind, id, skillId){
+  const unit = kind==="h" ? { hero:true, h:(CASTRA.heroes||[]).find(x=>x.id===id) } : (CASTRA.soldiers||[]).find(x=>x.id===id);
+  if(!unit || (kind==="h" && !unit.h)) return;
+  const err = castraSkillToggle(unit, skillId);
+  if(err==="vol") toast("Maximaal 4 artes", "Zet eerst een andere arte uit om deze te kiezen.");
+  else if(err==="gevecht") toast("Niet tijdens een gevecht", "Kies je artes in het kamp.");
+  else if(err==="vergrendeld") castraLockedToast("artes");
+  castraMenuRender();
+}
+
+
+/* ---------- Compara: soldaten en helden en hun artes vergelijken ---------- */
+function castraUnitById(id){
+  if(String(id).indexOf("h:")===0){ const h = (CASTRA.heroes||[]).find(x=>x.id===String(id).slice(2)); return h ? { hero:true, h } : null; }
+  return (CASTRA.soldiers||[]).find(x=>x.id===id) || null;
+}
+function castraUnitName(u){ return u.hero ? CASTRA_HERO_DATA[u.h.id].nm : castraSoldierName(u); }
+// Richtwaarden (aanname: vijand met tutela 8); voor vergelijken, niet als exacte schade.
+function castraUnitPower(u){
+  const st = u.hero ? castraHeroStats(u.h) : castraStats(u), a = castraSkillAgg(castraSkillIds(u));
+  const range = (CASTRA_P.rangeBase + st.ambitus*CASTRA_P.rangePerAmb)*(100+a.rng)/100/1000;
+  const cd = Math.max(CASTRA_P.cdMin, Math.round((CASTRA_P.cdBase - st.celeritas*CASTRA_P.cdPerCel)*(100-a.cd)/100)), hps = 20/cd;
+  const base = Math.max(1, st.impetus - Math.floor(8*2/5*(100-a.pierce)/100));
+  let mult = (100+a.dmg)/100;
+  if(a.nth) mult *= 1 + (a.nth.mult-1)/a.nth.n;
+  if(a.doubleEvery) mult *= 1 + 1/a.doubleEvery;
+  if(a.splash) mult *= 1 + 0.5*a.splash.pct/100;
+  const dps = base*mult*hps;
+  const team = [];
+  if(a.auraDmg) team.push(`+${a.auraDmg}% schade voor torens binnen ${(a.auraRadius/1000).toFixed(1)} tegels`);
+  if(a.global) team.push(`+${a.global}% schade voor alle torens`);
+  if(a.regen) team.push(`+${a.regen} leven na elke golf`);
+  if(a.reward) team.push(`+${a.reward}% beloning`);
+  if(a.slow) team.push(`vertraagt ${a.slow.pct}% (elke ${a.slow.every}e treffer)`);
+  return { st, a, range, hps, dps, team, skills: castraSkillsOf(u).filter(k=>k.equipped) };
+}
+function castraMenuCompare(){
+  const all = (CASTRA.soldiers||[]).map(s=>({ id:s.id, u:s })).concat((CASTRA.heroes||[]).map(h=>({ id:"h:"+h.id, u:{ hero:true, h } })));
+  const sel = CASTRA_MENU.cmp || (CASTRA_MENU.cmp = []);
+  const chips = all.map(x=>{ const on = sel.includes(x.id), lv = x.u.hero ? x.u.h.lvl : x.u.lvl;
+    return `<button class="btn ${on?"btn-gold":""}" style="margin:2px;min-height:40px;font-size:13px" onclick="castraMenuCmpPick('${x.id}')">${x.u.hero?"⭐ ":""}${esc(castraUnitName(x.u))} <small>Lv ${lv}</small></button>`; }).join("");
+  let table = "";
+  if(sel.length===2){
+    const U = sel.map(castraUnitById);
+    if(U[0] && U[1]){
+      const P = U.map(castraUnitPower), best = (f,hi)=>{ const v = P.map(f); return v[0]===v[1] ? -1 : (hi ? (v[0]>v[1]?0:1) : (v[0]<v[1]?0:1)); };
+      const cell = (i,txt,w)=>`<td style="padding:4px 6px;${w===i?"background:rgba(212,175,55,.35);font-weight:bold":""}">${txt}</td>`;
+      const row = (lbl,f,fmt,hi)=>{ const w = best(f,hi); return `<tr><td style="padding:4px 6px;opacity:.75">${lbl}</td>${cell(0,fmt(P[0]),w)}${cell(1,fmt(P[1]),w)}</tr>`; };
+      const cls = U.map(u=>{ const c = castraSkillClassOf(u); const b = typeof BM_CLASSES!=="undefined" ? BM_CLASSES.find(x=>x.id===c) : null; return b ? b.nm : (c==="myth"?"Monster":"—"); });
+      table = `<table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:14px">
+        <tr><th></th><th style="text-align:left;padding:4px 6px">${esc(castraUnitName(U[0]))}</th><th style="text-align:left;padding:4px 6px">${esc(castraUnitName(U[1]))}</th></tr>
+        <tr><td style="padding:4px 6px;opacity:.75">Klasse</td><td style="padding:4px 6px">${esc(cls[0])}</td><td style="padding:4px 6px">${esc(cls[1])}</td></tr>
+        ${CASTRA_STATS.map(s=>row(esc(s.nm), p=>p.st[s.id], p=>p.st[s.id], true)).join("")}
+        ${row("Bereik", p=>p.range, p=>p.range.toFixed(1)+" tegels", true)}
+        ${row("Schoten per s", p=>p.hps, p=>p.hps.toFixed(2), true)}
+        ${row("<b>Schade per s</b>", p=>p.dps, p=>"<b>≈ "+p.dps.toFixed(1)+"</b>", true)}
+        <tr><td style="padding:4px 6px;opacity:.75;vertical-align:top">Artes in gebruik</td>${P.map(p=>`<td style="padding:4px 6px;vertical-align:top">${p.skills.length?p.skills.map(k=>`<div>🎓 <b>${esc(k.la)}</b><br><small>${esc(k.nl)}</small></div>`).join(""):"<small style='opacity:.6'>geen</small>"}</td>`).join("")}</tr>
+        <tr><td style="padding:4px 6px;opacity:.75;vertical-align:top">Bonus voor het team</td>${P.map(p=>`<td style="padding:4px 6px;vertical-align:top;font-size:13px">${p.team.length?p.team.map(t=>"• "+esc(t)).join("<br>"):"<small style='opacity:.6'>geen</small>"}</td>`).join("")}</tr></table>
+        <div style="font-size:12px;opacity:.7;margin-top:4px">Gemarkeerd = beste waarde. "Schade per s" is een richtwaarde (tegen een vijand met tutela 8) om opstellingen te vergelijken; teambonussen zitten er niet in.</div>`;
+    }
+  }
+  return `<h3 style="margin:0 0 4px">Compara <small>vergelijken</small></h3>
+    <div style="font-size:13px;opacity:.85;margin-bottom:4px">Kies twee soldaten of helden (${sel.length} / 2) en vergelijk hun stats en artes. Wijzig je artes onder Milites of Heroes en kom terug om het effect te zien.</div>
+    <div>${chips||"<small>Nog geen soldaten.</small>"}</div>${table}`;
+}
+function castraMenuCmpPick(id){
+  const sel = CASTRA_MENU.cmp || (CASTRA_MENU.cmp = []);
+  const i = sel.indexOf(id); if(i>=0) sel.splice(i,1); else { if(sel.length>=2) sel.shift(); sel.push(id); }
+  castraMenuRender();
+}
+
+/* ---------- sluitknop (✕) op alle losse vakken ----------
+   Kamppanelen (#castraPanel) en wereldpanelen (#cwPanel) krijgen rechtsboven een ✕, ook als er al een
+   eigen "Sluiten"-knop onderaan staat (die kan buiten beeld liggen bij lange vakken, zoals de codex). */
+function castraXBtnHTML(fn){
+  return `<button class="castra-xbtn" onclick="${fn}()" aria-label="Sluiten" title="Sluiten" style="position:absolute;top:6px;right:6px;z-index:5;min-width:40px;min-height:40px;font-size:20px;line-height:1;background:rgba(0,0,0,.35);color:var(--cream,#f3e9d2);border:1px solid var(--hi-dim,#9c7c1f);border-radius:8px;cursor:pointer">✕</button>`;
+}
+function castraXBtnAttach(box, fn){
+  if(!box) return; const first = box.querySelector(".panel"); if(!first || first.querySelector(".castra-xbtn")) return;
+  first.style.position = "relative"; first.insertAdjacentHTML("afterbegin", castraXBtnHTML(fn));
+}
+const _castraOpenPanelX0 = castraOpenPanel;
+castraOpenPanel = function(html){ _castraOpenPanelX0(html); castraXBtnAttach(el("castraPanel"), "castraClosePanel"); };
