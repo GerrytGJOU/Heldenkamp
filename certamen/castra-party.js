@@ -33,7 +33,7 @@ function castraPartyLead(id){ const p = castraPartySync(), i = p.indexOf(id); if
 /* ---------- menu: Contubernium ---------- */
 (function(){
   const i = CASTRA_MENU_ITEMS.findIndex(x=>x.id==="milites");
-  CASTRA_MENU_ITEMS.splice(i<0 ? 1 : i+1, 0, { id:"party", la:"Contubernium", nl:"je groep van acht" });
+  CASTRA_MENU_ITEMS.splice(i<0 ? 1 : i+1, 0, { id:"party", la:"Je groep van acht", nl:"your group of eight" });
 })();
 const _castraMenuViewPt0 = castraMenuView;
 castraMenuView = function(id){

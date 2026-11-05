@@ -17,7 +17,7 @@
    Laadt als laatste (na castra-moves.js en castra-xp.js).
    ============================================================================ */
 
-const CASTRA_DQ_YES = { la:"Accipio", nl:"aannemen" }, CASTRA_DQ_NO = { la:"Nunc non", nl:"nu niet" };
+const CASTRA_DQ_YES = { la:"Aannemen", nl:"accept" }, CASTRA_DQ_NO = { la:"Nu niet", nl:"not now" };
 const CASTRA_QDEFS = [
   { id:"l_senator", giver:"senator", region:"latium", nm:{ la:"Miles fortis", nl:"Een sterke soldaat" },
     ask:[ { la:"Gegroet, leider {naam}! Ik zoek sterke soldaten.", nl:"Greetings, leader {naam}! I am looking for strong soldiers." },
@@ -26,13 +26,13 @@ const CASTRA_QDEFS = [
             { kind:"catch", n:2, hud:{ la:"Vang twee vijanden.", nl:"Capture two enemies." } } ],
     done:[ { la:"Uitstekend, leider {naam}! Hier is je beloning.", nl:"Excellent, leader {naam}! Here is your reward." } ],
     reward:{ aes:120, frumentum:60, gloria:2, pxp:30 } },
-  { id:"l_matrona", giver:"matrona_villa", region:"latium", nm:{ la:"Anulus perditus", nl:"De verloren ring" },
+  { id:"l_matrona", giver:"matrona_villa", region:"latium", nm:{ la:"De verloren ring", nl:"The lost ring" },
     ask:[ { la:"Ach, gast {naam}! Mijn ring is verdwenen.", nl:"Oh, guest {naam}! My ring is gone." },
           { la:"Zoek mijn ring op de velden, alsjeblieft (hij ligt ergens buiten in Latium).", nl:"Please look for my ring in the fields (it lies somewhere outside in Latium).", opts:[CASTRA_DQ_YES, CASTRA_DQ_NO] } ],
     steps:[ { kind:"find", region:"latium", icon:"💍", nm:"verloren ring", hud:{ la:"Zoek de ring buiten in Latium.", nl:"Find the ring outside in Latium." } } ],
     done:[ { la:"Mijn ring! Dank je wel, leider {naam}!", nl:"My ring! Thank you, leader {naam}!" } ],
     reward:{ aes:90, frumentum:50, gloria:2, pxp:30, token:1 } },
-  { id:"l_faber", giver:"faber", region:"latium", nm:{ la:"Murus novus", nl:"Een nieuwe muur" },
+  { id:"l_faber", giver:"faber", region:"latium", nm:{ la:"Een nieuwe muur", nl:"A new wall" },
     ask:[ { la:"Gegroet, leider {naam}! Ik bouw een nieuwe muur.", nl:"Greetings, leader {naam}! I am building a new wall." },
           { la:"Win op de Via Latina (missie 2) en versla vier vijanden op de weg.", nl:"Win on the Via Latina (mission 2) and defeat four enemies on the road.", opts:[CASTRA_DQ_YES, CASTRA_DQ_NO] } ],
     steps:[ { kind:"win", mission:"m2", hud:{ la:"Win de missie Via Latina.", nl:"Win the Via Latina mission." } },
@@ -46,7 +46,7 @@ const CASTRA_QDEFS = [
             { kind:"kill", n:5, region:"graecia", terrain:"litus", hud:{ la:"Versla vijanden aan de kust.", nl:"Defeat enemies on the coast." } } ],
     done:[ { la:"Uitstekend! Je bent snel, leider {naam}.", nl:"Excellent! You are fast, leader {naam}." } ],
     reward:{ aes:150, frumentum:80, gloria:2, pxp:35 } },
-  { id:"g_pythia", giver:"quiz_graecia", region:"graecia", nm:{ la:"Oraculum", nl:"Het orakel" },
+  { id:"g_pythia", giver:"quiz_graecia", region:"graecia", nm:{ la:"Het orakel", nl:"The oracle" },
     ask:[ { la:"Gegroet, gast {naam}! Het orakel spreekt.", nl:"Greetings, guest {naam}! The oracle speaks." },
           { la:"Zoek de dichter op en win de eerste missie in Graecia.", nl:"Find the poet and win the first mission in Graecia.", opts:[CASTRA_DQ_YES, CASTRA_DQ_NO] } ],
     steps:[ { kind:"talk", npc:"q_graecia", hud:{ la:"Praat met de dichter (Graecia).", nl:"Talk to the poet (Graecia)." },
@@ -62,7 +62,7 @@ const CASTRA_QDEFS = [
             { kind:"kill", n:6, region:"troia", terrain:"muros", hud:{ la:"Versla vijanden voor de muren.", nl:"Defeat enemies in front of the walls." } } ],
     done:[ { la:"Uitstekend, leider {naam}! Troje is veilig.", nl:"Excellent, leader {naam}! Troy is safe." } ],
     reward:{ aes:170, frumentum:90, gloria:3, pxp:40 } },
-  { id:"t_servus", giver:"rest_troia", region:"troia", nm:{ la:"Vinum perditum", nl:"De verloren wijn" },
+  { id:"t_servus", giver:"rest_troia", region:"troia", nm:{ la:"De verloren wijn", nl:"The lost wine" },
     ask:[ { la:"Gegroet, gast {naam}! Een amfoor wijn is zoekgeraakt.", nl:"Greetings, guest {naam}! A jar of wine has gone missing." },
           { la:"Zoek de amfoor ergens buiten in Troje, alsjeblieft.", nl:"Please look for the jar somewhere outside in Troy.", opts:[CASTRA_DQ_YES, CASTRA_DQ_NO] } ],
     steps:[ { kind:"find", region:"troia", icon:"🍷", nm:"amfoor wijn", hud:{ la:"Zoek de amfoor wijn buiten in Troje.", nl:"Find the jar of wine outside in Troy." } } ],
@@ -86,8 +86,8 @@ function castraDqAvailable(q){
    meld je bij de gever) → COMPLETED. De toestand wordt altijd uit de bestaande gegevens (CASTRA.dq en de voorwaarden) afgeleid,
    er is dus geen aparte opslag of migratie. Diarium en markeringen (❗ ❓ 💬) lezen alleen deze functie. */
 const CASTRA_QSTATE = {
-  LOCKED:{ la:"Clausa", nl:"nog dicht" }, AVAILABLE:{ la:"Parata", nl:"beschikbaar" }, ACTIVE:{ la:"Agitur", nl:"bezig" },
-  READY:{ la:"Perfecta", nl:"klaar om in te leveren" }, COMPLETED:{ la:"Confecta", nl:"afgerond" },
+  LOCKED:{ la:"Clausa", nl:"nog dicht" }, AVAILABLE:{ la:"Beschikbaar", nl:"available" }, ACTIVE:{ la:"Bezig", nl:"busy" },
+  READY:{ la:"Klaar om in te leveren", nl:"ready to hand in" }, COMPLETED:{ la:"Confecta", nl:"afgerond" },
 };
 function castraQuestState(id){
   const q = typeof id==="string" ? castraDqDef(id) : id; if(!q) return null;

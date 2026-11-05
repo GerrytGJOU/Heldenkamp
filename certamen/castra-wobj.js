@@ -21,17 +21,17 @@
 
 /* ---------- voorwerpen ---------- */
 const CASTRA_ITEMS = {
-  amphora:    { nm:"Amphora",    icon:"🏺", nl:"amfoor" },
-  lyra:       { nm:"Lyra",       icon:"🎶", nl:"lier" },
+  amphora:    { nm:"Amfoor",    icon:"🏺", nl:"amphora" },
+  lyra:       { nm:"Lier",       icon:"🎶", nl:"lyre" },
   clipeus:    { nm:"Clipeus",    icon:"🛡️", nl:"schild" },
   torques:    { nm:"Torques",    icon:"📿", nl:"halsband" },
-  scarabaeus: { nm:"Scarabaeus", icon:"🪲", nl:"scarabee" },
-  corona:     { nm:"Corona",     icon:"👑", nl:"kroon" },
-  ebur:       { nm:"Ebur",       icon:"🦷", nl:"ivoor" },
+  scarabaeus: { nm:"Scarabee", icon:"🪲", nl:"scarab" },
+  corona:     { nm:"Kroon",     icon:"👑", nl:"crown" },
+  ebur:       { nm:"Ivoor",       icon:"🦷", nl:"ivory" },
   gladius:    { nm:"Gladius",    icon:"🗡️", nl:"zwaard" },
-  galea:      { nm:"Galea",      icon:"⛑️", nl:"helm" },
-  cornu:      { nm:"Cornu",      icon:"📯", nl:"hoorn" },
-  arcus:      { nm:"Arcus",      icon:"🏹", nl:"boog" },
+  galea:      { nm:"Helm",      icon:"⛑️", nl:"helmet" },
+  cornu:      { nm:"Hoorn",      icon:"📯", nl:"horn" },
+  arcus:      { nm:"Boog",      icon:"🏹", nl:"bow" },
 };
 /* ---------- per regio: opdrachtgever, voorwerp, gebouw ---------- */
 // Latijn: acc = 4e naamval, nom = 1e naamval, pn/pa = mijn (1e/4e naamval), where = waar het ligt.
@@ -50,10 +50,10 @@ const CASTRA_WREG = {
 };
 // Gebouwtypes: Latijnse naam, Nederlandse naam, effect (heal of dagelijkse grondstof) en kaartstukken.
 const CASTRA_WBT = {
-  puteus:   { la:"Puteus",   acc:"puteum",   done:"paratus", nl:"put",        eff:"heal",              say:{ la:"Het water geneest je soldaten.",        nl:"The water heals your soldiers." },        built:[["well",0],["barrel",1]] },
-  horreum:  { la:"Horreum",  acc:"horreum",  done:"paratum", nl:"graanschuur", eff:{ frumentum:40 },   say:{ la:"De graanschuur geeft elke dag graan.",         nl:"The granary gives grain every day." },  built:[["crate_a",0],["crate_b",1]] },
-  lignatio: { la:"Lignatio", acc:"lignationem", done:"parata", nl:"houtzagerij", eff:{ lignum:40 },   say:{ la:"De houtzagerij geeft elke dag hout.",           nl:"The sawmill gives wood every day." },   built:[["stump",0],["fence",1]] },
-  metallum: { la:"Metallum", acc:"metallum", done:"paratum", nl:"mijn",        eff:{ aes:40 },         say:{ la:"De mijn geeft elke dag brons.",          nl:"The mine gives bronze every day." },         built:[["rock_grey",0],["rock_brown",1]] },
+  puteus:   { la:"Put",   acc:"puteum",   done:"paratus", nl:"well",        eff:"heal",              say:{ la:"Het water geneest je soldaten.",        nl:"The water heals your soldiers." },        built:[["well",0],["barrel",1]] },
+  horreum:  { la:"Graanschuur",  acc:"horreum",  done:"paratum", nl:"granary", eff:{ frumentum:40 },   say:{ la:"De graanschuur geeft elke dag graan.",         nl:"The granary gives grain every day." },  built:[["crate_a",0],["crate_b",1]] },
+  lignatio: { la:"Houtzagerij", acc:"lignationem", done:"parata", nl:"sawmill", eff:{ lignum:40 },   say:{ la:"De houtzagerij geeft elke dag hout.",           nl:"The sawmill gives wood every day." },   built:[["stump",0],["fence",1]] },
+  metallum: { la:"Mijn", acc:"metallum", done:"paratum", nl:"mine",        eff:{ aes:40 },         say:{ la:"De mijn geeft elke dag brons.",          nl:"The mine gives bronze every day." },         built:[["rock_grey",0],["rock_brown",1]] },
 };
 // Vaste plekken per regio (x,y); site = linkerhelft van de bouwplaats (de rechterhelft staat op x+1).
 const CASTRA_WPOS = {
@@ -236,7 +236,7 @@ function castraWBuildText(bid){
 }
 const CASTRA_WPUZ_HI = [
   { la:"Gegroet, leider {naam}! Laten we spelen!", nl:"Greetings, leader {naam}! Let's play!" },
-  { la:"Welk spel kies je?", nl:"Which game do you choose?", opts:[ { la:"Ordo verborum", nl:"woorden op volgorde" }, { la:"Verba iungere", nl:"woorden koppelen" }, { la:"Nunc non", nl:"nu niet" } ] },
+  { la:"Welk spel kies je?", nl:"Which game do you choose?", opts:[ { la:"Ordo verborum", nl:"woorden op volgorde" }, { la:"Verba iungere", nl:"woorden koppelen" }, { la:"Nu niet", nl:"not now" } ] },
 ];
 
 function castraWSay(e, lines, done){ castraDlgOpen({ nm:e.nm, look:castraWLook(e) }, lines, done); }
@@ -256,7 +256,7 @@ function castraWNpcTalk(e){
     if(castraWBuilt(bid)){ castraWSay(e, T.built, null); return; }
     q.step = 1; castraSave(); castraWRefreshHud();
     const can = castraCanPay(B.cost);
-    const lines = T.ask.concat([ can ? { la:"Wil je mij hout en brons geven?", nl:"Do you want to give me wood and bronze?", opts:[ { la:"Do", nl:"geven" }, { la:"Nondum", nl:"nog niet" } ] }
+    const lines = T.ask.concat([ can ? { la:"Wil je mij hout en brons geven?", nl:"Do you want to give me wood and bronze?", opts:[ { la:"Geven", nl:"give" }, { la:"Nog niet", nl:"not yet" } ] }
                                      : { la:"Je hebt nog niet genoeg.", nl:"You do not have enough yet." } ]);
     castraWSay(e, lines, k=>{
       if(k===0 && castraCanPay(B.cost)){

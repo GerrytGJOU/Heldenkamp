@@ -40,12 +40,12 @@ const CASTRA_FORM_CATCH = {
   myt_lemur:0.8, myt_silenus:0.85, myt_mumia:0.6, myt_draco2:0.35,
 };
 function castraFormCatch(formId){ return CASTRA_FORM_CATCH[formId] != null ? CASTRA_FORM_CATCH[formId] : 1; }
-const CASTRA_MV_BASIC  = { id:"oppugna", la:"Oppugna", nl:"Gewone aanval", kind:"dmg", power:50, acc:100, pp:0 };
+const CASTRA_MV_BASIC  = { id:"oppugna", la:"Gewone aanval", nl:"Normal attack", kind:"dmg", power:50, acc:100, pp:0 };
 const CASTRA_MV_DEFEND = { id:"defende", la:"Defende", nl:"Verdedig: deze beurt de helft minder schade (niet twee keer achter elkaar)", kind:"guard", pp:0, prio:2 };
 // eff = bijwerkingen na een treffer: { st:"vulnus", p:25 } (status op de vijand) of { stage:["cel",-1], p:100 } (stage van de vijand; self:true = van jezelf)
 const CASTRA_MV_SIG = {
-  inf:  { id:"sig_inf",  la:"Gravis ictus", nl:"Zware slag", kind:"dmg", power:72, acc:90,  pp:6 },
-  rec:  { id:"sig_inf",  la:"Gravis ictus", nl:"Zware slag", kind:"dmg", power:72, acc:90,  pp:6 },
+  inf:  { id:"sig_inf",  la:"Zware slag", nl:"Heavy blow", kind:"dmg", power:72, acc:90,  pp:6 },
+  rec:  { id:"sig_inf",  la:"Zware slag", nl:"Heavy blow", kind:"dmg", power:72, acc:90,  pp:6 },
   rng:  { id:"sig_rng",  la:"Sagitta",      nl:"Pijl die een kwart van de verdediging negeert", kind:"dmg", power:60, acc:100, pp:8, pierce:25, eff:[{ st:"vulnus", p:25 }] },
   cav:  { id:"sig_cav",  la:"Incursus",     nl:"Snelle uitval (gaat eerst)", kind:"dmg", power:62, acc:95, pp:6, prio:1 },
   sup:  { id:"sig_sup",  la:"Cura",         nl:"Geneest 30% van je levenspunten", kind:"heal", pp:4 },
@@ -524,8 +524,8 @@ function castraVResultHTML(){
 
 /* ---------- teksten ---------- */
 Object.assign(CASTRA_LA, {
-  capere:           { la:"Capere", nl:"Vangen" },
-  fuga:             { la:"Fuga", nl:"Vluchten" },
+  capere:           { la:"Vangen", nl:"Capture" },
+  fuga:             { la:"Vluchten", nl:"Flee" },
   captus_est:       { la:"De vijand is gevangen!", nl:"The enemy is captured!" },
   hostis_adiungit:  { la:"De vijand sluit zich bij je aan.", nl:"The enemy joins you." },
   hostis_fugit_victus:{ la:"De verslagen vijand vlucht. Wil je een vijand in je kamp? Vang hem voor hij verslagen is.", nl:"The defeated enemy flees. Do you want an enemy in your camp? Capture him before he is defeated." },

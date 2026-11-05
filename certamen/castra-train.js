@@ -16,9 +16,9 @@ const CASTRA_TRAIN_POS = {
   themiscyra:[[29,41],[29,26],[33,6]],
 };
 const CASTRA_TRAIN_KINDS = [
-  { nm:"Venator",   la:"Gegroet, gast! Ik ben een jager. Laten we vechten!",            nl:"Greetings, guest! I am a hunter. Let's fight!", armor:"vodden",  wapen:"speer" },
-  { nm:"Miles viae", la:"Ik bewaak hier de weg. Vecht je met mij?",               nl:"I guard the road here. Will you fight me?",            armor:"middel",  wapen:"zwaard" },
-  { nm:"Explorator", la:"Ik wil je kracht op de proef stellen. Kom op!",                  nl:"I want to test your strength. Come on!",        armor:"licht",   wapen:"boog" },
+  { nm:"Gegroet, gast! Ik ben een jager. Laten we vechten!",   la:"Gegroet, gast! Ik ben een jager. Laten we vechten!",            nl:"Greetings, guest! I am a hunter. Let's fight!", armor:"vodden",  wapen:"speer" },
+  { nm:"Ik bewaak hier de weg. Vecht je met mij?", la:"Ik bewaak hier de weg. Vecht je met mij?",               nl:"I guard the road here. Will you fight me?",            armor:"middel",  wapen:"zwaard" },
+  { nm:"Ik wil je kracht op de proef stellen. Kom op!", la:"Ik wil je kracht op de proef stellen. Kom op!",                  nl:"I want to test your strength. Come on!",        armor:"licht",   wapen:"boog" },
 ];
 const CASTRA_TRAIN_TITLES = { latium:"Latinus", graecia:"Graecus", troia:"Troianus", gallia:"Gallus", aegyptus:"Aegyptius", persis:"Persa", africa:"Poenus", roma:"Romanus", laconia:"Spartiates", germania:"Germanus", themiscyra:"Amazon" };
 const CASTRA_INSIGNIA_NAMES = { latium:"Latium", graecia:"Graecia", troia:"Troia", gallia:"Gallia", aegyptus:"Aegyptus", persis:"Persis", africa:"Africa", roma:"Roma", laconia:"Laconia", germania:"Germania", themiscyra:"Themiscyra" };
@@ -75,7 +75,7 @@ function castraTrainerTalk(e){
   castraLatSay(e.nm, look, [ { la:K.la, nl:K.nl }, { la:Q.ctx.la, nl:Q.ctx.nl }, { la:Q.q.la, nl:Q.q.nl, opts:Q.opts.map(o=>({ la:o.la, nl:o.nl })) } ], k=>{
     const right = !!(Q.opts[k] && Q.opts[k].ok);
     castraLatSay(e.nm, look, [ right ? { la:"Goed zo! Nu gaan we vechten (extra gloria bij winst).", nl:"Well done! Now we fight (extra glory if you win)." } : { la:"Niet goed. Maar laten we toch vechten.", nl:"Not good. But let's fight anyway." },
-      { la:"Durf je?", nl:"Do you dare?", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Nunc non", nl:"nu niet" } ] } ], j=>{ if(j===0) castraTrainerFight(e, right); });
+      { la:"Durf je?", nl:"Do you dare?", opts:[ { la:"Vechten", nl:"fight" }, { la:"Nu niet", nl:"not now" } ] } ], j=>{ if(j===0) castraTrainerFight(e, right); });
   });
 }
 // Een trainer heeft meerdere soldaten (twee in Latium, daarna drie): ze komen een voor een, zoals de Pokémon van een trainer.
@@ -267,7 +267,7 @@ function castraInsigniaCount(){ return Object.keys(CASTRA.insignia||{}).length; 
 /* ---------- menu: insignia ---------- */
 (function(){
   const i = CASTRA_MENU_ITEMS.findIndex(x=>x.id==="tabulae");
-  CASTRA_MENU_ITEMS.splice(i<0 ? CASTRA_MENU_ITEMS.length : i+1, 0, { id:"insignia", la:"Insignia", nl:"je insignes" });
+  CASTRA_MENU_ITEMS.splice(i<0 ? CASTRA_MENU_ITEMS.length : i+1, 0, { id:"insignia", la:"Je insignes", nl:"your insignia" });
 })();
 const _castraMenuViewTr0 = castraMenuView;
 castraMenuView = function(id){

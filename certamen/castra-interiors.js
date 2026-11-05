@@ -38,7 +38,7 @@ const CASTRA_INTERIORS = {
     pickups:[ { id:"aqua", item:"aqua", x:12, y:17, needs:{ qid:"eremita", step:1 } } ],
   },
   villa_latium: {
-    parent:"latium", kind:"house", nm:"Hospitium", nl:"De herberg", icon:"🏠", cols:20, rows:14,
+    parent:"latium", kind:"house", nm:"De herberg", nl:"The inn", icon:"🏠", cols:20, rows:14,
     start:{ x:10, y:11 },
     doors:[ { x:10, y:13, to:"latium", spawn:{ x:38, y:36, dir:"down" } },
             { x:19, y:6, to:"solarium_latium", icon:"🪜", feat:"puzzels", spawn:{ x:1, y:6, dir:"right" } } ],      // trap naar de zolder (vanaf niveau 13)
@@ -182,7 +182,7 @@ function castraMatronaTalk(){
   const done = w.hospitium===castraWDay();
   const lines = [ { la:"Gegroet, gast {naam}! Hier kun je uitrusten.", nl:"Greetings, guest {naam}! Here you can rest." },
     done ? { la:"Je hebt vandaag al gerust. Kom morgen terug!", nl:"You have already rested today. Come back tomorrow!" }
-         : { la:"Wil je uitrusten?", nl:"Do you want to rest?", opts:[ { la:"Quiesco", nl:"uitrusten" }, { la:"Vale", nl:"tot ziens" } ] } ];
+         : { la:"Wil je uitrusten?", nl:"Do you want to rest?", opts:[ { la:"Uitrusten", nl:"rest" }, { la:"Tot ziens", nl:"goodbye" } ] } ];
   castraDlgOpen({ nm:"Matrona", look:CASTRA_MATRONA_LOOK }, lines, k=>{
     if(k===0){
       const hurt = castraHealAll(); w.hospitium = castraWDay(); castraSave();

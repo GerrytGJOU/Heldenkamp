@@ -13,7 +13,7 @@
    Laadt NA castra-interiors.js.
    ============================================================================ */
 
-CASTRA_ITEMS.aqua = { nm:"Aqua sacra", icon:"💧", nl:"heilig water" };
+CASTRA_ITEMS.aqua = { nm:"Heilig water", icon:"💧", nl:"holy water" };
 CASTRA_WENT.push({ id:"venator_latium", region:"latium", kind:"npc", role:"bounty", nm:"Venator", x:36, y:44, dir:"left",
   look:{ huid:"getint", haar:"kort", haarkleur:"bruin", baard:"baard", cape:"geen", helm:"bandana", schild:"geen", wapen:"boog", armor:"middel" } });
 const _castraWFeatLat0 = castraWFeat;
@@ -59,7 +59,7 @@ function castraQuizOpen(){
   if(CASTRA_DLG) return;
   const e = CASTRA_WENT.find(x=>x.id==="senator");
   castraLatSay("Senator", e.look, [ { la:"Gegroet, leider {naam}! Ken jij Latijnse woorden?", nl:"Greetings, leader {naam}! Do you know Latin words?" },
-    { la:"Ik geef je vijf vragen.", nl:"I will give you five questions.", opts:[ { la:"Incipe", nl:"beginnen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
+    { la:"Ik geef je vijf vragen.", nl:"I will give you five questions.", opts:[ { la:"Beginnen", nl:"begin" }, { la:"Nu niet", nl:"not now" } ] } ],
     k=>{ if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_senator", rid:"latium", words:null, title:"Woordenquiz" }; castraQuizStart(); } });
 }
 function castraQuizStart(){
@@ -129,7 +129,7 @@ function castraBountyTalk(npcId){
   if(b.done) return say([ { la:"Vandaag heb je genoeg gedaan. Kom morgen terug, leider {naam}!", nl:"You have done enough today. Come back tomorrow, leader {naam}!" } ], null);
   if(!b.acc){
     return say([ { la:`Salve, dux {naam}! Hodie hostes ${low(tr.la)} vince.`, nl:`Gegroet, leider {naam}! Vandaag: versla vijanden ${low(tr.nl)}.` },
-                 { la:"Versla er drie en je krijgt een beloning.", nl:"Defeat three and you will receive a reward.", opts:[ { la:"Accipio", nl:"aannemen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
+                 { la:"Versla er drie en je krijgt een beloning.", nl:"Defeat three and you will receive a reward.", opts:[ { la:"Aannemen", nl:"accept" }, { la:"Nu niet", nl:"not now" } ] } ],
       k=>{ if(k===0){ b.acc = true; castraSave(); if(typeof castraWRefreshHud==="function") castraWRefreshHud(); } });
   }
   if(b.n < b.need) return say([ { la:`Quot hostes vicisti? ${b.n} / ${b.need}.`, nl:`Hoeveel vijanden heb je verslagen? ${b.n} van ${b.need} (${low(tr.nl)}).` } ], null);

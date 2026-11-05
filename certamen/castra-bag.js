@@ -18,13 +18,13 @@
 const CASTRA_GOODS = {
   posca:       { la:"Posca",       icon:"🍶", kind:"heal",    heal:0.30, price:{ aes:25 },                nl:"posca",        note:"Zure wijn met water: de gewone drank van Romeinse soldaten." },
   buccellatum: { la:"Buccellatum", icon:"🥖", kind:"heal",    heal:0.15, price:{ frumentum:12 },          nl:"soldatenbeschuit", note:"Hard beschuit dat maanden goed bleef, voedsel voor onderweg." },
-  mulsum:      { la:"Mulsum",      icon:"🍯", kind:"heal",    heal:0.60, price:{ aes:70 },                nl:"honingwijn",   note:"Wijn met honing: een kostbare versterking." },
+  mulsum:      { la:"Honingwijn",      icon:"🍯", kind:"heal",    heal:0.60, price:{ aes:70 },                nl:"honey wine",   note:"Wijn met honing: een kostbare versterking." },
   theriaca:    { la:"Theriaca",    icon:"⚗️", kind:"revive",  heal:0.50, price:{ aes:120 },               nl:"wondermiddel", note:"Het beroemde tegengif en wondermiddel van Romeinse artsen. Zet iemand die buiten gevecht is weer op de been." },
-  suffimentum: { la:"Suffimentum", icon:"🌿", kind:"repel",   steps:100, price:{ aes:40 },               nl:"rookwerk",     note:"Rook van kruiden en hars. Zwakkere wilde vijanden blijven 100 stappen weg." },
+  suffimentum: { la:"Rookwerk", icon:"🌿", kind:"repel",   steps:100, price:{ aes:40 },               nl:"incense",     note:"Rook van kruiden en hars. Zwakkere wilde vijanden blijven 100 stappen weg." },
   viaticum:    { la:"Viaticum",    icon:"🪙", kind:"recruit", bonus:0.15, price:{ aes:30 },               nl:"reisgeld",     note:"Het reisgeld dat een rekruut kreeg. Geef het aan een vijand om hem te overtuigen: +15% kans bij het werven." },
   donativum:   { la:"Donativum",   icon:"💰", kind:"recruit", bonus:0.30, price:{ aes:80, gloria:1 },     nl:"geldgeschenk", note:"Het geschenk dat soldaten kregen bij een feestelijke gelegenheid: +30% kans bij het werven." },
-  libum:       { la:"Libum",       icon:"🥧", kind:"heal",    heal:0.40, price:{ frumentum:20 },        nl:"offerkoek",    note:"Een koekje van meel, kaas en honing dat Romeinen aan de goden offerden. Alleen op marktdag (nundinae) te koop.", nundOnly:true },
-  hamus:       { la:"Hamus",       icon:"🎣", kind:"tool",                price:{ aes:35 },               nl:"vishaak",      note:"Een vishaak met riet. Met een hamus kun je aan het water vissen; hij blijft in je saccus.", once:true },
+  libum:       { la:"Offerkoek",       icon:"🥧", kind:"heal",    heal:0.40, price:{ frumentum:20 },        nl:"offering cake",    note:"Een koekje van meel, kaas en honing dat Romeinen aan de goden offerden. Alleen op marktdag (nundinae) te koop.", nundOnly:true },
+  hamus:       { la:"Vishaak",       icon:"🎣", kind:"tool",                price:{ aes:35 },               nl:"fish hook",      note:"Een vishaak met riet. Met een hamus kun je aan het water vissen; hij blijft in je saccus.", once:true },
 };
 const CASTRA_GOODS_ORDER = ["posca","buccellatum","mulsum","libum","theriaca","suffimentum","viaticum","donativum","hamus"];
 

@@ -14,8 +14,8 @@ const CASTRA_REGSPEC = {
   gallia: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"gal",
     houseA:{ nm:"Domus Druidis", nl:"Het huis van de druïde", icon:"🌿", label:"🌿 Domus Druidis", npc:{ nm:"Bardus", role:"gquiz", title:"Carmen bardi" } },
-    houseB:{ nm:"Taberna", nl:"De herberg", icon:"🍺", label:"🍺 Taberna", rest:{ nm:"Caupo" }, champ:{ nm:"Pugnator Gallus", form:"gal_bellatorgallus", lvl:26, terrain:"campus" } },
-    cave:{ x:10, y:38, nm:"Antrum", nl:"De Gallische grot", icon:"🕳️", label:"🕳️ Antrum", terrain:{ id:"antrum", la:"In antro", nl:"In de grot", taks:["Wolven van Mars"] },
+    houseB:{ nm:"De herberg", nl:"The inn", icon:"🍺", label:"🍺 Taberna", rest:{ nm:"Caupo" }, champ:{ nm:"Pugnator Gallus", form:"gal_bellatorgallus", lvl:26, terrain:"campus" } },
+    cave:{ x:10, y:38, nm:"De Gallische grot", nl:"The Gallic cave", icon:"🕳️", label:"🕳️ Antrum", terrain:{ id:"antrum", la:"In antro", nl:"In de grot", taks:["Wolven van Mars"] },
       fetch:{ nm:"Druida", item:"viscum", itemNm:"Viscum", icon:"🌿", itemNl:"maretak",
         ask:{ la:"Gegroet, gast {naam}! Ik zoek maretak.", nl:"Greetings, guest {naam}! I am looking for mistletoe." }, how:{ la:"Ga diep het grot in en breng de maretak.", nl:"Go deep into the cave and bring the mistletoe." },
         wait:{ la:"Waar is de maretak?", nl:"Where is the mistletoe?" }, thanks:{ la:"De maretak! Dank je wel, leider {naam}!", nl:"The mistletoe! Thank you, leader {naam}!" },
@@ -25,9 +25,9 @@ const CASTRA_REGSPEC = {
   },
   graecia: {
     tents:[ { o:"tent_beige", x:14, y:16 }, { o:"tent_white", x:44, y:16 } ], venator:[34,44], folk:"gra",
-    houseA:{ nm:"Oraculum", nl:"Het orakel", icon:"🔮", label:"🔮 Oraculum", npc:{ nm:"Pythia", role:"gquiz", title:"Oraculum" } },
-    houseB:{ nm:"Gymnasium", nl:"De sportschool", icon:"🏛️", label:"🏛️ Gymnasium", rest:{ nm:"Gymnasiarches" }, champ:{ nm:"Athleta", form:"gra_peltasta", lvl:38, terrain:"urbs" } },
-    cave:{ x:56, y:34, nm:"Labyrinthus", nl:"Het labyrint", icon:"🌀", label:"🌀 Labyrinthus", terrain:{ id:"labyrinthus", la:"In labyrintho", nl:"In het labyrint", taks:["Draken"] },
+    houseA:{ nm:"Het orakel", nl:"The oracle", icon:"🔮", label:"🔮 Oraculum", npc:{ nm:"Pythia", role:"gquiz", title:"Oraculum" } },
+    houseB:{ nm:"De sportschool", nl:"The gym", icon:"🏛️", label:"🏛️ Gymnasium", rest:{ nm:"Gymnasiarches" }, champ:{ nm:"Athleta", form:"gra_peltasta", lvl:38, terrain:"urbs" } },
+    cave:{ x:56, y:34, nm:"Het labyrint", nl:"The labyrinth", icon:"🌀", label:"🌀 Labyrinthus", terrain:{ id:"labyrinthus", la:"In het labyrint", nl:"In the labyrinth", taks:["Draken"] },
       fetch:{ nm:"Daedalus", item:"filum", itemNm:"Filum Ariadnae", icon:"🧵", itemNl:"draad van Ariadne",
         ask:{ la:"Gegroet, gast {naam}! Ik zoek mijn draad.", nl:"Greetings, guest {naam}! I am looking for my thread." }, how:{ la:"Ga diep het labyrint in en breng de draad van Ariadne.", nl:"Go deep into the labyrinth and bring Ariadne's thread." },
         wait:{ la:"Waar is de draad?", nl:"Where is the thread?" }, thanks:{ la:"Mijn draad! Dank je wel, leider {naam}!", nl:"My thread! Thank you, leader {naam}!" },
@@ -37,7 +37,7 @@ const CASTRA_REGSPEC = {
   },
   aegyptus: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:20, y:20 } ], venator:[34,44], folk:"aeg",
-    houseA:{ nm:"Templum Isidis", nl:"De tempel van Isis", icon:"🏺", label:"🏺 Templum Isidis", npc:{ nm:"Sacerdos", role:"gquiz", title:"Hieroglyphi" } },
+    houseA:{ nm:"De tempel van Isis", nl:"The temple of Isis", icon:"🏺", label:"🏺 Templum Isidis", npc:{ nm:"Sacerdos", role:"gquiz", title:"Hieroglyphi" } },
     houseB:{ nm:"Hortus Nili", nl:"De tuin aan de Nijl", icon:"🌴", label:"🌴 Hortus Nili", rest:{ nm:"Hortulanus" }, champ:{ nm:"Custos Pharaonis", form:"aeg_custospharaonis", lvl:50, terrain:"urbs" } },
     cave:{ x:50, y:38, nm:"Pyramis", nl:"De piramide", icon:"🔺", label:"🔺 Pyramis", terrain:{ id:"pyramis", la:"In pyramide", nl:"In de piramide", taks:["Feniks","Draken"] },
       fetch:{ nm:"Sacerdos senex", item:"scarabaeus_sacer", itemNm:"Scarabaeus sacer", icon:"🪲", itemNl:"heilige scarabee",
@@ -51,7 +51,7 @@ const CASTRA_REGSPEC = {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"spa",
     houseA:{ nm:"Gerousia", nl:"De raad van oudsten", icon:"🏛️", label:"🏛️ Gerousia", npc:{ nm:"Geron", role:"gquiz", title:"Gerousia" } },
     houseB:{ nm:"Syssitia", nl:"De gemeenschappelijke maaltijd", icon:"🍲", label:"🍲 Syssitia", rest:{ nm:"Coquus" }, champ:{ nm:"Spartiata", form:"spa_trecentus", lvl:42, terrain:"urbs" } },
-    cave:{ x:50, y:38, nm:"Specus Taygeti", nl:"De Taygetosgrot", icon:"⛰️", label:"⛰️ Specus Taygeti", terrain:{ id:"taygetus", la:"In Taygeto", nl:"In de Taygetosgrot", taks:["Grijpvogels","Centauren"] },
+    cave:{ x:50, y:38, nm:"De Taygetosgrot", nl:"The Taygetus cave", icon:"⛰️", label:"⛰️ Specus Taygeti", terrain:{ id:"taygetus", la:"In Taygeto", nl:"In de Taygetosgrot", taks:["Grijpvogels","Centauren"] },
       fetch:{ nm:"Pastor", item:"agnus", itemNm:"Agnus", icon:"🐑", itemNl:"verdwaald lam",
         ask:{ la:"Gegroet, gast {naam}! Ik zoek mijn lam.", nl:"Greetings, guest {naam}! I am looking for my lamb." }, how:{ la:"Ga diep de grot in en breng mijn lam terug.", nl:"Go deep into the cave and bring my lamb back." },
         wait:{ la:"Waar is het lam?", nl:"Where is the lamb?" }, thanks:{ la:"Mijn lam! Dank je wel, leider {naam}!", nl:"My lamb! Thank you, leader {naam}!" },
@@ -61,9 +61,9 @@ const CASTRA_REGSPEC = {
   },
   troia: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"tro",
-    houseA:{ nm:"Templum Apollinis", nl:"De tempel van Apollo", icon:"☀️", label:"☀️ Templum Apollinis", npc:{ nm:"Vates", role:"gquiz", title:"Vaticinium" } },
-    houseB:{ nm:"Domus Priami", nl:"Het paleis van Priamus", icon:"🏰", label:"🏰 Domus Priami", rest:{ nm:"Servus" }, champ:{ nm:"Custos portae", form:"tro_custosportae", lvl:44, terrain:"muros" } },
-    cave:{ x:20, y:38, nm:"Cuniculus", nl:"De geheime tunnel", icon:"🕳️", label:"🕳️ Cuniculus", terrain:{ id:"cuniculus", la:"In cuniculo", nl:"In de tunnel", taks:["Cyclopen"] },
+    houseA:{ nm:"De tempel van Apollo", nl:"The temple of Apollo", icon:"☀️", label:"☀️ Templum Apollinis", npc:{ nm:"Vates", role:"gquiz", title:"Vaticinium" } },
+    houseB:{ nm:"Het paleis van Priamus", nl:"The palace of Priam", icon:"🏰", label:"🏰 Domus Priami", rest:{ nm:"Servus" }, champ:{ nm:"Custos portae", form:"tro_custosportae", lvl:44, terrain:"muros" } },
+    cave:{ x:20, y:38, nm:"De geheime tunnel", nl:"The secret tunnel", icon:"🕳️", label:"🕳️ Cuniculus", terrain:{ id:"cuniculus", la:"In cuniculo", nl:"In de tunnel", taks:["Cyclopen"] },
       fetch:{ nm:"Cassandra", item:"sagitta", itemNm:"Sagitta Apollinis", icon:"🏹", itemNl:"pijl van Apollo",
         ask:{ la:"Gegroet, gast {naam}! Ik zoek mijn pijl.", nl:"Greetings, guest {naam}! I am looking for my arrow." }, how:{ la:"Ga diep de tunnel in en breng de pijl van Apollo.", nl:"Go deep into the tunnel and bring the arrow of Apollo." },
         wait:{ la:"Waar is de pijl?", nl:"Where is the arrow?" }, thanks:{ la:"Mijn pijl! Dank je wel, leider {naam}!", nl:"My arrow! Thank you, leader {naam}!" },
@@ -74,8 +74,8 @@ const CASTRA_REGSPEC = {
   germania: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"ger",
     houseA:{ nm:"Aula", nl:"De hal van het stamhoofd", icon:"🏠", label:"🏠 Aula", npc:{ nm:"Vates", role:"gquiz", title:"Runae" } },
-    houseB:{ nm:"Mansio", nl:"De herberg", icon:"🍺", label:"🍺 Mansio", rest:{ nm:"Caupo" }, champ:{ nm:"Pugnator Germanus", form:"ger_centenus", lvl:32, terrain:"vicus" } },
-    cave:{ x:50, y:38, nm:"Specus Hercynius", nl:"De Hercynische grot", icon:"🌲", label:"🌲 Specus Hercynius", terrain:{ id:"hercynia", la:"In specu", nl:"In de grot", taks:["Wolven van Mars","Draken"] },
+    houseB:{ nm:"De herberg", nl:"The inn", icon:"🍺", label:"🍺 Mansio", rest:{ nm:"Caupo" }, champ:{ nm:"Pugnator Germanus", form:"ger_centenus", lvl:32, terrain:"vicus" } },
+    cave:{ x:50, y:38, nm:"De Hercynische grot", nl:"The Hercynian cave", icon:"🌲", label:"🌲 Specus Hercynius", terrain:{ id:"hercynia", la:"In specu", nl:"In de grot", taks:["Wolven van Mars","Draken"] },
       fetch:{ nm:"Venator senex", item:"cornu_bibendi", itemNm:"Cornu bibendi", icon:"🐂", itemNl:"drinkhoorn",
         ask:{ la:"Gegroet, gast {naam}! Ik zoek mijn drinkhoorn.", nl:"Greetings, guest {naam}! I am looking for my drinking horn." }, how:{ la:"Ga diep de grot in en breng mijn hoorn terug.", nl:"Go deep into the cave and bring my horn back." },
         wait:{ la:"Waar is de hoorn?", nl:"Where is the horn?" }, thanks:{ la:"Mijn hoorn! Dank je wel, leider {naam}!", nl:"My horn! Thank you, leader {naam}!" },
@@ -86,8 +86,8 @@ const CASTRA_REGSPEC = {
   themiscyra: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"ama",
     houseA:{ nm:"Regia", nl:"Het paleis van de koningin", icon:"👑", label:"👑 Regia", npc:{ nm:"Hippolyta", role:"gquiz", title:"Regia" } },
-    houseB:{ nm:"Stabulum", nl:"De stal", icon:"🐎", label:"🐎 Stabulum", rest:{ nm:"Equiso" }, champ:{ nm:"Amazon", form:"ama_securifera", lvl:48, terrain:"campus" } },
-    cave:{ x:50, y:38, nm:"Antrum Martis", nl:"De grot van Ares", icon:"⚔️", label:"⚔️ Antrum Martis", terrain:{ id:"martis", la:"In antro Martis", nl:"In de grot van Ares", taks:["Harpijen","Wolven van Mars"] },
+    houseB:{ nm:"De stal", nl:"The stable", icon:"🐎", label:"🐎 Stabulum", rest:{ nm:"Equiso" }, champ:{ nm:"Amazon", form:"ama_securifera", lvl:48, terrain:"campus" } },
+    cave:{ x:50, y:38, nm:"De grot van Ares", nl:"The cave of Ares", icon:"⚔️", label:"⚔️ Antrum Martis", terrain:{ id:"martis", la:"In antro Martis", nl:"In de grot van Ares", taks:["Harpijen","Wolven van Mars"] },
       fetch:{ nm:"Sacerdos", item:"balteus", itemNm:"Balteus", icon:"🎗️", itemNl:"gordel van Hippolyta",
         ask:{ la:"Gegroet, gast {naam}! Ik zoek de gordel van Hippolyta.", nl:"Greetings, guest {naam}! I am looking for the belt of Hippolyta." }, how:{ la:"Ga diep de grot in en breng de gordel.", nl:"Go deep into the cave and bring the belt." },
         wait:{ la:"Waar is de gordel?", nl:"Where is the belt?" }, thanks:{ la:"De gordel! Dank je wel, leider {naam}!", nl:"The belt! Thank you, leader {naam}!" },
@@ -98,8 +98,8 @@ const CASTRA_REGSPEC = {
   persis: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"per",
     houseA:{ nm:"Palatium", nl:"Het paleis van de koning", icon:"🏰", label:"🏰 Palatium", npc:{ nm:"Magus", role:"gquiz", title:"Magi" } },
-    houseB:{ nm:"Caravanserai", nl:"De karavaanherberg", icon:"🐪", label:"🐪 Caravanserai", rest:{ nm:"Caupo" }, champ:{ nm:"Immortalis", form:"per_immortalis", lvl:50, terrain:"urbs" } },
-    cave:{ x:10, y:38, nm:"Sepulcrum", nl:"Het koningsgraf", icon:"⚱️", label:"⚱️ Sepulcrum", terrain:{ id:"sepulcrum", la:"In sepulcro", nl:"In het graf", taks:["Feniks","Draken"] },
+    houseB:{ nm:"De karavaanherberg", nl:"The caravan inn", icon:"🐪", label:"🐪 Caravanserai", rest:{ nm:"Caupo" }, champ:{ nm:"Immortalis", form:"per_immortalis", lvl:50, terrain:"urbs" } },
+    cave:{ x:10, y:38, nm:"Het koningsgraf", nl:"The royal tomb", icon:"⚱️", label:"⚱️ Sepulcrum", terrain:{ id:"sepulcrum", la:"In het graf", nl:"In the tomb", taks:["Feniks","Draken"] },
       fetch:{ nm:"Magus senex", item:"ignis", itemNm:"Ignis sacer", icon:"🔥", itemNl:"heilig vuur",
         ask:{ la:"Gegroet, gast {naam}! Ik zoek het heilige vuur.", nl:"Greetings, guest {naam}! I am looking for the sacred fire." }, how:{ la:"Ga diep het graf in en breng het heilige vuur.", nl:"Go deep into the tomb and bring the sacred fire." },
         wait:{ la:"Waar is het vuur?", nl:"Where is the fire?" }, thanks:{ la:"Het heilige vuur! Dank je wel, leider {naam}!", nl:"The sacred fire! Thank you, leader {naam}!" },
@@ -110,8 +110,8 @@ const CASTRA_REGSPEC = {
   africa: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"car",
     houseA:{ nm:"Curia Carthaginis", nl:"Het raadhuis van Carthago", icon:"🏛️", label:"🏛️ Curia Carthaginis", npc:{ nm:"Suffes", role:"gquiz", title:"Suffetes" } },
-    houseB:{ nm:"Taberna navalis", nl:"De havenherberg", icon:"⚓", label:"⚓ Taberna navalis", rest:{ nm:"Nauta" }, champ:{ nm:"Veteranus Libyus", form:"car_veteranuslibyus", lvl:52, terrain:"urbs" } },
-    cave:{ x:20, y:38, nm:"Specus Hannibalis", nl:"Hannibals grot", icon:"🐘", label:"🐘 Specus Hannibalis", terrain:{ id:"hannibalis", la:"In specu Hannibalis", nl:"In Hannibals grot", taks:["Draken","Feniks"] },
+    houseB:{ nm:"De havenherberg", nl:"The harbour inn", icon:"⚓", label:"⚓ Taberna navalis", rest:{ nm:"Nauta" }, champ:{ nm:"Veteranus Libyus", form:"car_veteranuslibyus", lvl:52, terrain:"urbs" } },
+    cave:{ x:20, y:38, nm:"Hannibals grot", nl:"Hannibal's cave", icon:"🐘", label:"🐘 Specus Hannibalis", terrain:{ id:"hannibalis", la:"In Hannibals grot", nl:"In Hannibal's cave", taks:["Draken","Feniks"] },
       fetch:{ nm:"Elephantarius", item:"dens_elephanti", itemNm:"Ebur", icon:"🦷", itemNl:"olifantstand",
         ask:{ la:"Gegroet, gast {naam}! Ik zoek mijn olifantstand.", nl:"Greetings, guest {naam}! I am looking for my elephant tusk." }, how:{ la:"Ga diep de grot in en breng mijn olifantstand terug.", nl:"Go deep into the cave and bring my elephant tusk back." },
         wait:{ la:"Waar is de olifantstand?", nl:"Where is the elephant tusk?" }, thanks:{ la:"Mijn olifantstand! Dank je wel, leider {naam}!", nl:"My elephant tusk! Thank you, leader {naam}!" },
@@ -217,7 +217,7 @@ castraNpcTalk = function(id){
 };
 function castraRegQuiz(e){
   if(CASTRA_DLG) return;
-  castraLatSay(e.nm, e.look, [ { la:"Gegroet, leider {naam}! Vertaal Latijnse zinnen! Vijf vragen.", nl:"Greetings, leader {naam}! Translate Latin sentences! Five questions.", opts:[ { la:"Incipe", nl:"beginnen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
+  castraLatSay(e.nm, e.look, [ { la:"Gegroet, leider {naam}! Vertaal Latijnse zinnen! Vijf vragen.", nl:"Greetings, leader {naam}! Translate Latin sentences! Five questions.", opts:[ { la:"Beginnen", nl:"begin" }, { la:"Nu niet", nl:"not now" } ] } ],
     k=>{ if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_"+e.id, rid:CASTRA_WORLDS[e.region].parent, words:CASTRA_QUIZ_SENT_BASE.concat(e.sents||[]), title:e.title }; castraQuizStart(); } });
 }
 function castraRegRest(e){
@@ -225,7 +225,7 @@ function castraRegRest(e){
   const w = CASTRA.wday || (CASTRA.wday = {}), key = "rest_"+e.id, done = w[key]===castraWDay();
   castraLatSay(e.nm, e.look, [ { la:"Gegroet, gast {naam}! Hier kun je uitrusten.", nl:"Greetings, guest {naam}! Here you can rest." },
     done ? { la:"Je hebt vandaag al gerust. Kom morgen terug!", nl:"You have already rested today. Come back tomorrow!" }
-         : { la:"Wil je uitrusten?", nl:"Do you want to rest?", opts:[ { la:"Quiesco", nl:"uitrusten" }, { la:"Vale", nl:"tot ziens" } ] } ],
+         : { la:"Wil je uitrusten?", nl:"Do you want to rest?", opts:[ { la:"Uitrusten", nl:"rest" }, { la:"Tot ziens", nl:"goodbye" } ] } ],
     k=>{
       if(done || k!==0) return;
       const hurt = castraHealAll();
@@ -239,7 +239,7 @@ function castraRegChamp(e){
   castraFsprProbe([["trn_champ_"+rid, "battle_front"]]);          // de pose van de kampioen alvast controleren (castra-vscene.js toont hem aan het begin van het gevecht)
   castraLatSay(e.nm, e.look, [ { la:"Gegroet, leider {naam}! Ik heb een sterke vechter.", nl:"Greetings, leader {naam}! I have a strong fighter." },
     done ? { la:"Vandaag heb je hem verslagen. Kom morgen terug!", nl:"Today you have defeated him. Come back tomorrow!" }
-         : { la:"Durf je tegen hem te vechten? Wie wint, krijgt een beloning.", nl:"Do you dare to fight him? The winner gets a reward.", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Nunc non", nl:"nu niet" } ] } ],
+         : { la:"Durf je tegen hem te vechten? Wie wint, krijgt een beloning.", nl:"Do you dare to fight him? The winner gets a reward.", opts:[ { la:"Vechten", nl:"fight" }, { la:"Nu niet", nl:"not now" } ] } ],
     k=>{ if(!done && k===0) castraRegionFight(rid, e.fight.terrain, e.fight.form, e.fight.lvl, { key, reward:CASTRA_REG_REWARD.champ, gloria:2, pxp:25, token:true, why:"kampioen verslagen", pose:"trn_champ_"+rid }); });
 }
 function castraRegFetch(e){
@@ -267,7 +267,7 @@ function castraRegBoss(e){
   if(CASTRA_DLG) return;
   const rid = CASTRA_WORLDS[e.region].parent;
   castraLatSay(e.nm, castraRegLook("rom", { armor:"vodden", haarkleur:"grijs", huid:"zeerlicht" }), [ { la:"Ik ben de bewaker van deze plek. Hier blijf ik!", nl:"I am the guardian of this place. Here I stay!" },
-    { la:"Durf je met mij te vechten?", nl:"Do you dare to fight me?", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Fuge", nl:"wegrennen" } ] } ],
+    { la:"Durf je met mij te vechten?", nl:"Do you dare to fight me?", opts:[ { la:"Vechten", nl:"fight" }, { la:"Wegrennen", nl:"run away" } ] } ],
     k=>{ if(k===0) castraRegionFight(rid, e.terrain, e.form, e.lvl, { key:"boss_"+e.id, reward:CASTRA_REG_REWARD.boss, gloria:2, pxp:30, token:true, why:e.nm+" verslagen" }); });
 }
 

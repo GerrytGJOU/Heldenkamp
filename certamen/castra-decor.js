@@ -11,21 +11,21 @@
    ============================================================================ */
 
 const CASTRA_DECOR = [
-  { id:"flower_w", ic:"🌼", la:"Flos albus",   nl:"witte bloemen", cost:{ aes:5 } },
-  { id:"flower_p", ic:"🌸", la:"Flos roseus",  nl:"roze bloemen",  cost:{ aes:5 } },
-  { id:"flower_b", ic:"💠", la:"Flos caeruleus", nl:"blauwe bloemen", cost:{ aes:5 } },
-  { id:"flower_o", ic:"🏵️", la:"Flos aureus",  nl:"oranje bloemen", cost:{ aes:5 } },
-  { id:"fern",     ic:"🌿", la:"Filix",        nl:"varen",         cost:{ aes:5 } },
-  { id:"stones",   ic:"🪨", la:"Lapides",      nl:"kiezels",       cost:{ aes:5 } },
-  { id:"barrel",   ic:"🛢️", la:"Dolium",       nl:"ton",           cost:{ lignum:10 } },
-  { id:"crate_a",  ic:"📦", la:"Arca",         nl:"kist",          cost:{ lignum:10 } },
-  { id:"pot",      ic:"🏺", la:"Olla",         nl:"kruik",         cost:{ aes:10 } },
-  { id:"hay",      ic:"🌾", la:"Fenum",        nl:"hooibaal",      cost:{ lignum:10 } },
-  { id:"fence",    ic:"🚧", la:"Saepes",       nl:"hek",           cost:{ lignum:10 } },
+  { id:"flower_w", ic:"🌼", la:"Witte bloemen",   nl:"white flowers", cost:{ aes:5 } },
+  { id:"flower_p", ic:"🌸", la:"Roze bloemen",  nl:"pink flowers",  cost:{ aes:5 } },
+  { id:"flower_b", ic:"💠", la:"Blauwe bloemen", nl:"blue flowers", cost:{ aes:5 } },
+  { id:"flower_o", ic:"🏵️", la:"Oranje bloemen",  nl:"orange flowers", cost:{ aes:5 } },
+  { id:"fern",     ic:"🌿", la:"Varen",        nl:"ferns",         cost:{ aes:5 } },
+  { id:"stones",   ic:"🪨", la:"Kiezels",      nl:"pebbles",       cost:{ aes:5 } },
+  { id:"barrel",   ic:"🛢️", la:"Ton",       nl:"barrel",           cost:{ lignum:10 } },
+  { id:"crate_a",  ic:"📦", la:"Kist",         nl:"chest",          cost:{ lignum:10 } },
+  { id:"pot",      ic:"🏺", la:"Kruik",         nl:"jug",         cost:{ aes:10 } },
+  { id:"hay",      ic:"🌾", la:"Hooibaal",        nl:"hay bale",      cost:{ lignum:10 } },
+  { id:"fence",    ic:"🚧", la:"Hek",       nl:"fence",           cost:{ lignum:10 } },
   { id:"sign",     ic:"🪧", la:"Titulus",      nl:"bord",          cost:{ lignum:10 } },
-  { id:"well",     ic:"⛲", la:"Puteus",       nl:"put",           cost:{ aes:40 } },
+  { id:"well",     ic:"⛲", la:"Put",       nl:"well",           cost:{ aes:40 } },
   { id:"tree_a",   ic:"🌲", la:"Pinus",        nl:"den",           cost:{ lignum:20 } },
-  { id:"tree_b",   ic:"🌳", la:"Arbor",        nl:"boom",          cost:{ lignum:20 } },
+  { id:"tree_b",   ic:"🌳", la:"Boom",        nl:"tree",          cost:{ lignum:20 } },
 ];
 const CASTRA_DECOR_UI = { on:false, pick:"flower_w" };
 

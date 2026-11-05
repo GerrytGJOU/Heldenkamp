@@ -23,7 +23,7 @@
 
 const CASTRA_WK_MAPS = ["a","b","c","d","e","g","h"];
 const CASTRA_WK_TYPES = [
-  { id:"def", kind:"Verdediging", icon:"🏃", la:"Via celeris", nl:"De snelle weg", roles:["velox","velox","gravis"],
+  { id:"def", kind:"Verdediging", icon:"🏃", la:"De snelle weg", nl:"The fast road", roles:["velox","velox","gravis"],
     edicta:[ ["ventus"], ["ventus"] ], bonus:{ k:"hp", v:8 }, bonusNl:"Houd minstens 8 van de 10 levens van het kamp over.",
     task:"Houd het kamp intact tegen snelle vijanden.", words:[["celer","snel"],["hostis","vijand"],["castra","kamp"]] },
   { id:"pri", kind:"Prioriteit", icon:"⚕️", la:"Medicus primus", nl:"Eerst de genezer", roles:["medicus","scutarius","medicus"],
@@ -32,7 +32,7 @@ const CASTRA_WK_TYPES = [
   { id:"eff", kind:"Efficiëntie", icon:"⚔️", la:"Acies angusta", nl:"Een kleine verdediging", roles:["gravis","velox","gravis"],
     edicta:[ ["acies","sine_h"], ["acies"] ], bonus:{ k:"hp", v:8 }, bonusNl:"Win met minstens 8 levens over.",
     task:"Kies je vijf beste soldaten en win met weinig verlies.", words:[["miles","soldaat"],["via","weg"],["defendit","verdedigt"]] },
-  { id:"beh", kind:"Beheersing", icon:"⚡", la:"Imperium parcum", nl:"Zuinig met bevelen", roles:["medicus","gravis","velox","scutarius"],
+  { id:"beh", kind:"Beheersing", icon:"⚡", la:"Zuinig met bevelen", nl:"Sparing with commands", roles:["medicus","gravis","velox","scutarius"],
     edicta:[ ["frigus","pluvia"], ["frigus"] ], cmdMax:1, bonus:{ k:"leaks", v:0 }, bonusNl:"Win zonder dat één vijand het kamp bereikt.",
     task:"Je mag maar één bevel geven: kies het moment goed.", words:[["impete","val aan"],["state","houd stand"],["imperator","bevelhebber"]] },
 ];

@@ -18,19 +18,19 @@
    Laadt NA castra-wobj.js, castra-heroevo-all.js en castra-interiors.js (die de regiogegevens leveren).
    ============================================================================ */
 const CASTRA_FIELD_TYPES = {
-  saxum:     { icon:"🪨", need:["hopliet","spartaan"], needNl:"hopliet of spartaan",    nm:"Saxum",     gate:true,
+  saxum:     { icon:"🪨", need:["hopliet","spartaan"], needNl:"hopliet of spartaan",    nm:"Een enorme rots versperrt de weg. Een sterke soldaat (hopliet of spartaan) kan hem breken.",     gate:true,
                la:"Een enorme rots versperrt de weg. Een sterke soldaat (hopliet of spartaan) kan hem breken.", nl:"A huge boulder blocks the road. A strong soldier (hoplite or Spartan) can break it.",
                ok:{ la:"breekt de rots! De weg is open.", nl:"breaks the boulder! The road is open." }, daily:{ aes:[40,90], frumentum:[10,30] } },
-  arbor:     { icon:"🪵", need:["genie"], needNl:"genie (bouwer)", nm:"Arbor",
+  arbor:     { icon:"🪵", need:["genie"], needNl:"genie (bouwer)", nm:"Een boom is omgevallen en versperrt de weg. Een genie (bouwer) kan hem wegruimen.",
                la:"Een boom is omgevallen en versperrt de weg. Een genie (bouwer) kan hem wegruimen.", nl:"A tree has fallen and blocks the road. An engineer (builder) can clear it away.",
                ok:{ la:"ruimt de boom op! De weg is open.", nl:"clears the tree! The road is open." }, daily:{ lignum:[40,90], aes:[10,30] } },
-  ara:       { icon:"🗿", need:["priester","myth"], needNl:"priester of mythisch wezen", nm:"Ara",
+  ara:       { icon:"🗿", need:["priester","myth"], needNl:"priester of mythisch wezen", nm:"Een vervloekt altaar versperrt de weg. Een priester (of mythisch wezen) kan het reinigen.",
                la:"Een vervloekt altaar versperrt de weg. Een priester (of mythisch wezen) kan het reinigen.", nl:"A cursed altar blocks the road. A priest (or mythical creature) can cleanse it.",
                ok:{ la:"reinigt het altaar! De weg is open.", nl:"cleanses the altar! The road is open." }, daily:{ gloria:[1,2], frumentum:[20,50] } },
-  tentorium: { icon:"⛺", need:["centurio"], needNl:"centurio (commandant)", nm:"Castra deserta",
+  tentorium: { icon:"⛺", need:["centurio"], needNl:"centurio (commandant)", nm:"Een verlaten legerplaats versperrt de weg. Een centurio kan de soldaten weer aanvoeren.",
                la:"Een verlaten legerplaats versperrt de weg. Een centurio kan de soldaten weer aanvoeren.", nl:"An abandoned army camp blocks the road. A centurion can lead the soldiers again.",
                ok:{ la:"voert de soldaten aan! De weg is open.", nl:"leads the soldiers! The road is open." }, daily:{ frumentum:[40,90], aes:[20,50] } },
-  vestigia:  { icon:"👣", need:["verkenner","cavalerie"], needNl:"verkenner of ruiter", nm:"Vestigia",
+  vestigia:  { icon:"👣", need:["verkenner","cavalerie"], needNl:"verkenner of ruiter", nm:"Hier zijn sporen. Een verkenner of ruiter kan ze volgen.",
                la:"Hier zijn sporen. Een verkenner of ruiter kan ze volgen.", nl:"There are tracks here. A scout or rider can follow them.",
                ok:{ la:"volgt de sporen en vindt een schat!", nl:"follows the tracks and finds a treasure!" }, daily:{ aes:[30,70], gloria:[1,2] } },
 };
