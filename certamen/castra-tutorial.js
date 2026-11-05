@@ -26,35 +26,35 @@ const CASTRA_TUT_REWARD = { aes:80, frumentum:60, gloria:2 };
 
 const CASTRA_TUT_TEXT = {
   place0:[
-    { la:"Salve, dux {naam}! Aeneas sum. Castra tua vacua sunt.", nl:"Gegroet, leider {naam}! Ik ben Aeneas. Je kamp is nog leeg." },
-    { la:"Primum praetorium aedifica. Ubi vis?", nl:"Bouw eerst het Praetorium, je hoofdgebouw. Tik op het gras waar de ingang moet komen: groen mag, rood niet." },
+    { la:"Gegroet, leider {naam}! Ik ben Aeneas. Je kamp is nog leeg.", nl:"Greetings, leader {naam}! I am Aeneas. Your camp is still empty." },
+    { la:"Bouw eerst het Praetorium, je hoofdgebouw. Tik op het gras waar de ingang moet komen: groen mag, rood niet.", nl:"First build the Praetorium, your main building. Tap on the grass where the entrance should go: green is allowed, red is not." },
   ],
   place1:[
-    { la:"Optime! Nunc plura aedificia pone.", nl:"Uitstekend! Zet nu meer gebouwen neer: een Lignatio (hout), een Metallum (brons), een Valetudinarium (herstel) en Contubernia (barakken)." },
-    { la:"Ligna et aes tibi do. Vias liberas serva!", nl:"Hout en brons krijg je van mij, alles is gratis. Houd de paden en de poorten vrij!" },
+    { la:"Uitstekend! Zet nu meer gebouwen neer: een Lignatio (hout), een Metallum (brons), een Valetudinarium (herstel) en Contubernia (barakken).", nl:"Excellent! Now place more buildings: a Lignatio (wood), a Metallum (bronze), a Valetudinarium (healing) and Contubernia (barracks)." },
+    { la:"Hout en brons krijg je van mij, alles is gratis. Houd de paden en de poorten vrij!", nl:"I give you wood and bronze, everything is free. Keep the paths and the gates clear!" },
   ],
-  bar_m2:{ la:"Praetorium aedifica!", nl:"Opdracht 1: zet je Praetorium neer. Tik op een vrij grasvak waar de ingang moet komen." },
+  bar_m2:{ la:"Opdracht 1: zet je Praetorium neer. Tik op een vrij grasvak waar de ingang moet komen.", nl:"Task 1: place your Praetorium. Tap on a free grass tile where the entrance should go." },
   intro:[
-    { la:"Salve, dux {naam}! Aeneas sum. Castra tua nova sunt.", nl:"Gegroet, leider {naam}! Ik ben Aeneas. Je kamp is nieuw." },
-    { la:"Milites tibi opus sunt. Unum militem tibi do.", nl:"Je hebt soldaten nodig. Ik geef je er één." },
-    { la:"Quem eligis?", nl:"Wie kies je?", choose:true },
+    { la:"Gegroet, leider {naam}! Ik ben Aeneas. Je kamp is nieuw.", nl:"Greetings, leader {naam}! I am Aeneas. Your camp is new." },
+    { la:"Je hebt soldaten nodig. Ik geef je er één.", nl:"You need soldiers. I will give you one." },
+    { la:"Wie kies je?", nl:"Who do you choose?", choose:true },
   ],
   chosen:[
-    { la:"Bene elegisti! Hic miles tuus est.", nl:"Goed gekozen! Deze soldaat is van jou." },
-    { la:"Nunc alium militem cape. Per portam decumanam in Latium i. Hostem debilita et eum cape.", nl:"Vang nu nog een soldaat. Ga door de porta decumana naar Latium. Verzwak een vijand en gebruik Capere om hem te vangen." },
+    { la:"Goed gekozen! Deze soldaat is van jou.", nl:"Well chosen! This soldier is yours." },
+    { la:"Vang nu nog een soldaat. Ga door de porta decumana naar Latium. Verzwak een vijand en gebruik Capere om hem te vangen.", nl:"Now capture another soldier. Go through the porta decumana to Latium. Weaken an enemy and use Capere to capture him." },
   ],
   caught:[
-    { la:"Optime! Duos milites habes.", nl:"Uitstekend! Je hebt twee soldaten." },
-    { la:"Nunc castra defende. Per portam praetoriam i et proelium vince.", nl:"Verdedig nu het kamp. Ga door de porta praetoria en win het gevecht." },
-    { la:"Milites tuos colloca et hostes vince!", nl:"Plaats je soldaten (tik op een soldaat, dan op een vrij vak) en versla de vijanden!" },
+    { la:"Uitstekend! Je hebt twee soldaten.", nl:"Excellent! You have two soldiers." },
+    { la:"Verdedig nu het kamp. Ga door de porta praetoria en win het gevecht.", nl:"Now defend the camp. Go through the porta praetoria and win the battle." },
+    { la:"Plaats je soldaten (tik op een soldaat, dan op een vrij vak) en versla de vijanden!", nl:"Place your soldiers (tap a soldier, then a free tile) and defeat the enemies!" },
   ],
   done:[
-    { la:"Optime, dux {naam}! Castra defendisti.", nl:"Uitstekend, leider {naam}! Je hebt het kamp verdedigd." },
-    { la:"Iam scis venari, conscribere et pugnare.", nl:"Nu weet je hoe je jaagt, werft en vecht." },
-    { la:"Nunc heroes quaere et regiones novas explora. Vale!", nl:"Zoek nu helden en verken nieuwe regio's. Tot ziens!" },
+    { la:"Uitstekend, leider {naam}! Je hebt het kamp verdedigd.", nl:"Excellent, leader {naam}! You have defended the camp." },
+    { la:"Nu weet je hoe je jaagt, werft en vecht.", nl:"Now you know how to hunt, recruit and fight." },
+    { la:"Zoek nu helden en verken nieuwe regio's. Tot ziens!", nl:"Now look for heroes and explore new regions. See you!" },
   ],
-  bar1:{ la:"Alium militem cape!", nl:"Opdracht 1: vang een tweede soldaat. Ga door de porta decumana (bovenaan), verzwak de vijand met je moves en tik op \"Capere\" (verslaan laat hem vluchten)." },
-  bar2:{ la:"Castra defende!", nl:"Opdracht 2: win het eerste gevecht. Ga door de porta praetoria (rechts), kies \"Defensio castrorum\" en plaats je soldaten." },
+  bar1:{ la:"Opdracht 1: vang een tweede soldaat. Ga door de porta decumana (bovenaan), verzwak de vijand met je moves en tik op \"Capere\" (verslaan laat hem vluchten).", nl:"Task 1: capture a second soldier. Go through the porta decumana (at the top), weaken the enemy with your moves and tap \"Capere\" (defeating him makes him flee)." },
+  bar2:{ la:"Opdracht 2: win het eerste gevecht. Ga door de porta praetoria (rechts), kies \"Defensio castrorum\" en plaats je soldaten.", nl:"Task 2: win the first battle. Go through the porta praetoria (right), choose \"Defensio castrorum\" and place your soldiers." },
 };
 
 /* ---------- dialoogvenster ---------- */

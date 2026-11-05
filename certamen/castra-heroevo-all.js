@@ -38,7 +38,7 @@ function _HE_Q(nm, seek, steps, nom, first){
           { la:steps.map(s=>ends(s.hud.la)).join(" "), nl:steps.map(s=>s.hud.nl).join(" "), opts:[CASTRA_DQ_YES, CASTRA_DQ_NO] } ],
     steps,
     done:[ { la:nom[0]+"! Gratias tibi ago, dux {naam}.", nl:nom[1]+"! Dank je wel, leider {naam}." },
-           first ? { la:"Nunc viam eligere possum.", nl:"Nu kan ik mijn weg kiezen (menu: Heroes, Evolueer)." } : { la:"Ambrosia mihi datur.", nl:"Ik krijg ambrosia." } ] };
+           first ? { la:"Nu kan ik mijn weg kiezen (menu: Heroes, Evolueer).", nl:"Now I can choose my path (menu: Heroes, Evolve)." } : { la:"Ik krijg ambrosia.", nl:"I receive ambrosia." } ] };
 }
 // Een specialisatie met prestigevorm. a = archetype (sleutel van CASTRA_HEVO_ARCH).
 function _HE_S(hid, id, a, nm, nl, desc, look, q2, pr){

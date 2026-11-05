@@ -50,10 +50,10 @@ const CASTRA_WREG = {
 };
 // Gebouwtypes: Latijnse naam, Nederlandse naam, effect (heal of dagelijkse grondstof) en kaartstukken.
 const CASTRA_WBT = {
-  puteus:   { la:"Puteus",   acc:"puteum",   done:"paratus", nl:"put",        eff:"heal",              say:{ la:"Aqua milites sanat.",        nl:"Het water geneest je soldaten." },        built:[["well",0],["barrel",1]] },
-  horreum:  { la:"Horreum",  acc:"horreum",  done:"paratum", nl:"graanschuur", eff:{ frumentum:40 },   say:{ la:"Horreum cibum dat.",         nl:"De graanschuur geeft elke dag graan." },  built:[["crate_a",0],["crate_b",1]] },
-  lignatio: { la:"Lignatio", acc:"lignationem", done:"parata", nl:"houtzagerij", eff:{ lignum:40 },   say:{ la:"Silva ligna dat.",           nl:"De houtzagerij geeft elke dag hout." },   built:[["stump",0],["fence",1]] },
-  metallum: { la:"Metallum", acc:"metallum", done:"paratum", nl:"mijn",        eff:{ aes:40 },         say:{ la:"Metallum aes dat.",          nl:"De mijn geeft elke dag brons." },         built:[["rock_grey",0],["rock_brown",1]] },
+  puteus:   { la:"Puteus",   acc:"puteum",   done:"paratus", nl:"put",        eff:"heal",              say:{ la:"Het water geneest je soldaten.",        nl:"The water heals your soldiers." },        built:[["well",0],["barrel",1]] },
+  horreum:  { la:"Horreum",  acc:"horreum",  done:"paratum", nl:"graanschuur", eff:{ frumentum:40 },   say:{ la:"De graanschuur geeft elke dag graan.",         nl:"The granary gives grain every day." },  built:[["crate_a",0],["crate_b",1]] },
+  lignatio: { la:"Lignatio", acc:"lignationem", done:"parata", nl:"houtzagerij", eff:{ lignum:40 },   say:{ la:"De houtzagerij geeft elke dag hout.",           nl:"The sawmill gives wood every day." },   built:[["stump",0],["fence",1]] },
+  metallum: { la:"Metallum", acc:"metallum", done:"paratum", nl:"mijn",        eff:{ aes:40 },         say:{ la:"De mijn geeft elke dag brons.",          nl:"The mine gives bronze every day." },         built:[["rock_grey",0],["rock_brown",1]] },
 };
 // Vaste plekken per regio (x,y); site = linkerhelft van de bouwplaats (de rechterhelft staat op x+1).
 const CASTRA_WPOS = {
@@ -221,7 +221,7 @@ function castraWQuestText(rid){
           { la:`Quaere ${g.acc} ${g.where}, et aes tibi dabo.`, nl:`Zoek de ${CASTRA_ITEMS[g.item].nl} ${g.whereNl}, dan geef ik je brons.` } ],
     wait:[ { la:`Ubi est ${g.nom.toLowerCase()} ${g.pn}?`, nl:`Waar is mijn ${CASTRA_ITEMS[g.item].nl}?` } ],
     done:[ { la:`${g.nom} ${g.pn}! Gratias tibi ago, dux {naam}!`, nl:`Mijn ${CASTRA_ITEMS[g.item].nl}! Dank je wel, leider {naam}!` } ],
-    after:[ { la:"Vale, dux {naam}! Bene vivas!", nl:"Tot ziens, leider {naam}! Het ga je goed!" } ],
+    after:[ { la:"Tot ziens, leider {naam}! Het ga je goed!", nl:"Goodbye, leader {naam}! Farewell!" } ],
     hud:{ la:`${g.nom} quaere ${g.where}!`, nl:`Zoek de ${CASTRA_ITEMS[g.item].nl} van de ${g.npc} ${g.whereNl} (✨).` },
   };
 }
@@ -235,8 +235,8 @@ function castraWBuildText(bid){
   };
 }
 const CASTRA_WPUZ_HI = [
-  { la:"Salve, dux {naam}! Ludamus!", nl:"Gegroet, leider {naam}! Laten we spelen!" },
-  { la:"Quem ludum eligis?", nl:"Welk spel kies je?", opts:[ { la:"Ordo verborum", nl:"woorden op volgorde" }, { la:"Verba iungere", nl:"woorden koppelen" }, { la:"Nunc non", nl:"nu niet" } ] },
+  { la:"Gegroet, leider {naam}! Laten we spelen!", nl:"Greetings, leader {naam}! Let's play!" },
+  { la:"Welk spel kies je?", nl:"Which game do you choose?", opts:[ { la:"Ordo verborum", nl:"woorden op volgorde" }, { la:"Verba iungere", nl:"woorden koppelen" }, { la:"Nunc non", nl:"nu niet" } ] },
 ];
 
 function castraWSay(e, lines, done){ castraDlgOpen({ nm:e.nm, look:castraWLook(e) }, lines, done); }
@@ -256,8 +256,8 @@ function castraWNpcTalk(e){
     if(castraWBuilt(bid)){ castraWSay(e, T.built, null); return; }
     q.step = 1; castraSave(); castraWRefreshHud();
     const can = castraCanPay(B.cost);
-    const lines = T.ask.concat([ can ? { la:"Visne mihi ligna et aes dare?", nl:"Wil je mij hout en brons geven?", opts:[ { la:"Do", nl:"geven" }, { la:"Nondum", nl:"nog niet" } ] }
-                                     : { la:"Nondum satis habes.", nl:"Je hebt nog niet genoeg." } ]);
+    const lines = T.ask.concat([ can ? { la:"Wil je mij hout en brons geven?", nl:"Do you want to give me wood and bronze?", opts:[ { la:"Do", nl:"geven" }, { la:"Nondum", nl:"nog niet" } ] }
+                                     : { la:"Je hebt nog niet genoeg.", nl:"You do not have enough yet." } ]);
     castraWSay(e, lines, k=>{
       if(k===0 && castraCanPay(B.cost)){
         castraPay(B.cost); (CASTRA.wbuilt || (CASTRA.wbuilt = {}))[bid] = true;
@@ -289,12 +289,12 @@ function castraWobjOpus(){
 
 /* ---------- Latijnse puzzels ---------- */
 const CASTRA_PUZ_ORDER = [
-  { la:"Aeneas Troiam relinquit.", nl:"Aeneas verlaat Troje." },
-  { la:"Romulus urbem condit.", nl:"Romulus sticht de stad." },
-  { la:"Milites in castris dormiunt.", nl:"De soldaten slapen in het kamp." },
-  { la:"Dux hostes vincit.", nl:"De leider verslaat de vijanden." },
-  { la:"Equites ad portam veniunt.", nl:"De ruiters komen naar de poort." },
-  { la:"Sagittarii hostes vident.", nl:"De boogschutters zien de vijanden." },
+  { la:"Aeneas verlaat Troje.", nl:"Aeneas leaves Troy." },
+  { la:"Romulus sticht de stad.", nl:"Romulus founds the city." },
+  { la:"De soldaten slapen in het kamp.", nl:"The soldiers sleep in the camp." },
+  { la:"De leider verslaat de vijanden.", nl:"The leader defeats the enemies." },
+  { la:"De ruiters komen naar de poort.", nl:"The riders come to the gate." },
+  { la:"De boogschutters zien de vijanden.", nl:"The archers see the enemies." },
 ];
 const CASTRA_PUZ_MATCH = [
   ["miles","soldaat"], ["castra","kamp"], ["hostis","vijand"], ["dux","leider"], ["porta","poort"],

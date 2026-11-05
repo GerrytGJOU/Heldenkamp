@@ -19,30 +19,30 @@
 /* ---------- rollen ---------- */
 const CASTRA_P_ROLES = {
   velox:     { icon:"🏃", la:"Velox",     nl:"Snelle verkenner", hp:0.55, spd:1.6,  red:0,  leak:0, prio:0, frac:0.5,  maxk:4,
-               ex:{ la:"Hostis celer est. Cito currit, sed infirmus est.", nl:"Een snelle vijand. Hij rent veel sneller dan de rest, maar heeft weinig levenspunten.",
+               ex:{ la:"Een snelle vijand. Hij rent veel sneller dan de rest, maar heeft weinig levenspunten.", nl:"A fast enemy. He runs much faster than the rest, but has few life points.",
                     tip:"Tip: boogschutters en soldaten met een vertragende arte pakken hem het best aan." } },
   gravis:    { icon:"💪", la:"Gravis",    nl:"Zware krijger",    hp:1.8,  spd:0.8,  red:20, leak:1, prio:0, frac:0.4,  maxk:3,
-               ex:{ la:"Hostis gravis est. Tardus est, sed fortis.", nl:"Een zware krijger: langzaam, veel levenspunten en een pantser (jouw schade is 20% lager). Breekt hij door, dan kost dat 2 levens in plaats van 1.",
+               ex:{ la:"Een zware krijger: langzaam, veel levenspunten en een pantser (jouw schade is 20% lager). Breekt hij door, dan kost dat 2 levens in plaats van 1.", nl:"A heavy warrior: slow, with many life points and armour (your damage is 20% lower). If he breaks through, it costs 2 lives instead of 1.",
                     tip:"Tip: laat sterke soldaten dichtbij elkaar schieten; zwakke aanvallers richten weinig uit." } },
   scutarius: { icon:"🔰", la:"Scutarius", nl:"Schilddrager",     hp:1.3,  spd:0.95, red:0,  leak:0, prio:1, frac:0.25, maxk:2, radius:1700, prot:35,
-               ex:{ la:"Scutarius socios tegit.", nl:"Een schilddrager: vijanden in zijn buurt krijgen 35% minder schade.",
+               ex:{ la:"Een schilddrager: vijanden in zijn buurt krijgen 35% minder schade.", nl:"A shield-bearer: enemies near him take 35% less damage.",
                     tip:"Tip: boogschutters schieten eerst op schilddragers en genezers. Ruim hem snel op." } },
   medicus:   { icon:"⚕️", la:"Medicus",   nl:"Genezer",          hp:0.8,  spd:0.95, red:0,  leak:0, prio:2, frac:0.2,  maxk:2, radius:1800, heal:6, every:40, cap:60,
-               ex:{ la:"Medicus socios sanat.", nl:"Een genezer: elke 2 seconden herstelt hij 6% van de levenspunten van vijanden in zijn buurt (een vijand kan zo in totaal maximaal 60% van zijn levenspunten terugkrijgen).",
+               ex:{ la:"Een genezer: elke 2 seconden herstelt hij 6% van de levenspunten van vijanden in zijn buurt (een vijand kan zo in totaal maximaal 60% van zijn levenspunten terugkrijgen).", nl:"A healer: every 2 seconds he restores 6% of the life points of enemies near him (an enemy can regain at most 60% of its life points this way).",
                     tip:"Tip: boogschutters mikken eerst op genezers. Breng de genezer snel uit het spel, anders duurt het gevecht eindeloos." } },
 };
 
 /* ---------- missieregels ---------- */
 const CASTRA_EDICTA = {
-  ventus: { icon:"💨", la:"Ventus",         nl:"Wind",          ex:{ la:"Ventus flat. Hostes celeriores sunt.", nl:"Het waait hard: alle vijanden lopen 15% sneller." }, mods:{ spd:1.15 } },
-  nox:    { icon:"🌙", la:"Nox",            nl:"Nacht",         ex:{ la:"Nox est. Milites minus vident.", nl:"Het is nacht: je soldaten hebben 25% minder bereik." }, mods:{ rng:0.75 } },
-  pluvia: { icon:"🌧️", la:"Pluvia",         nl:"Regen",         ex:{ la:"Pluvia cadit. Arcus madidi sunt.", nl:"Het regent: boogschutters doen 30% minder schade." }, type:{ rng:-30 } },
-  aestus: { icon:"☀️", la:"Aestus",         nl:"Hitte",         ex:{ la:"Aestus magnus est. Equites fessi sunt.", nl:"Het is erg heet: cavalerie doet 30% minder schade." }, type:{ cav:-30 } },
-  frigus: { icon:"❄️", la:"Frigus",         nl:"Kou",           ex:{ la:"Frigus est. Milites lentius pugnant.", nl:"Het is koud: al je soldaten schieten 20% langzamer." }, mods:{ cd:1.2 } },
-  acies:  { icon:"⚔️", la:"Acies angusta",  nl:"Smalle linie",  ex:{ la:"Acies angusta est. Quinque milites sufficiunt.", nl:"De linie is smal: je mag maximaal 5 soldaten plaatsen." }, cap:5 },
-  sine_h: { icon:"🚫", la:"Sine heroibus",  nl:"Geen helden",   ex:{ la:"Heroes hodie non pugnant.", nl:"Helden mogen deze missie niet meedoen." }, banHero:true },
-  sine_s: { icon:"🏹", la:"Sine sagittariis", nl:"Geen boogschutters", ex:{ la:"Sagittarii hodie non pugnant.", nl:"Boogschutters mogen deze missie niet meedoen." }, banTypes:["rng"] },
-  sine_d: { icon:"🎁", la:"Sine donis",     nl:"Geen gunsten",  ex:{ la:"Hodie dona non sunt.", nl:"Na een golf krijg je geen gunst om uit te kiezen." }, noDona:true },
+  ventus: { icon:"💨", la:"Ventus",         nl:"Wind",          ex:{ la:"Het waait hard: alle vijanden lopen 15% sneller.", nl:"It is windy: all enemies walk 15% faster." }, mods:{ spd:1.15 } },
+  nox:    { icon:"🌙", la:"Nox",            nl:"Nacht",         ex:{ la:"Het is nacht: je soldaten hebben 25% minder bereik.", nl:"It is night: your soldiers have 25% less range." }, mods:{ rng:0.75 } },
+  pluvia: { icon:"🌧️", la:"Pluvia",         nl:"Regen",         ex:{ la:"Het regent: boogschutters doen 30% minder schade.", nl:"It is raining: archers deal 30% less damage." }, type:{ rng:-30 } },
+  aestus: { icon:"☀️", la:"Aestus",         nl:"Hitte",         ex:{ la:"Het is erg heet: cavalerie doet 30% minder schade.", nl:"It is very hot: cavalry deals 30% less damage." }, type:{ cav:-30 } },
+  frigus: { icon:"❄️", la:"Frigus",         nl:"Kou",           ex:{ la:"Het is koud: al je soldaten schieten 20% langzamer.", nl:"It is cold: all your soldiers shoot 20% slower." }, mods:{ cd:1.2 } },
+  acies:  { icon:"⚔️", la:"Acies angusta",  nl:"Smalle linie",  ex:{ la:"De linie is smal: je mag maximaal 5 soldaten plaatsen.", nl:"The line is narrow: you may place at most 5 soldiers." }, cap:5 },
+  sine_h: { icon:"🚫", la:"Sine heroibus",  nl:"Geen helden",   ex:{ la:"Helden mogen deze missie niet meedoen.", nl:"Heroes may not take part in this mission." }, banHero:true },
+  sine_s: { icon:"🏹", la:"Sine sagittariis", nl:"Geen boogschutters", ex:{ la:"Boogschutters mogen deze missie niet meedoen.", nl:"Archers may not take part in this mission." }, banTypes:["rng"] },
+  sine_d: { icon:"🎁", la:"Sine donis",     nl:"Geen gunsten",  ex:{ la:"Na een golf krijg je geen gunst om uit te kiezen.", nl:"After a wave you get no favour to choose from." }, noDona:true },
 };
 // Samengevoegde invloed van de regels van een missie (ook voor de balansproef in tools/castra-balance-td.js).
 function castraEdictSimSetup(m){
@@ -137,13 +137,13 @@ function castraBInfo(){
 /* ---------- synergieën ---------- */
 const CASTRA_P_SYNINFO = {
   muri:   { icon:"🧱", la:"Murus et sagittae", nl:"Muur en pijlen",
-            ex:{ la:"Pedites hostes tardant, et sagittarii eos feriunt.", nl:"Infanterie vertraagt vijanden met 25% zolang er een boogschutter binnen 3 tegels staat. De boogschutter heeft zo meer tijd om te schieten.",
+            ex:{ la:"Infanterie vertraagt vijanden met 25% zolang er een boogschutter binnen 3 tegels staat. De boogschutter heeft zo meer tijd om te schieten.", nl:"Infantry slows enemies by 25% as long as an archer stands within 3 tiles. This gives the archer more time to shoot.",
                  tip:"Tip: zet een infanterist vlak naast een boogschutter. De verbonden soldaten zie je met een gouden lijn." } },
   pers:   { icon:"🐎", la:"Persecutio", nl:"Achtervolging",
-            ex:{ la:"Equites hostes fessos persequuntur.", nl:"Cavalerie doet 50% extra schade aan vijanden die nog maar de helft van hun levenspunten hebben.",
+            ex:{ la:"Cavalerie doet 50% extra schade aan vijanden die nog maar de helft van hun levenspunten hebben.", nl:"Cavalry deals 50% extra damage to enemies that have only half of their life points left.",
                  tip:"Tip: laat eerst andere soldaten schade doen en bewaar de cavalerie voor het eind van het pad." } },
   acies:  { icon:"🏹", la:"Acies sagittariorum", nl:"Slagorde van boogschutters",
-            ex:{ la:"Signifer sagittarios adiuvat.", nl:"Een boogschutter binnen het bereik van een ondersteuner krijgt 15% extra bereik, naast de gewone buff van de ondersteuner.",
+            ex:{ la:"Een boogschutter binnen het bereik van een ondersteuner krijgt 15% extra bereik, naast de gewone buff van de ondersteuner.", nl:"An archer within range of a support unit gets 15% extra range, on top of the support unit's normal buff.",
                  tip:"Tip: zet je ondersteuner in het midden van je boogschutters." } },
 };
 // Welke synergieën zijn actief voor deze torens? (zelfde regels als de simulatie, alleen voor weergave.)
@@ -171,7 +171,7 @@ function castraBRenderSyn(notify){
 /* ---------- bevelen (energia) ---------- */
 const CASTRA_P_CMDINFO = {
   cmd: { icon:"⚡", la:"Imperia", nl:"Bevelen",
-         ex:{ la:"Imperator, imperia tua milites iuvant!", nl:"Tijdens een golf kun je twee bevelen geven. Impete! (Val aan!): 8 seconden lang +25% schade en 30% snellere aanvallen. State! (Houd stand!): 4 seconden lang lopen alle vijanden op 40% snelheid. Elk bevel kost 1 energie (⚡): je begint met 1 en krijgt er 1 bij na elke golf en na elke 15 verslagen vijanden (max. 3).",
+         ex:{ la:"Tijdens een golf kun je twee bevelen geven. Impete! (Val aan!): 8 seconden lang +25% schade en 30% snellere aanvallen. State! (Houd stand!): 4 seconden lang lopen alle vijanden op 40% snelheid. Elk bevel kost 1 energie (⚡): je begint met 1 en krijgt er 1 bij na elke golf en na elke 15 verslagen vijanden (max. 3).", nl:"During a wave you can give two commands. Impete! (Attack!): for 8 seconds +25% damage and 30% faster attacks. State! (Hold!): for 4 seconds all enemies move at 40% speed. Each command costs 1 energy (⚡): you start with 1 and gain 1 after every wave and after every 15 enemies defeated (max. 3).",
               tip:"Tip: bewaar je energie voor het moment dat een zware golf bijna doorbreekt." } },
 };
 function castraBCmd(id){

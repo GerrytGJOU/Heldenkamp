@@ -144,9 +144,9 @@ castraNpcTalk = function(id){ if(String(id)==="w:pontifex"){ castraPontifexTalk(
 function castraPontifexTalk(){
   if(CASTRA_DLG) return;
   const w = CASTRA.wday || (CASTRA.wday = {}), done = w.templum===castraWDay();
-  castraLatSay("Pontifex", CASTRA_ROMA_LOOKS.pontifex, [ { la:"Salve, hospes {naam}! Templum Iovis patet.", nl:"Gegroet, gast {naam}! De tempel van Iuppiter staat open." },
-    done ? { la:"Hodie iam sacrificasti. Cras redi!", nl:"Je hebt vandaag al geofferd. Kom morgen terug!" }
-         : { la:"Visne Iovi sacrificare?", nl:"Wil je een offer brengen aan Iuppiter?", opts:[ { la:"Sacrifico", nl:"offeren" }, { la:"Vale", nl:"tot ziens" } ] } ],
+  castraLatSay("Pontifex", CASTRA_ROMA_LOOKS.pontifex, [ { la:"Gegroet, gast {naam}! De tempel van Iuppiter staat open.", nl:"Greetings, guest {naam}! The temple of Jupiter is open." },
+    done ? { la:"Je hebt vandaag al geofferd. Kom morgen terug!", nl:"You have already made an offering today. Come back tomorrow!" }
+         : { la:"Wil je een offer brengen aan Iuppiter?", nl:"Do you want to make an offering to Jupiter?", opts:[ { la:"Sacrifico", nl:"offeren" }, { la:"Vale", nl:"tot ziens" } ] } ],
     k=>{
       if(done || k!==0) return;
       const hurt = castraHealAll();

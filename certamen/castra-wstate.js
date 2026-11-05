@@ -14,30 +14,30 @@
 const CASTRA_WSTATES = [
   { id:"ardea", region:"latium", at:[34,21], cond:"mission:m3", folk:"rom", banner:["🏛️ Ardea", "Ardea is verdedigd! In het noorden staat de weg naar Rome weer open."],
     voor:{ nm:"Fugitivus", look:{ armor:"vodden", baard:"baard", haarkleur:"grijs" }, say:[
-      { la:"Ardea obsidetur! Hostes muros oppugnant.", nl:"Ardea wordt belegerd! De vijanden bestormen de muren." },
-      { la:"Roma clausa est. Adiuva nos!", nl:"Rome is gesloten. Help ons!" } ] },
+      { la:"Ardea wordt belegerd! De vijanden bestormen de muren.", nl:"Ardea is under siege! The enemies are storming the walls." },
+      { la:"Rome is gesloten. Help ons!", nl:"Rome is closed. Help us!" } ] },
     na:{ nm:"Civis Ardeae", look:{ armor:"robe", baard:"geen", haar:"vlecht" }, say:[
-      { la:"Ardea libera est! Gratias tibi agimus.", nl:"Ardea is vrij! Wij danken je." },
-      { la:"Nunc Roma tibi patet.", nl:"Nu staat Rome voor je open." } ] } },
+      { la:"Ardea is vrij! Wij danken je.", nl:"Ardea is free! We thank you." },
+      { la:"Nu staat Rome voor je open.", nl:"Now Rome is open to you." } ] } },
   { id:"labyrinthus", region:"graecia", at:[55,38], cond:"mission:g2", folk:"gra", banner:["🏺 Labyrinthus", "Het labyrint is stil: de Minotaurus is verslagen."],
     voor:{ nm:"Mater anxia", look:{ armor:"robe", baard:"geen", haar:"vlecht" }, say:[
-      { la:"Minotaurus in labyrintho habitat.", nl:"De Minotaurus woont in het labyrint." },
-      { la:"Filius meus ibi est!", nl:"Mijn zoon is daar!" } ] },
+      { la:"De Minotaurus woont in het labyrint.", nl:"The Minotaur lives in the labyrinth." },
+      { la:"Mijn zoon is daar!", nl:"My son is over there!" } ] },
     na:{ nm:"Mater laeta", look:{ armor:"robe", baard:"geen", haar:"vlecht" }, say:[
-      { la:"Minotaurus victus est!", nl:"De Minotaurus is verslagen!" },
-      { la:"Filius meus domi est.", nl:"Mijn zoon is thuis." } ] } },
+      { la:"De Minotaurus is verslagen!", nl:"The Minotaur is defeated!" },
+      { la:"Mijn zoon is thuis.", nl:"My son is home." } ] } },
   { id:"alesia", region:"gallia", at:[29,40], cond:"mission:ga2", folk:"gal", banner:["🌿 Alesia", "Het beleg van Alesia is voorbij. In het land is het stil geworden."],
     voor:{ nm:"Gallus defessus", look:{ armor:"vodden", baard:"baard", haarkleur:"bruin" }, say:[
-      { la:"Alesia obsidetur. Fames nos premit.", nl:"Alesia wordt belegerd. De honger drukt ons." },
-      { la:"Quando pax erit?", nl:"Wanneer komt er vrede?" } ] },
+      { la:"Alesia wordt belegerd. De honger drukt ons.", nl:"Alesia is under siege. Hunger is pressing us." },
+      { la:"Wanneer komt er vrede?", nl:"When will there be peace?" } ] },
     na:{ nm:"Gallus pacatus", look:{ armor:"vodden", baard:"baard", haarkleur:"bruin" }, say:[
-      { la:"Pax est. Alesia cecidit, sed vivimus.", nl:"Er is vrede. Alesia is gevallen, maar wij leven." } ] } },
+      { la:"Er is vrede. Alesia is gevallen, maar wij leven.", nl:"There is peace. Alesia has fallen, but we are alive." } ] } },
   { id:"thermopylae", region:"laconia", at:[29,38], cond:"mission:la1", folk:"spa", banner:["🛡️ Thermopylae", "Thermopylae is verdedigd. De Spartanen eren hun gevallenen."],
     voor:{ nm:"Spartiates", look:{ armor:"middel", baard:"baard", haarkleur:"zwart" }, say:[
-      { la:"Persae appropinquant.", nl:"De Perzen komen eraan." },
-      { la:"Pro patria pugnabimus!", nl:"Wij vechten voor het vaderland!" } ] },
+      { la:"De Perzen komen eraan.", nl:"The Persians are coming." },
+      { la:"Wij vechten voor het vaderland!", nl:"We fight for the homeland!" } ] },
     na:{ nm:"Spartiates senex", look:{ armor:"middel", baard:"baard", haarkleur:"grijs" }, say:[
-      { la:"Thermopylarum memoria manet.", nl:"De herinnering aan Thermopylae blijft." } ] } },
+      { la:"De herinnering aan Thermopylae blijft.", nl:"The memory of Thermopylae lives on." } ] } },
 ];
 (function(){
   CASTRA_WSTATES.forEach(S=>{

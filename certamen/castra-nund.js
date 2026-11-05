@@ -34,7 +34,7 @@ castraNpcTalk = function(id){
   const e = id.indexOf("w:")===0 ? CASTRA_WENT.find(x=>"w:"+x.id===id) : null;
   if(e && e.role==="mercator"){
     if(CASTRA_DLG) return;
-    castraLatSay(e.nm, castraWLook(e), [ { la:"Hodie nundinae sunt! Eme, hospes!", nl:"Het is marktdag! Koop iets, gast!" } ], ()=>castraMarketOpen());
+    castraLatSay(e.nm, castraWLook(e), [ { la:"Het is marktdag! Koop iets, gast!", nl:"It is market day! Buy something, guest!" } ], ()=>castraMarketOpen());
     return;
   }
   return _castraNpcTalkNu0.apply(this, arguments);

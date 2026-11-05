@@ -17,11 +17,11 @@ const CASTRA_REGSPEC = {
     houseB:{ nm:"Taberna", nl:"De herberg", icon:"🍺", label:"🍺 Taberna", rest:{ nm:"Caupo" }, champ:{ nm:"Pugnator Gallus", form:"gal_bellatorgallus", lvl:26, terrain:"campus" } },
     cave:{ x:10, y:38, nm:"Antrum", nl:"De Gallische grot", icon:"🕳️", label:"🕳️ Antrum", terrain:{ id:"antrum", la:"In antro", nl:"In de grot", taks:["Wolven van Mars"] },
       fetch:{ nm:"Druida", item:"viscum", itemNm:"Viscum", icon:"🌿", itemNl:"maretak",
-        ask:{ la:"Salve, hospes {naam}! Viscum quaero.", nl:"Gegroet, gast {naam}! Ik zoek maretak." }, how:{ la:"Descende in antrum et refer viscum.", nl:"Ga diep het grot in en breng de maretak." },
-        wait:{ la:"Ubi est viscum?", nl:"Waar is de maretak?" }, thanks:{ la:"Viscum! Gratias tibi ago, dux {naam}!", nl:"De maretak! Dank je wel, leider {naam}!" },
-        hud:{ la:"Viscum refer!", nl:"Haal de maretak voor de druïde uit het diepste van de grot." } },
+        ask:{ la:"Gegroet, gast {naam}! Ik zoek maretak.", nl:"Greetings, guest {naam}! I am looking for mistletoe." }, how:{ la:"Ga diep het grot in en breng de maretak.", nl:"Go deep into the cave and bring the mistletoe." },
+        wait:{ la:"Waar is de maretak?", nl:"Where is the mistletoe?" }, thanks:{ la:"De maretak! Dank je wel, leider {naam}!", nl:"The mistletoe! Thank you, leader {naam}!" },
+        hud:{ la:"Haal de maretak voor de druïde uit het diepste van de grot.", nl:"Fetch the mistletoe for the druid from the deepest part of the cave." } },
       boss:{ nm:"Centaurus", form:"myt_centaurussagitta", lvl:28, icon:"🏹" } },
-    sentences:[ ["Galli in silvis habitant.","De Galliërs wonen in de bossen."],["Druides arbores colunt.","De druïden vereren bomen."],["Bardus carmina cantat.","De barde zingt liederen."],["Caesar Rhenum transit.","Caesar steekt de Rijn over."],["Galli fortiter pugnant.","De Galliërs vechten dapper."],["Oppidum muros altos habet.","De burcht heeft hoge muren."] ],
+    sentences:[ ["Galli in silvis habitant.","De Galliërs wonen in de bossen."],["Druides arbores colunt.","De druïden vereren bomen."],["Bardus carmina cantat.","De barde zingt liederen."],["Caesar steekt de Rijn over.","Caesar crosses the Rhine."],["Galli fortiter pugnant.","De Galliërs vechten dapper."],["Oppidum muros altos habet.","De burcht heeft hoge muren."] ],
   },
   graecia: {
     tents:[ { o:"tent_beige", x:14, y:16 }, { o:"tent_white", x:44, y:16 } ], venator:[34,44], folk:"gra",
@@ -29,11 +29,11 @@ const CASTRA_REGSPEC = {
     houseB:{ nm:"Gymnasium", nl:"De sportschool", icon:"🏛️", label:"🏛️ Gymnasium", rest:{ nm:"Gymnasiarches" }, champ:{ nm:"Athleta", form:"gra_peltasta", lvl:38, terrain:"urbs" } },
     cave:{ x:56, y:34, nm:"Labyrinthus", nl:"Het labyrint", icon:"🌀", label:"🌀 Labyrinthus", terrain:{ id:"labyrinthus", la:"In labyrintho", nl:"In het labyrint", taks:["Draken"] },
       fetch:{ nm:"Daedalus", item:"filum", itemNm:"Filum Ariadnae", icon:"🧵", itemNl:"draad van Ariadne",
-        ask:{ la:"Salve, hospes {naam}! Filum meum quaero.", nl:"Gegroet, gast {naam}! Ik zoek mijn draad." }, how:{ la:"Descende in labyrinthum et refer filum.", nl:"Ga diep het labyrint in en breng de draad van Ariadne." },
-        wait:{ la:"Ubi est filum?", nl:"Waar is de draad?" }, thanks:{ la:"Filum meum! Gratias tibi ago, dux {naam}!", nl:"Mijn draad! Dank je wel, leider {naam}!" },
-        hud:{ la:"Filum refer!", nl:"Haal de draad van Ariadne voor Daedalus uit het diepste van het labyrint." } },
+        ask:{ la:"Gegroet, gast {naam}! Ik zoek mijn draad.", nl:"Greetings, guest {naam}! I am looking for my thread." }, how:{ la:"Ga diep het labyrint in en breng de draad van Ariadne.", nl:"Go deep into the labyrinth and bring Ariadne's thread." },
+        wait:{ la:"Waar is de draad?", nl:"Where is the thread?" }, thanks:{ la:"Mijn draad! Dank je wel, leider {naam}!", nl:"My thread! Thank you, leader {naam}!" },
+        hud:{ la:"Haal de draad van Ariadne voor Daedalus uit het diepste van het labyrint.", nl:"Fetch Ariadne's thread for Daedalus from the deepest part of the labyrinth." } },
       boss:{ nm:"Draco", form:"myt_draco", lvl:40, icon:"🐉" } },
-    sentences:[ ["Graeci deos multos colunt.","De Grieken vereren veel goden."],["Athenae urbs pulchra est.","Athene is een mooie stad."],["Sparta milites fortes habet.","Sparta heeft sterke soldaten."],["Pythia futurum dicit.","De Pythia voorspelt de toekomst."],["Philosophi in horto disputant.","De filosofen discussiëren in de tuin."],["Naves in mari navigant.","De schepen varen over zee."] ],
+    sentences:[ ["Graeci deos multos colunt.","De Grieken vereren veel goden."],["Athene is een mooie stad.","Athens is a beautiful city."],["Sparta milites fortes habet.","Sparta heeft sterke soldaten."],["Pythia futurum dicit.","De Pythia voorspelt de toekomst."],["Philosophi in horto disputant.","De filosofen discussiëren in de tuin."],["De schepen varen over zee.","The ships sail across the sea."] ],
   },
   aegyptus: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:20, y:20 } ], venator:[34,44], folk:"aeg",
@@ -41,11 +41,11 @@ const CASTRA_REGSPEC = {
     houseB:{ nm:"Hortus Nili", nl:"De tuin aan de Nijl", icon:"🌴", label:"🌴 Hortus Nili", rest:{ nm:"Hortulanus" }, champ:{ nm:"Custos Pharaonis", form:"aeg_custospharaonis", lvl:50, terrain:"urbs" } },
     cave:{ x:50, y:38, nm:"Pyramis", nl:"De piramide", icon:"🔺", label:"🔺 Pyramis", terrain:{ id:"pyramis", la:"In pyramide", nl:"In de piramide", taks:["Feniks","Draken"] },
       fetch:{ nm:"Sacerdos senex", item:"scarabaeus_sacer", itemNm:"Scarabaeus sacer", icon:"🪲", itemNl:"heilige scarabee",
-        ask:{ la:"Salve, hospes {naam}! Scarabaeum sacrum quaero.", nl:"Gegroet, gast {naam}! Ik zoek de heilige scarabee." }, how:{ la:"Descende in pyramidem et refer scarabaeum.", nl:"Ga diep de piramide in en breng de scarabee." },
-        wait:{ la:"Ubi est scarabaeus?", nl:"Waar is de scarabee?" }, thanks:{ la:"Scarabaeus! Gratias tibi ago, dux {naam}!", nl:"De scarabee! Dank je wel, leider {naam}!" },
-        hud:{ la:"Scarabaeum refer!", nl:"Haal de heilige scarabee voor de priester uit het diepste van de piramide." } },
+        ask:{ la:"Gegroet, gast {naam}! Ik zoek de heilige scarabee.", nl:"Greetings, guest {naam}! I am looking for the sacred scarab." }, how:{ la:"Ga diep de piramide in en breng de scarabee.", nl:"Go deep into the pyramid and bring the scarab." },
+        wait:{ la:"Waar is de scarabee?", nl:"Where is the scarab?" }, thanks:{ la:"De scarabee! Dank je wel, leider {naam}!", nl:"The scarab! Thank you, leader {naam}!" },
+        hud:{ la:"Haal de heilige scarabee voor de priester uit het diepste van de piramide.", nl:"Fetch the sacred scarab for the priest from the deepest part of the pyramid." } },
       boss:{ nm:"Mumia", form:"myt_mumia", lvl:54, icon:"👻" } },
-    sentences:[ ["Pharao in pyramide sepelitur.","De farao wordt in de piramide begraven."],["Nilus agros aqua rigat.","De Nijl bevloeit de akkers met water."],["Sacerdotes deos colunt.","De priesters vereren de goden."],["Scribae hieroglyphos scribunt.","De schrijvers schrijven hiërogliefen."],["Sol per caelum currit.","De zon loopt door de hemel."],["Cleopatra regina Aegypti est.","Cleopatra is de koningin van Egypte."] ],
+    sentences:[ ["De farao wordt in de piramide begraven.","The pharaoh is buried in the pyramid."],["De Nijl bevloeit de akkers met water.","The Nile waters the fields."],["Sacerdotes deos colunt.","De priesters vereren de goden."],["Scribae hieroglyphos scribunt.","De schrijvers schrijven hiërogliefen."],["Sol per caelum currit.","De zon loopt door de hemel."],["Cleopatra is de koningin van Egypte.","Cleopatra is the queen of Egypt."] ],
   },
   laconia: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"spa",
@@ -53,11 +53,11 @@ const CASTRA_REGSPEC = {
     houseB:{ nm:"Syssitia", nl:"De gemeenschappelijke maaltijd", icon:"🍲", label:"🍲 Syssitia", rest:{ nm:"Coquus" }, champ:{ nm:"Spartiata", form:"spa_trecentus", lvl:42, terrain:"urbs" } },
     cave:{ x:50, y:38, nm:"Specus Taygeti", nl:"De Taygetosgrot", icon:"⛰️", label:"⛰️ Specus Taygeti", terrain:{ id:"taygetus", la:"In Taygeto", nl:"In de Taygetosgrot", taks:["Grijpvogels","Centauren"] },
       fetch:{ nm:"Pastor", item:"agnus", itemNm:"Agnus", icon:"🐑", itemNl:"verdwaald lam",
-        ask:{ la:"Salve, hospes {naam}! Agnum meum quaero.", nl:"Gegroet, gast {naam}! Ik zoek mijn lam." }, how:{ la:"Descende in specum et refer agnum.", nl:"Ga diep de grot in en breng mijn lam terug." },
-        wait:{ la:"Ubi est agnus?", nl:"Waar is het lam?" }, thanks:{ la:"Agnus meus! Gratias tibi ago, dux {naam}!", nl:"Mijn lam! Dank je wel, leider {naam}!" },
-        hud:{ la:"Agnum refer!", nl:"Haal het verdwaalde lam voor de herder uit het diepste van de grot." } },
+        ask:{ la:"Gegroet, gast {naam}! Ik zoek mijn lam.", nl:"Greetings, guest {naam}! I am looking for my lamb." }, how:{ la:"Ga diep de grot in en breng mijn lam terug.", nl:"Go deep into the cave and bring my lamb back." },
+        wait:{ la:"Waar is het lam?", nl:"Where is the lamb?" }, thanks:{ la:"Mijn lam! Dank je wel, leider {naam}!", nl:"My lamb! Thank you, leader {naam}!" },
+        hud:{ la:"Haal het verdwaalde lam voor de herder uit het diepste van de grot.", nl:"Fetch the lost lamb for the shepherd from the deepest part of the cave." } },
       boss:{ nm:"Gryps", form:"myt_gryps", lvl:54, icon:"🦅" } },
-    sentences:[ ["Spartani fortiter pugnant.","De Spartanen vechten dapper."],["Leonidas Thermopylas defendit.","Leonidas verdedigt Thermopylae."],["Pueri Spartani in agoge discunt.","De Spartaanse jongens leren in de agoge."],["Spartani panem nigrum edunt.","De Spartanen eten zwart brood."],["Rex Spartae ad bellum it.","De koning van Sparta gaat naar de oorlog."],["Mater filium ad pugnam mittit.","De moeder stuurt haar zoon naar de strijd."] ],
+    sentences:[ ["Spartani fortiter pugnant.","De Spartanen vechten dapper."],["Leonidas Thermopylas defendit.","Leonidas verdedigt Thermopylae."],["Pueri Spartani in agoge discunt.","De Spartaanse jongens leren in de agoge."],["Spartani panem nigrum edunt.","De Spartanen eten zwart brood."],["De koning van Sparta gaat naar de oorlog.","The king of Sparta goes to war."],["De moeder stuurt haar zoon naar de strijd.","The mother sends her son into battle."] ],
   },
   troia: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"tro",
@@ -65,11 +65,11 @@ const CASTRA_REGSPEC = {
     houseB:{ nm:"Domus Priami", nl:"Het paleis van Priamus", icon:"🏰", label:"🏰 Domus Priami", rest:{ nm:"Servus" }, champ:{ nm:"Custos portae", form:"tro_custosportae", lvl:44, terrain:"muros" } },
     cave:{ x:20, y:38, nm:"Cuniculus", nl:"De geheime tunnel", icon:"🕳️", label:"🕳️ Cuniculus", terrain:{ id:"cuniculus", la:"In cuniculo", nl:"In de tunnel", taks:["Cyclopen"] },
       fetch:{ nm:"Cassandra", item:"sagitta", itemNm:"Sagitta Apollinis", icon:"🏹", itemNl:"pijl van Apollo",
-        ask:{ la:"Salve, hospes {naam}! Sagittam meam quaero.", nl:"Gegroet, gast {naam}! Ik zoek mijn pijl." }, how:{ la:"Descende in cuniculum et refer sagittam.", nl:"Ga diep de tunnel in en breng de pijl van Apollo." },
-        wait:{ la:"Ubi est sagitta?", nl:"Waar is de pijl?" }, thanks:{ la:"Sagitta mea! Gratias tibi ago, dux {naam}!", nl:"Mijn pijl! Dank je wel, leider {naam}!" },
-        hud:{ la:"Sagittam refer!", nl:"Haal de pijl van Apollo voor Cassandra uit het diepste van de tunnel." } },
+        ask:{ la:"Gegroet, gast {naam}! Ik zoek mijn pijl.", nl:"Greetings, guest {naam}! I am looking for my arrow." }, how:{ la:"Ga diep de tunnel in en breng de pijl van Apollo.", nl:"Go deep into the tunnel and bring the arrow of Apollo." },
+        wait:{ la:"Waar is de pijl?", nl:"Where is the arrow?" }, thanks:{ la:"Mijn pijl! Dank je wel, leider {naam}!", nl:"My arrow! Thank you, leader {naam}!" },
+        hud:{ la:"Haal de pijl van Apollo voor Cassandra uit het diepste van de tunnel.", nl:"Fetch Apollo's arrow for Cassandra from the deepest part of the tunnel." } },
       boss:{ nm:"Cyclops", form:"myt_cyclopsfaber", lvl:58, icon:"👁️" } },
-    sentences:[ ["Troia urbs magna est.","Troje is een grote stad."],["Hector Troianos defendit.","Hector verdedigt de Trojanen."],["Graeci equum ligneum aedificant.","De Grieken bouwen een houten paard."],["Priamus rex Troiae est.","Priamus is de koning van Troje."],["Cassandra futurum videt.","Cassandra ziet de toekomst."],["Achilles hostes vincit.","Achilles overwint de vijanden."] ],
+    sentences:[ ["Troje is een grote stad.","Troy is a big city."],["Hector Troianos defendit.","Hector verdedigt de Trojanen."],["De Grieken bouwen een houten paard.","The Greeks are building a wooden horse."],["Priamus is de koning van Troje.","Priam is the king of Troy."],["Cassandra futurum videt.","Cassandra ziet de toekomst."],["Achilles hostes vincit.","Achilles overwint de vijanden."] ],
   },
   germania: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"ger",
@@ -77,11 +77,11 @@ const CASTRA_REGSPEC = {
     houseB:{ nm:"Mansio", nl:"De herberg", icon:"🍺", label:"🍺 Mansio", rest:{ nm:"Caupo" }, champ:{ nm:"Pugnator Germanus", form:"ger_centenus", lvl:32, terrain:"vicus" } },
     cave:{ x:50, y:38, nm:"Specus Hercynius", nl:"De Hercynische grot", icon:"🌲", label:"🌲 Specus Hercynius", terrain:{ id:"hercynia", la:"In specu", nl:"In de grot", taks:["Wolven van Mars","Draken"] },
       fetch:{ nm:"Venator senex", item:"cornu_bibendi", itemNm:"Cornu bibendi", icon:"🐂", itemNl:"drinkhoorn",
-        ask:{ la:"Salve, hospes {naam}! Cornu meum quaero.", nl:"Gegroet, gast {naam}! Ik zoek mijn drinkhoorn." }, how:{ la:"Descende in specum et refer cornu.", nl:"Ga diep de grot in en breng mijn hoorn terug." },
-        wait:{ la:"Ubi est cornu?", nl:"Waar is de hoorn?" }, thanks:{ la:"Cornu meum! Gratias tibi ago, dux {naam}!", nl:"Mijn hoorn! Dank je wel, leider {naam}!" },
-        hud:{ la:"Cornu refer!", nl:"Haal de drinkhoorn voor de oude jager uit het diepste van de grot." } },
+        ask:{ la:"Gegroet, gast {naam}! Ik zoek mijn drinkhoorn.", nl:"Greetings, guest {naam}! I am looking for my drinking horn." }, how:{ la:"Ga diep de grot in en breng mijn hoorn terug.", nl:"Go deep into the cave and bring my horn back." },
+        wait:{ la:"Waar is de hoorn?", nl:"Where is the horn?" }, thanks:{ la:"Mijn hoorn! Dank je wel, leider {naam}!", nl:"My horn! Thank you, leader {naam}!" },
+        hud:{ la:"Haal de drinkhoorn voor de oude jager uit het diepste van de grot.", nl:"Fetch the drinking horn for the old hunter from the deepest part of the cave." } },
       boss:{ nm:"Lupus Martius", form:"myt_lupusmartius", lvl:42, icon:"🐺" } },
-    sentences:[ ["Germani in silvis vivunt.","De Germanen leven in de bossen."],["Silva magna et obscura est.","Het bos is groot en donker."],["Germani bestias venantur.","De Germanen jagen op dieren."],["Rhenus Germaniam et Galliam dividit.","De Rijn scheidt Germanië en Gallië."],["Viri hastas portant.","De mannen dragen speren."],["Femina cibum parat.","De vrouw bereidt het eten."] ],
+    sentences:[ ["Germani in silvis vivunt.","De Germanen leven in de bossen."],["Het bos is groot en donker.","The forest is big and dark."],["Germani bestias venantur.","De Germanen jagen op dieren."],["Rhenus Germaniam et Galliam dividit.","De Rijn scheidt Germanië en Gallië."],["Viri hastas portant.","De mannen dragen speren."],["De vrouw bereidt het eten.","The woman prepares the food."] ],
   },
   themiscyra: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"ama",
@@ -89,11 +89,11 @@ const CASTRA_REGSPEC = {
     houseB:{ nm:"Stabulum", nl:"De stal", icon:"🐎", label:"🐎 Stabulum", rest:{ nm:"Equiso" }, champ:{ nm:"Amazon", form:"ama_securifera", lvl:48, terrain:"campus" } },
     cave:{ x:50, y:38, nm:"Antrum Martis", nl:"De grot van Ares", icon:"⚔️", label:"⚔️ Antrum Martis", terrain:{ id:"martis", la:"In antro Martis", nl:"In de grot van Ares", taks:["Harpijen","Wolven van Mars"] },
       fetch:{ nm:"Sacerdos", item:"balteus", itemNm:"Balteus", icon:"🎗️", itemNl:"gordel van Hippolyta",
-        ask:{ la:"Salve, hospes {naam}! Balteum Hippolytae quaero.", nl:"Gegroet, gast {naam}! Ik zoek de gordel van Hippolyta." }, how:{ la:"Descende in antrum et refer balteum.", nl:"Ga diep de grot in en breng de gordel." },
-        wait:{ la:"Ubi est balteus?", nl:"Waar is de gordel?" }, thanks:{ la:"Balteus! Gratias tibi ago, dux {naam}!", nl:"De gordel! Dank je wel, leider {naam}!" },
-        hud:{ la:"Balteum refer!", nl:"Haal de gordel van Hippolyta voor de priesteres uit het diepste van de grot." } },
+        ask:{ la:"Gegroet, gast {naam}! Ik zoek de gordel van Hippolyta.", nl:"Greetings, guest {naam}! I am looking for the belt of Hippolyta." }, how:{ la:"Ga diep de grot in en breng de gordel.", nl:"Go deep into the cave and bring the belt." },
+        wait:{ la:"Waar is de gordel?", nl:"Where is the belt?" }, thanks:{ la:"De gordel! Dank je wel, leider {naam}!", nl:"The belt! Thank you, leader {naam}!" },
+        hud:{ la:"Haal de gordel van Hippolyta voor de priesteres uit het diepste van de grot.", nl:"Fetch Hippolyta's belt for the priestess from the deepest part of the cave." } },
       boss:{ nm:"Equus alatus", form:"myt_equusalatus", lvl:60, icon:"🐴" } },
-    sentences:[ ["Amazones equos amant.","De Amazones houden van paarden."],["Hippolyta regina Amazonum est.","Hippolyta is de koningin van de Amazones."],["Feminae fortiter pugnant.","De vrouwen vechten dapper."],["Sagittae celeriter volant.","De pijlen vliegen snel."],["Hercules balteum petit.","Hercules vraagt om de gordel."],["Amazones in silvis venantur.","De Amazones jagen in de bossen."] ],
+    sentences:[ ["De Amazones houden van paarden.","The Amazons love horses."],["Hippolyta is de koningin van de Amazones.","Hippolyta is the queen of the Amazons."],["Feminae fortiter pugnant.","De vrouwen vechten dapper."],["Sagittae celeriter volant.","De pijlen vliegen snel."],["Hercules balteum petit.","Hercules vraagt om de gordel."],["Amazones in silvis venantur.","De Amazones jagen in de bossen."] ],
   },
   persis: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"per",
@@ -101,11 +101,11 @@ const CASTRA_REGSPEC = {
     houseB:{ nm:"Caravanserai", nl:"De karavaanherberg", icon:"🐪", label:"🐪 Caravanserai", rest:{ nm:"Caupo" }, champ:{ nm:"Immortalis", form:"per_immortalis", lvl:50, terrain:"urbs" } },
     cave:{ x:10, y:38, nm:"Sepulcrum", nl:"Het koningsgraf", icon:"⚱️", label:"⚱️ Sepulcrum", terrain:{ id:"sepulcrum", la:"In sepulcro", nl:"In het graf", taks:["Feniks","Draken"] },
       fetch:{ nm:"Magus senex", item:"ignis", itemNm:"Ignis sacer", icon:"🔥", itemNl:"heilig vuur",
-        ask:{ la:"Salve, hospes {naam}! Ignem sacrum quaero.", nl:"Gegroet, gast {naam}! Ik zoek het heilige vuur." }, how:{ la:"Descende in sepulcrum et refer ignem.", nl:"Ga diep het graf in en breng het heilige vuur." },
-        wait:{ la:"Ubi est ignis?", nl:"Waar is het vuur?" }, thanks:{ la:"Ignis sacer! Gratias tibi ago, dux {naam}!", nl:"Het heilige vuur! Dank je wel, leider {naam}!" },
-        hud:{ la:"Ignem refer!", nl:"Haal het heilige vuur voor de magiër uit het diepste van het koningsgraf." } },
+        ask:{ la:"Gegroet, gast {naam}! Ik zoek het heilige vuur.", nl:"Greetings, guest {naam}! I am looking for the sacred fire." }, how:{ la:"Ga diep het graf in en breng het heilige vuur.", nl:"Go deep into the tomb and bring the sacred fire." },
+        wait:{ la:"Waar is het vuur?", nl:"Where is the fire?" }, thanks:{ la:"Het heilige vuur! Dank je wel, leider {naam}!", nl:"The sacred fire! Thank you, leader {naam}!" },
+        hud:{ la:"Haal het heilige vuur voor de magiër uit het diepste van het koningsgraf.", nl:"Fetch the sacred fire for the magus from the deepest part of the royal tomb." } },
       boss:{ nm:"Draco Persicus", form:"myt_draco2", lvl:54, icon:"🐉" } },
-    sentences:[ ["Rex Persarum magnus est.","De koning van de Perzen is groot."],["Persae sagittis pugnant.","De Perzen vechten met pijlen."],["Magi ignem sacrum custodiunt.","De magiërs bewaken het heilige vuur."],["Dareus exercitum ducit.","Darius leidt het leger."],["Via regia longa est.","De koninklijke weg is lang."],["Equites in campo currunt.","De ruiters rennen over het veld."] ],
+    sentences:[ ["De koning van de Perzen is groot.","The king of the Persians is great."],["De Perzen vechten met pijlen.","The Persians fight with arrows."],["De magiërs bewaken het heilige vuur.","The magi guard the sacred fire."],["Darius leidt het leger.","Darius leads the army."],["Via regia longa est.","De koninklijke weg is lang."],["De ruiters rennen over het veld.","The riders race across the field."] ],
   },
   africa: {
     tents:[ { o:"tent_beige", x:40, y:20 }, { o:"tent_white", x:22, y:20 } ], venator:[34,44], folk:"car",
@@ -113,11 +113,11 @@ const CASTRA_REGSPEC = {
     houseB:{ nm:"Taberna navalis", nl:"De havenherberg", icon:"⚓", label:"⚓ Taberna navalis", rest:{ nm:"Nauta" }, champ:{ nm:"Veteranus Libyus", form:"car_veteranuslibyus", lvl:52, terrain:"urbs" } },
     cave:{ x:20, y:38, nm:"Specus Hannibalis", nl:"Hannibals grot", icon:"🐘", label:"🐘 Specus Hannibalis", terrain:{ id:"hannibalis", la:"In specu Hannibalis", nl:"In Hannibals grot", taks:["Draken","Feniks"] },
       fetch:{ nm:"Elephantarius", item:"dens_elephanti", itemNm:"Ebur", icon:"🦷", itemNl:"olifantstand",
-        ask:{ la:"Salve, hospes {naam}! Ebur meum quaero.", nl:"Gegroet, gast {naam}! Ik zoek mijn olifantstand." }, how:{ la:"Descende in specum et refer ebur.", nl:"Ga diep de grot in en breng mijn olifantstand terug." },
-        wait:{ la:"Ubi est ebur?", nl:"Waar is de olifantstand?" }, thanks:{ la:"Ebur meum! Gratias tibi ago, dux {naam}!", nl:"Mijn olifantstand! Dank je wel, leider {naam}!" },
-        hud:{ la:"Ebur refer!", nl:"Haal de olifantstand voor de olifantenleider uit het diepste van de grot." } },
+        ask:{ la:"Gegroet, gast {naam}! Ik zoek mijn olifantstand.", nl:"Greetings, guest {naam}! I am looking for my elephant tusk." }, how:{ la:"Ga diep de grot in en breng mijn olifantstand terug.", nl:"Go deep into the cave and bring my elephant tusk back." },
+        wait:{ la:"Waar is de olifantstand?", nl:"Where is the elephant tusk?" }, thanks:{ la:"Mijn olifantstand! Dank je wel, leider {naam}!", nl:"My elephant tusk! Thank you, leader {naam}!" },
+        hud:{ la:"Haal de olifantstand voor de olifantenleider uit het diepste van de grot.", nl:"Fetch the elephant tusk for the elephant leader from the deepest part of the cave." } },
       boss:{ nm:"Serpens", form:"myt_serpens", lvl:64, icon:"🐍" } },
-    sentences:[ ["Carthago urbs magna est.","Carthago is een grote stad."],["Hannibal elephantos ducit.","Hannibal leidt olifanten."],["Poeni naves multas habent.","De Carthagers hebben veel schepen."],["Mare nostrum latum est.","Onze zee is wijd."],["Romani Carthaginem vincunt.","De Romeinen overwinnen Carthago."],["Elephanti Alpes transeunt.","De olifanten steken de Alpen over."] ],
+    sentences:[ ["Carthago is een grote stad.","Carthage is a big city."],["Hannibal elephantos ducit.","Hannibal leidt olifanten."],["Poeni naves multas habent.","De Carthagers hebben veel schepen."],["Onze zee is wijd.","Our sea is wide."],["Romani Carthaginem vincunt.","De Romeinen overwinnen Carthago."],["De olifanten steken de Alpen over.","The elephants cross the Alps."] ],
   },
 };
 
@@ -217,15 +217,15 @@ castraNpcTalk = function(id){
 };
 function castraRegQuiz(e){
   if(CASTRA_DLG) return;
-  castraLatSay(e.nm, e.look, [ { la:"Salve, dux {naam}! Sententias Latinas interpretare!", nl:"Gegroet, leider {naam}! Vertaal Latijnse zinnen! Vijf vragen.", opts:[ { la:"Incipe", nl:"beginnen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
+  castraLatSay(e.nm, e.look, [ { la:"Gegroet, leider {naam}! Vertaal Latijnse zinnen! Vijf vragen.", nl:"Greetings, leader {naam}! Translate Latin sentences! Five questions.", opts:[ { la:"Incipe", nl:"beginnen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
     k=>{ if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_"+e.id, rid:CASTRA_WORLDS[e.region].parent, words:CASTRA_QUIZ_SENT_BASE.concat(e.sents||[]), title:e.title }; castraQuizStart(); } });
 }
 function castraRegRest(e){
   if(CASTRA_DLG) return;
   const w = CASTRA.wday || (CASTRA.wday = {}), key = "rest_"+e.id, done = w[key]===castraWDay();
-  castraLatSay(e.nm, e.look, [ { la:"Salve, hospes {naam}! Hic quiescere potes.", nl:"Gegroet, gast {naam}! Hier kun je uitrusten." },
-    done ? { la:"Hodie iam quievisti. Cras redi!", nl:"Je hebt vandaag al gerust. Kom morgen terug!" }
-         : { la:"Visne quiescere?", nl:"Wil je uitrusten?", opts:[ { la:"Quiesco", nl:"uitrusten" }, { la:"Vale", nl:"tot ziens" } ] } ],
+  castraLatSay(e.nm, e.look, [ { la:"Gegroet, gast {naam}! Hier kun je uitrusten.", nl:"Greetings, guest {naam}! Here you can rest." },
+    done ? { la:"Je hebt vandaag al gerust. Kom morgen terug!", nl:"You have already rested today. Come back tomorrow!" }
+         : { la:"Wil je uitrusten?", nl:"Do you want to rest?", opts:[ { la:"Quiesco", nl:"uitrusten" }, { la:"Vale", nl:"tot ziens" } ] } ],
     k=>{
       if(done || k!==0) return;
       const hurt = castraHealAll();
@@ -237,9 +237,9 @@ function castraRegChamp(e){
   if(CASTRA_DLG) return;
   const key = "champ_"+e.id, done = (CASTRA.wday||{})[key]===castraWDay(), rid = CASTRA_WORLDS[e.region].parent;
   castraFsprProbe([["trn_champ_"+rid, "battle_front"]]);          // de pose van de kampioen alvast controleren (castra-vscene.js toont hem aan het begin van het gevecht)
-  castraLatSay(e.nm, e.look, [ { la:"Salve, dux {naam}! Pugnatorem fortem habeo.", nl:"Gegroet, leider {naam}! Ik heb een sterke vechter." },
-    done ? { la:"Hodie eum vicisti. Cras redi!", nl:"Vandaag heb je hem verslagen. Kom morgen terug!" }
-         : { la:"Visne cum eo pugnare?", nl:"Durf je tegen hem te vechten? Wie wint, krijgt een beloning.", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Nunc non", nl:"nu niet" } ] } ],
+  castraLatSay(e.nm, e.look, [ { la:"Gegroet, leider {naam}! Ik heb een sterke vechter.", nl:"Greetings, leader {naam}! I have a strong fighter." },
+    done ? { la:"Vandaag heb je hem verslagen. Kom morgen terug!", nl:"Today you have defeated him. Come back tomorrow!" }
+         : { la:"Durf je tegen hem te vechten? Wie wint, krijgt een beloning.", nl:"Do you dare to fight him? The winner gets a reward.", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Nunc non", nl:"nu niet" } ] } ],
     k=>{ if(!done && k===0) castraRegionFight(rid, e.fight.terrain, e.fight.form, e.fight.lvl, { key, reward:CASTRA_REG_REWARD.champ, gloria:2, pxp:25, token:true, why:"kampioen verslagen", pose:"trn_champ_"+rid }); });
 }
 function castraRegFetch(e){
@@ -261,13 +261,13 @@ function castraRegFetch(e){
         if(typeof castraWRefreshHud==="function") castraWRefreshHud();
       });
     } else say([ F.wait ], null);
-  } else say([ { la:"Vale, dux {naam}! Bene vivas!", nl:"Tot ziens, leider {naam}! Het ga je goed!" } ], null);
+  } else say([ { la:"Tot ziens, leider {naam}! Het ga je goed!", nl:"Goodbye, leader {naam}! Farewell!" } ], null);
 }
 function castraRegBoss(e){
   if(CASTRA_DLG) return;
   const rid = CASTRA_WORLDS[e.region].parent;
-  castraLatSay(e.nm, castraRegLook("rom", { armor:"vodden", haarkleur:"grijs", huid:"zeerlicht" }), [ { la:"Custos huius loci sum. Hic maneo!", nl:"Ik ben de bewaker van deze plek. Hier blijf ik!" },
-    { la:"Visne mecum pugnare?", nl:"Durf je met mij te vechten?", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Fuge", nl:"wegrennen" } ] } ],
+  castraLatSay(e.nm, castraRegLook("rom", { armor:"vodden", haarkleur:"grijs", huid:"zeerlicht" }), [ { la:"Ik ben de bewaker van deze plek. Hier blijf ik!", nl:"I am the guardian of this place. Here I stay!" },
+    { la:"Durf je met mij te vechten?", nl:"Do you dare to fight me?", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Fuge", nl:"wegrennen" } ] } ],
     k=>{ if(k===0) castraRegionFight(rid, e.terrain, e.form, e.lvl, { key:"boss_"+e.id, reward:CASTRA_REG_REWARD.boss, gloria:2, pxp:30, token:true, why:e.nm+" verslagen" }); });
 }
 

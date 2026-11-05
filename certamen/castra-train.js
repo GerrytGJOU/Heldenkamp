@@ -16,9 +16,9 @@ const CASTRA_TRAIN_POS = {
   themiscyra:[[29,41],[29,26],[33,6]],
 };
 const CASTRA_TRAIN_KINDS = [
-  { nm:"Venator",   la:"Salve, hospes! Venator sum. Pugnemus!",            nl:"Gegroet, gast! Ik ben een jager. Laten we vechten!", armor:"vodden",  wapen:"speer" },
-  { nm:"Miles viae", la:"Hic viam custodio. Pugnasne mecum?",               nl:"Ik bewaak hier de weg. Vecht je met mij?",            armor:"middel",  wapen:"zwaard" },
-  { nm:"Explorator", la:"Vires tuas experiri volo. Veni!",                  nl:"Ik wil je kracht op de proef stellen. Kom op!",        armor:"licht",   wapen:"boog" },
+  { nm:"Venator",   la:"Gegroet, gast! Ik ben een jager. Laten we vechten!",            nl:"Greetings, guest! I am a hunter. Let's fight!", armor:"vodden",  wapen:"speer" },
+  { nm:"Miles viae", la:"Ik bewaak hier de weg. Vecht je met mij?",               nl:"I guard the road here. Will you fight me?",            armor:"middel",  wapen:"zwaard" },
+  { nm:"Explorator", la:"Ik wil je kracht op de proef stellen. Kom op!",                  nl:"I want to test your strength. Come on!",        armor:"licht",   wapen:"boog" },
 ];
 const CASTRA_TRAIN_TITLES = { latium:"Latinus", graecia:"Graecus", troia:"Troianus", gallia:"Gallus", aegyptus:"Aegyptius", persis:"Persa", africa:"Poenus", roma:"Romanus", laconia:"Spartiates", germania:"Germanus", themiscyra:"Amazon" };
 const CASTRA_INSIGNIA_NAMES = { latium:"Latium", graecia:"Graecia", troia:"Troia", gallia:"Gallia", aegyptus:"Aegyptus", persis:"Persis", africa:"Africa", roma:"Roma", laconia:"Laconia", germania:"Germania", themiscyra:"Themiscyra" };
@@ -70,12 +70,12 @@ function castraTrainerQuestion(rid, seed){
 function castraTrainerTalk(e){
   if(CASTRA_DLG) return;
   const K = CASTRA_TRAIN_KINDS[e.tk], look = castraTrainerLook(e), rid = CASTRA_WORLDS[e.region].parent || e.region;
-  if(castraTrainerDone(e)){ castraLatSay(e.nm, look, [ { la:"Hodie me vicisti. Cras redi!", nl:"Vandaag heb je mij verslagen. Kom morgen terug voor een rematch!" } ], null); return; }
+  if(castraTrainerDone(e)){ castraLatSay(e.nm, look, [ { la:"Vandaag heb je mij verslagen. Kom morgen terug voor een rematch!", nl:"Today you have defeated me. Come back tomorrow for a rematch!" } ], null); return; }
   const Q = castraTrainerQuestion(rid, (CASTRA.seed ^ (e.x*131+e.y*977))>>>0); CASTRA.seed = (CASTRA.seed+17)>>>0;
   castraLatSay(e.nm, look, [ { la:K.la, nl:K.nl }, { la:Q.ctx.la, nl:Q.ctx.nl }, { la:Q.q.la, nl:Q.q.nl, opts:Q.opts.map(o=>({ la:o.la, nl:o.nl })) } ], k=>{
     const right = !!(Q.opts[k] && Q.opts[k].ok);
-    castraLatSay(e.nm, look, [ right ? { la:"Recte! Nunc pugnemus.", nl:"Goed zo! Nu gaan we vechten (extra gloria bij winst)." } : { la:"Non recte. Sed pugnemus.", nl:"Niet goed. Maar laten we toch vechten." },
-      { la:"Visne pugnare?", nl:"Durf je?", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Nunc non", nl:"nu niet" } ] } ], j=>{ if(j===0) castraTrainerFight(e, right); });
+    castraLatSay(e.nm, look, [ right ? { la:"Goed zo! Nu gaan we vechten (extra gloria bij winst).", nl:"Well done! Now we fight (extra glory if you win)." } : { la:"Niet goed. Maar laten we toch vechten.", nl:"Not good. But let's fight anyway." },
+      { la:"Durf je?", nl:"Do you dare?", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Nunc non", nl:"nu niet" } ] } ], j=>{ if(j===0) castraTrainerFight(e, right); });
   });
 }
 // Een trainer heeft meerdere soldaten (twee in Latium, daarna drie): ze komen een voor een, zoals de Pokémon van een trainer.

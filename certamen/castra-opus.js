@@ -97,9 +97,9 @@ function castraMenuLabor(){
 }
 
 Object.assign(CASTRA_LA, {
-  miles_laborat:       { la:"Miles laborat.", nl:"Deze soldaat werkt in het kamp. Roep hem eerst terug (menu: Labor)." },
-  vulneratus_laborat:  { la:"Miles vulneratus est.", nl:"Een gewonde soldaat kan niet werken." },
-  exercitatur_laborat: { la:"Miles exercetur.", nl:"Een soldaat die traint kan niet werken." },
+  miles_laborat:       { la:"Deze soldaat werkt in het kamp. Roep hem eerst terug (menu: Labor).", nl:"This soldier is working in the camp. Call him back first (menu: Labor)." },
+  vulneratus_laborat:  { la:"Een gewonde soldaat kan niet werken.", nl:"A wounded soldier cannot work." },
+  exercitatur_laborat: { la:"Een soldaat die traint kan niet werken.", nl:"A soldier who is training cannot work." },
 });
 CASTRA_LA.exercetur_laborat = CASTRA_LA.exercitatur_laborat;
 Object.assign(CASTRA_GLOSS, { "hic":"hier", "milites":"soldaten", "laborant":"werken", "laborat":"werkt", "nemo":"niemand", "miles":"soldaat", "vulneratus":"gewond", "exercetur":"wordt getraind" });

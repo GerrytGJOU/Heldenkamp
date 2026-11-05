@@ -11,9 +11,9 @@
 
 /* Korte Latijnse mythesamenvattingen (voorlopig, ter controle door Gerben). */
 const CASTRA_CODEX_LORE = {
-  myt_myrmido:   { la:"Aeacus formicas in homines mutavit. Myrmidones Achillem sequuntur.", nl:"Aeacus veranderde mieren in mensen. De Myrmidonen volgen Achilles." },
-  myt_spartus:   { la:"Cadmus dentes draconis serit. Viri armati ex terra surgunt.", nl:"Cadmus zaait drakentanden. Gewapende mannen rijzen uit de grond." },
-  myt_lupusmartius:{ la:"Lupa Romulum et Remum nutrit. Lupus Martis sacer est.", nl:"Een wolvin voedt Romulus en Remus. De wolf van Mars is heilig." },
+  myt_myrmido:   { la:"Aeacus veranderde mieren in mensen. De Myrmidonen volgen Achilles.", nl:"Aeacus turned ants into people. The Myrmidons follow Achilles." },
+  myt_spartus:   { la:"Cadmus zaait drakentanden. Gewapende mannen rijzen uit de grond.", nl:"Cadmus sows dragon's teeth. Armed men rise from the ground." },
+  myt_lupusmartius:{ la:"Een wolvin voedt Romulus en Remus. De wolf van Mars is heilig.", nl:"A she-wolf nurses Romulus and Remus. The wolf of Mars is sacred." },
 };
 
 /* ---- Tweede verzamelas: prestaties (titels en beloningen voor codex-voortgang) ----

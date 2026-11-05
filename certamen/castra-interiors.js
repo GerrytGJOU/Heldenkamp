@@ -58,14 +58,14 @@ const CASTRA_INTERIORS = {
 };
 const CASTRA_MATRONA_LOOK = { huid:"licht", haar:"knot", haarkleur:"bruin", baard:"geen", cape:"geen", helm:"geen", schild:"geen", wapen:"geen", armor:"robe" };
 const CASTRA_PROVERBIA = [
-  { la:"Festina lente.", nl:"Haast je langzaam." },
-  { la:"Carpe diem.", nl:"Pluk de dag." },
-  { la:"Veni, vidi, vici.", nl:"Ik kwam, ik zag, ik overwon." },
-  { la:"Alea iacta est.", nl:"De teerling is geworpen." },
-  { la:"Per aspera ad astra.", nl:"Door moeilijkheden naar de sterren." },
-  { la:"Docendo discimus.", nl:"Al doende leren we." },
-  { la:"Fortes fortuna adiuvat.", nl:"Het geluk helpt de dapperen." },
-  { la:"Ubi bene, ibi patria.", nl:"Waar het goed is, is mijn vaderland." },
+  { la:"Haast je langzaam.", nl:"Make haste slowly." },
+  { la:"Pluk de dag.", nl:"Seize the day." },
+  { la:"Ik kwam, ik zag, ik overwon.", nl:"I came, I saw, I conquered." },
+  { la:"De teerling is geworpen.", nl:"The die is cast." },
+  { la:"Door moeilijkheden naar de sterren.", nl:"Through hardships to the stars." },
+  { la:"Al doende leren we.", nl:"By doing, we learn." },
+  { la:"Het geluk helpt de dapperen.", nl:"Fortune favours the brave." },
+  { la:"Waar het goed is, is mijn vaderland.", nl:"Where it is good, there is my homeland." },
 ];
 
 /* ---------- registratie als werelden en wereldobjecten ---------- */
@@ -180,9 +180,9 @@ function castraMatronaTalk(){
   if(CASTRA_DLG) return;
   const e = CASTRA_WENT.find(x=>x.id==="matrona_villa"), w = CASTRA.wday || (CASTRA.wday = {});
   const done = w.hospitium===castraWDay();
-  const lines = [ { la:"Salve, hospes {naam}! Hic quiescere potes.", nl:"Gegroet, gast {naam}! Hier kun je uitrusten." },
-    done ? { la:"Hodie iam quievisti. Cras redi!", nl:"Je hebt vandaag al gerust. Kom morgen terug!" }
-         : { la:"Visne quiescere?", nl:"Wil je uitrusten?", opts:[ { la:"Quiesco", nl:"uitrusten" }, { la:"Vale", nl:"tot ziens" } ] } ];
+  const lines = [ { la:"Gegroet, gast {naam}! Hier kun je uitrusten.", nl:"Greetings, guest {naam}! Here you can rest." },
+    done ? { la:"Je hebt vandaag al gerust. Kom morgen terug!", nl:"You have already rested today. Come back tomorrow!" }
+         : { la:"Wil je uitrusten?", nl:"Do you want to rest?", opts:[ { la:"Quiesco", nl:"uitrusten" }, { la:"Vale", nl:"tot ziens" } ] } ];
   castraDlgOpen({ nm:"Matrona", look:CASTRA_MATRONA_LOOK }, lines, k=>{
     if(k===0){
       const hurt = castraHealAll(); w.hospitium = castraWDay(); castraSave();

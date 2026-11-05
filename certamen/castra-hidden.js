@@ -13,13 +13,13 @@
 const CASTRA_HID = {
   perRegion:4, perInterior:1, perCave:2, glimpse:2, keepAway:3,
   finds:[
-    { w:5, la:"Nummus in herba latet!",   nl:"Een muntje in het gras!",                  res:{ aes:[12,30] } },
-    { w:4, la:"Spicae frumenti!",         nl:"Aren graan, verloren van een kar.",        res:{ frumentum:[10,25] } },
-    { w:4, la:"Lignum siccum!",           nl:"Droog brandhout onder de bladeren.",       res:{ lignum:[12,30] } },
-    { w:1, la:"Fibula antiqua!",          nl:"Een oude mantelspeld, mooi bewaard.",       res:{ gloria:[1,1] } },
-    { w:2, la:"Posca in testa!",          nl:"Een scherf met een restje posca.",           res:{}, good:"posca" },
-    { w:1, la:"Suffimentum!",             nl:"Een bundeltje rookkruid, nog geurig.",       res:{}, good:"suffimentum" },
-    { w:1, la:"Viaticum!",                nl:"Een verloren beurs met reisgeld.",           res:{}, good:"viaticum" },
+    { w:5, la:"Een muntje in het gras!",   nl:"A coin in the grass!",                  res:{ aes:[12,30] } },
+    { w:4, la:"Aren graan, verloren van een kar.",         nl:"Ears of grain, lost from a cart.",        res:{ frumentum:[10,25] } },
+    { w:4, la:"Droog brandhout onder de bladeren.",           nl:"Dry firewood under the leaves.",       res:{ lignum:[12,30] } },
+    { w:1, la:"Een oude mantelspeld, mooi bewaard.",          nl:"An old brooch, nicely preserved.",       res:{ gloria:[1,1] } },
+    { w:2, la:"Een scherf met een restje posca.",          nl:"A shard with a little posca left.",           res:{}, good:"posca" },
+    { w:1, la:"Een bundeltje rookkruid, nog geurig.",             nl:"A bundle of fragrant herbs, still sweet-smelling.",       res:{}, good:"suffimentum" },
+    { w:1, la:"Een verloren beurs met reisgeld.",                nl:"A lost purse with travel money.",           res:{}, good:"viaticum" },
   ],
 };
 function castraHidHash(str){ let h = 2166136261; for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h>>>0; }

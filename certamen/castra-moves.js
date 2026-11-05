@@ -207,7 +207,7 @@ function castraMvSpeed(S){ return castraMvStat(S, "cel"); }
 /* ---------- teksten bij gebeurtenissen ---------- */
 const CASTRA_MV_STATUS_LA = {
   vulnus:{ on:["Vulnus accipit.", "{n} is gewond."], dot:["Vulnus dolet.", "De wond doet pijn."], key:"mv_vulnus" },
-  ustio: { on:["Ustio accipit.", "{n} heeft een brandwond."], dot:["Ustio urit.", "De brandwond brandt."], key:"mv_ustio" },
+  ustio: { on:["{n} heeft een brandwond.", "{n} has a burn."], dot:["Ustio urit.", "De brandwond brandt."], key:"mv_ustio" },
   somnus:{ on:["Somnus cadit.", "{n} valt in slaap."], key:"mv_somnus" },
   pavor: { on:["Pavor capit.", "{n} is bang."], key:"mv_pavor" },
 };
@@ -526,9 +526,9 @@ function castraVResultHTML(){
 Object.assign(CASTRA_LA, {
   capere:           { la:"Capere", nl:"Vangen" },
   fuga:             { la:"Fuga", nl:"Vluchten" },
-  captus_est:       { la:"Hostis captus est!", nl:"De vijand is gevangen!" },
-  hostis_adiungit:  { la:"Hostis se tibi adiungit.", nl:"De vijand sluit zich bij je aan." },
-  hostis_fugit_victus:{ la:"Hostis victus fugit.", nl:"De verslagen vijand vlucht. Wil je een vijand in je kamp? Vang hem voor hij verslagen is." },
+  captus_est:       { la:"De vijand is gevangen!", nl:"The enemy is captured!" },
+  hostis_adiungit:  { la:"De vijand sluit zich bij je aan.", nl:"The enemy joins you." },
+  hostis_fugit_victus:{ la:"De verslagen vijand vlucht. Wil je een vijand in je kamp? Vang hem voor hij verslagen is.", nl:"The defeated enemy flees. Do you want an enemy in your camp? Capture him before he is defeated." },
 });
 Object.assign(CASTRA_GLOSS, {
   "capere":"vangen", "cape":"vang!", "debilita":"verzwak!", "hostem":"vijand (4e naamval)", "conscribe":"werf!", "captus":"gevangen", "capio":"ik vang", "funis":"touw", "ruptus":"gebroken", "tenet":"houdt", "fuga":"vlucht", "fugit":"vlucht",

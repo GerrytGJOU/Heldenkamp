@@ -106,42 +106,42 @@ castraZoneChipUpdate = function(){
 // septentrio (noord), meridies (zuid).
 const CASTRA_MYTH_HINTS = {
   latium: { nm:"Pastor Latinus", lines:[
-    { la:"Salve, hospes! Lupa olim Romulum et Remum aluit.", nl:"Gegroet, gast! De wolvin voedde eens Romulus en Remus." },
-    { la:"In specu ad occidentem lupae et Fauni adhuc habitant. Noli sine armis intrare!", nl:"In de grot in het westen wonen nog wolven en faunen. Ga niet zonder wapens naar binnen!" } ] },
+    { la:"Gegroet, gast! De wolvin voedde eens Romulus en Remus.", nl:"Greetings, guest! The she-wolf once fed Romulus and Remus." },
+    { la:"In de grot in het westen wonen nog wolven en faunen. Ga niet zonder wapens naar binnen!", nl:"Wolves and fauns still live in the cave in the west. Do not go in without weapons!" } ] },
   roma: { nm:"Augur", lines:[
-    { la:"Aves specto. Aquilae Iovis supra Capitolium volant, sed interdiu tantum.", nl:"Ik kijk naar de vogels. De adelaars van Iuppiter vliegen boven het Capitool, maar alleen overdag." },
-    { la:"Lupi Martis in campo Martio habitant, ad meridiem et occidentem.", nl:"De wolven van Mars wonen op het Marsveld, in het zuiden en westen." },
-    { la:"Et prope sepulcra, ad meridiem muri, lemures noctu errant.", nl:"En bij de graven, ten zuiden van de muur, dwalen 's nachts de lemuren rond." } ] },
+    { la:"Ik kijk naar de vogels. De adelaars van Iuppiter vliegen boven het Capitool, maar alleen overdag.", nl:"I watch the birds. Jupiter's eagles fly above the Capitol, but only by day." },
+    { la:"De wolven van Mars wonen op het Marsveld, in het zuiden en westen.", nl:"The wolves of Mars live on the Field of Mars, in the south and west." },
+    { la:"En bij de graven, ten zuiden van de muur, dwalen 's nachts de lemuren rond.", nl:"And near the graves, south of the wall, the lemures roam at night." } ] },
   gallia: { nm:"Bardus senex", lines:[
-    { la:"Carmina antiqua cano. Lupi Martis in antro ad meridiem latent.", nl:"Ik zing oude liederen. De wolven van Mars liggen verscholen in de grot in het zuiden." },
-    { la:"Noli sine armis intrare!", nl:"Ga niet zonder wapens naar binnen!" } ] },
+    { la:"Ik zing oude liederen. De wolven van Mars liggen verscholen in de grot in het zuiden.", nl:"I sing old songs. The wolves of Mars lie hidden in the cave in the south." },
+    { la:"Ga niet zonder wapens naar binnen!", nl:"Do not go in without weapons!" } ] },
   germania: { nm:"Venator Hercynius", lines:[
-    { la:"Silva Hercynia vetus est et densa.", nl:"Het Hercynische woud is oud en dicht." },
-    { la:"In specu ad orientem draco dormit. Noli eum excitare!", nl:"In de grot in het oosten slaapt een draak. Maak hem niet wakker!" } ] },
+    { la:"Het Hercynische woud is oud en dicht.", nl:"The Hercynian Forest is old and dense." },
+    { la:"In de grot in het oosten slaapt een draak. Maak hem niet wakker!", nl:"A dragon sleeps in the cave in the east. Do not wake it!" } ] },
   graecia: { nm:"Rhapsodos", lines:[
-    { la:"Ad litus orientale Sirenae noctu cantant, et Harpyiae Phineum cruciant.", nl:"Aan de oostkust zingen 's nachts de Sirenen, en de Harpijen kwellen Phineus." },
-    { la:"In oleis, ad occidentem, Bacchus satyros ducit; ibi fons Pegasi latet.", nl:"In de olijfgaarden in het westen leidt Bacchus de satyrs; daar ligt de bron van Pegasus verborgen." },
-    { la:"In urbe, ad orientem, formicae in homines mutatae sunt et dentes draconis in agro iacent.", nl:"In de stad in het oosten zijn mieren in mensen veranderd, en liggen drakentanden in een akker." } ] },
+    { la:"Aan de oostkust zingen 's nachts de Sirenen, en de Harpijen kwellen Phineus.", nl:"On the east coast the Sirens sing at night, and the Harpies torment Phineus." },
+    { la:"In de olijfgaarden in het westen leidt Bacchus de satyrs; daar ligt de bron van Pegasus verborgen.", nl:"In the olive groves in the west Bacchus leads the satyrs; there the spring of Pegasus lies hidden." },
+    { la:"In de stad in het oosten zijn mieren in mensen veranderd, en liggen drakentanden in een akker.", nl:"In the city in the east ants have been turned into people, and dragon's teeth lie in a field." } ] },
   laconia: { nm:"Hilotes", lines:[
-    { la:"Sparta montes amat. In monte Taygeto grypes nidificant.", nl:"Sparta houdt van bergen. Op de berg Taygetos nestelen grijpvogels." },
-    { la:"In urbe, ad orientem, Spartoi ex dentibus nati vagantur.", nl:"In de stad in het oosten zwerven de Spartoi, geboren uit tanden." } ] },
+    { la:"Sparta houdt van bergen. Op de berg Taygetos nestelen grijpvogels.", nl:"Sparta loves mountains. Griffins nest on Mount Taygetus." },
+    { la:"In de stad in het oosten zwerven de Spartoi, geboren uit tanden.", nl:"In the city in the east the Spartoi roam, born from teeth." } ] },
   troia: { nm:"Pastor Idaeus", lines:[
-    { la:"Prope Scamandrum, ad occidentem, fons nympharum latet.", nl:"Bij de Scamander, in het westen, ligt een bron van nimfen verborgen." },
-    { la:"Ad orientem Cyclopes muros veteres servant.", nl:"In het oosten bewaken de Cyclopen de oude muren." },
-    { la:"In litore Nereides ludunt, et ad ostium Scamandri equi marini natant.", nl:"Op het strand spelen de Nereïden, en bij de monding van de Scamander zwemmen zeepaarden." } ] },
+    { la:"Bij de Scamander, in het westen, ligt een bron van nimfen verborgen.", nl:"By the Scamander, in the west, a spring of nymphs lies hidden." },
+    { la:"In het oosten bewaken de Cyclopen de oude muren.", nl:"In the east the Cyclopes guard the old walls." },
+    { la:"Op het strand spelen de Nereïden, en bij de monding van de Scamander zwemmen zeepaarden.", nl:"On the beach the Nereids play, and sea horses swim at the mouth of the Scamander." } ] },
   themiscyra: { nm:"Venatrix Amazon", lines:[
-    { la:"Dryades in quercu sacra habitant, ad septentrionem; centauri in prato, ad meridiem.", nl:"De Dryaden wonen in de heilige eik, in het noorden; de centauren in de weide, in het zuiden." },
-    { la:"Equi alati in alio prato pascuntur, et Oreades in monte saltant.", nl:"Gevleugelde paarden grazen in een andere weide, en de Oreaden dansen op de berg." },
-    { la:"Harpyiae in scopulis orientalibus nidificant. Cave!", nl:"Harpijen nestelen op de oostelijke kliffen. Pas op!" } ] },
+    { la:"De Dryaden wonen in de heilige eik, in het noorden; de centauren in de weide, in het zuiden.", nl:"The Dryads live in the sacred oak, in the north; the centaurs in the meadow, in the south." },
+    { la:"Gevleugelde paarden grazen in een andere weide, en de Oreaden dansen op de berg.", nl:"Winged horses graze in another meadow, and the Oreads dance on the mountain." },
+    { la:"Harpijen nestelen op de oostelijke kliffen. Pas op!", nl:"Harpies nest on the eastern cliffs. Watch out!" } ] },
   persis: { nm:"Senex Persa", lines:[
-    { la:"In montibus, ad occidentem, grypes nidificant.", nl:"In de bergen in het westen nestelen grijpvogels." },
-    { la:"In saxo rubro, ad septentrionem, fissura est ubi serpentes latent.", nl:"In de rode rots in het noorden is een spleet waar slangen schuilen." } ] },
+    { la:"In de bergen in het westen nestelen grijpvogels.", nl:"Griffins nest in the mountains in the west." },
+    { la:"In de rode rots in het noorden is een spleet waar slangen schuilen.", nl:"In the red rock in the north there is a crevice where snakes hide." } ] },
   aegyptus: { nm:"Augur Solis", lines:[
-    { la:"Sole oriente Phoenix Heliopolim visitat.", nl:"Bij zonsopgang bezoekt de Feniks Heliopolis." },
-    { la:"Interdiu tantum eum vides, ad septentrionem et orientem.", nl:"Je ziet hem alleen overdag, in het noorden en oosten." } ] },
+    { la:"Bij zonsopgang bezoekt de Feniks Heliopolis.", nl:"At sunrise the Phoenix visits Heliopolis." },
+    { la:"Je ziet hem alleen overdag, in het noorden en oosten.", nl:"You only see him by day, in the north and east." } ] },
   africa: { nm:"Nauta Poenus", lines:[
-    { la:"In litore orientali noctu Sirenae cantant.", nl:"Aan de oostkust zingen 's nachts de Sirenen." },
-    { la:"Cave! Nautae cantu earum decipiuntur.", nl:"Pas op! Zeelieden worden misleid door hun zang." } ] },
+    { la:"Aan de oostkust zingen 's nachts de Sirenen.", nl:"On the east coast the Sirens sing at night." },
+    { la:"Pas op! Zeelieden worden misleid door hun zang.", nl:"Watch out! Sailors are misled by their song." } ] },
 };
 Object.assign(CASTRA_GLOSS, {
   "pastor":"herder", "lupa":"wolvin", "olim":"eens", "aluit":"voedde", "specu":"grot", "occidentem":"westen", "lupae":"wolven", "fauni":"faunen", "adhuc":"nog", "habitant":"wonen",

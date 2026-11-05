@@ -26,13 +26,13 @@ function castraEremitaTalk(){
   const e = CASTRA_WENT.find(x=>x.id==="eremita"), q = castraWQ("eremita");
   const say = (lines, done)=>castraLatSay("Eremita", e.look, lines, done);
   if(q.step===0){
-    say([ { la:"Salve, hospes {naam}! Aquam sacram quaero.", nl:"Gegroet, gast {naam}! Ik zoek heilig water." },
-          { la:"Descende in specum altum et refer aquam sacram.", nl:"Daal af in de diepe grot (trap bovenin) en breng het heilige water." } ],
+    say([ { la:"Gegroet, gast {naam}! Ik zoek heilig water.", nl:"Greetings, guest {naam}! I am looking for holy water." },
+          { la:"Daal af in de diepe grot (trap bovenin) en breng het heilige water.", nl:"Descend into the deep cave (stairs at the top) and bring the holy water." } ],
         ()=>{ q.step = 1; castraSave(); castraWobjDraw(); castraWRefreshHud && castraWRefreshHud(); });
   } else if(q.step===1){
     if(castraWItems().aqua){
-      say([ { la:"Aqua sacra! Gratias tibi ago, dux {naam}!", nl:"Het heilige water! Dank je wel, leider {naam}!" },
-            { la:"Romulus in via est. Quaere eum!", nl:"Romulus is op de Via. Zoek hem op!" } ],
+      say([ { la:"Het heilige water! Dank je wel, leider {naam}!", nl:"The holy water! Thank you, leader {naam}!" },
+            { la:"Romulus is op de Via. Zoek hem op!", nl:"Romulus is on the Via. Go and find him!" } ],
         ()=>{
           delete castraWItems().aqua; q.step = 2;
           const t = castraWGive(castraWScaled({ aes:120, frumentum:60 }, castraWScale("latium")));
@@ -42,8 +42,8 @@ function castraEremitaTalk(){
           if(typeof castraCardToken==="function") castraCardToken(1, "opdracht voltooid");
           if(typeof castraWRefreshHud==="function") castraWRefreshHud();
         });
-    } else say([ { la:"Ubi est aqua sacra?", nl:"Waar is het heilige water?" } ], null);
-  } else say([ { la:"Vale, dux {naam}! Bene vivas!", nl:"Tot ziens, leider {naam}! Het ga je goed!" } ], null);
+    } else say([ { la:"Waar is het heilige water?", nl:"Where is the holy water?" } ], null);
+  } else say([ { la:"Tot ziens, leider {naam}! Het ga je goed!", nl:"Goodbye, leader {naam}! Farewell!" } ], null);
 }
 
 /* ---------- Senator: woordenquiz ---------- */
@@ -58,8 +58,8 @@ let CASTRA_QUIZ_KIND = { key:"quiz_senator", rid:"latium", words:null, title:"Wo
 function castraQuizOpen(){
   if(CASTRA_DLG) return;
   const e = CASTRA_WENT.find(x=>x.id==="senator");
-  castraLatSay("Senator", e.look, [ { la:"Salve, dux {naam}! Verba Latina scisne?", nl:"Gegroet, leider {naam}! Ken jij Latijnse woorden?" },
-    { la:"Quinque quaestiones tibi do.", nl:"Ik geef je vijf vragen.", opts:[ { la:"Incipe", nl:"beginnen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
+  castraLatSay("Senator", e.look, [ { la:"Gegroet, leider {naam}! Ken jij Latijnse woorden?", nl:"Greetings, leader {naam}! Do you know Latin words?" },
+    { la:"Ik geef je vijf vragen.", nl:"I will give you five questions.", opts:[ { la:"Incipe", nl:"beginnen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
     k=>{ if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_senator", rid:"latium", words:null, title:"Woordenquiz" }; castraQuizStart(); } });
 }
 function castraQuizStart(){
@@ -126,14 +126,14 @@ function castraBountyTalk(npcId){
   const e = CASTRA_WENT.find(x=>x.id===npcId) || CASTRA_WENT.find(x=>x.id==="venator_latium"), rid = e.region, b = castraBountyToday(rid), tr = castraBountyTerr(b);
   const low = s=>s.charAt(0).toLowerCase()+s.slice(1);
   const say = (lines, done)=>castraLatSay("Venator", e.look, lines, done);
-  if(b.done) return say([ { la:"Hodie satis fecisti. Cras redi, dux {naam}!", nl:"Vandaag heb je genoeg gedaan. Kom morgen terug, leider {naam}!" } ], null);
+  if(b.done) return say([ { la:"Vandaag heb je genoeg gedaan. Kom morgen terug, leider {naam}!", nl:"You have done enough today. Come back tomorrow, leader {naam}!" } ], null);
   if(!b.acc){
     return say([ { la:`Salve, dux {naam}! Hodie hostes ${low(tr.la)} vince.`, nl:`Gegroet, leider {naam}! Vandaag: versla vijanden ${low(tr.nl)}.` },
-                 { la:"Tres hostes vince, et praemium accipies.", nl:"Versla er drie en je krijgt een beloning.", opts:[ { la:"Accipio", nl:"aannemen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
+                 { la:"Versla er drie en je krijgt een beloning.", nl:"Defeat three and you will receive a reward.", opts:[ { la:"Accipio", nl:"aannemen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
       k=>{ if(k===0){ b.acc = true; castraSave(); if(typeof castraWRefreshHud==="function") castraWRefreshHud(); } });
   }
   if(b.n < b.need) return say([ { la:`Quot hostes vicisti? ${b.n} / ${b.need}.`, nl:`Hoeveel vijanden heb je verslagen? ${b.n} van ${b.need} (${low(tr.nl)}).` } ], null);
-  say([ { la:"Optime, dux {naam}! Praemium tibi do.", nl:"Uitstekend, leider {naam}! Hier is je beloning." } ], ()=>{
+  say([ { la:"Uitstekend, leider {naam}! Hier is je beloning.", nl:"Excellent, leader {naam}! Here is your reward." } ], ()=>{
     b.done = true; const t = castraWGive(Object.assign(castraWScaled({ aes:50, frumentum:25 }, castraWScale(rid)), { gloria:1 })); castraSave();
     toast("🏹 "+castraLaText("recte"), t); if(typeof castraPxpAdd==="function") castraPxpAdd(15, "Dagelijkse opdracht");
     if(typeof castraWRefreshHud==="function") castraWRefreshHud();
@@ -159,4 +159,4 @@ castraQuestHud = function(){
   return _castraQuestHudLat0() + extra;
 };
 const _castraWobjOpusLat0 = castraWobjOpus;
-castraWobjOpus = function(){ const out = _castraWobjOpusLat0(); const t = castraBountyHud(); if(t) out.push({ la:t.la, nl:t.nl }); const q = castraWQ("eremita"); if(q.step===1) out.push({ la:"Aquam sacram refer!", nl:"Latium: haal heilig water uit de diepe grot (trap bovenin de Specus Lupae) voor de Eremita." }); return out; };
+castraWobjOpus = function(){ const out = _castraWobjOpusLat0(); const t = castraBountyHud(); if(t) out.push({ la:t.la, nl:t.nl }); const q = castraWQ("eremita"); if(q.step===1) out.push({ la:"Latium: haal heilig water uit de diepe grot (trap bovenin de Specus Lupae) voor de Eremita.", nl:"Latium: fetch holy water from the deep cave (stairs at the top of the Specus Lupae) for the Hermit." }); return out; };

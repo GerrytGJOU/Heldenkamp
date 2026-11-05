@@ -177,20 +177,20 @@ const romaSay = (who, look, lines, done)=>castraLatSay(who, look, lines, done);
 
 /* Consul: vertaalquiz met hele zinnen */
 const CASTRA_QUIZ_SENT = [
-  ["Senatus Romanus consulem creat.","De Romeinse senaat kiest een consul."],["Miles fortiter pugnat.","De soldaat vecht dapper."],
-  ["Consul in foro orationem habet.","De consul houdt een toespraak op het Forum."],["Hostes urbem oppugnant.","De vijanden vallen de stad aan."],
-  ["Pueri in schola discunt.","De jongens leren op school."],["Dux milites ad castra ducit.","De leider voert de soldaten naar het kamp."],
+  ["De Romeinse senaat kiest een consul.","The Roman senate elects a consul."],["Miles fortiter pugnat.","De soldaat vecht dapper."],
+  ["De consul houdt een toespraak op het Forum.","The consul gives a speech in the Forum."],["De vijanden vallen de stad aan.","The enemies attack the city."],
+  ["Pueri in schola discunt.","De jongens leren op school."],["De leider voert de soldaten naar het kamp.","The leader leads the soldiers to the camp."],
   ["Romani deos colunt.","De Romeinen vereren de goden."],["Gladiator in arena pugnat.","De gladiator vecht in de arena."],
-  ["Cives pacem amant.","De burgers houden van vrede."],["Rex populum regit.","De koning bestuurt het volk."],
-  ["Navis ad portum venit.","Het schip komt bij de haven aan."],["Equites hostes fugant.","De ruiters jagen de vijanden op de vlucht."],
-  ["Mater filios vocat.","De moeder roept haar zonen."],["Aqua in flumine fluit.","Het water stroomt in de rivier."],
-  ["Legati pacem petunt.","De gezanten vragen om vrede."],["Servus dominum timet.","De slaaf vreest zijn meester."],
+  ["De burgers houden van vrede.","The citizens love peace."],["De koning bestuurt het volk.","The king rules the people."],
+  ["Het schip komt bij de haven aan.","The ship arrives at the harbour."],["Equites hostes fugant.","De ruiters jagen de vijanden op de vlucht."],
+  ["De moeder roept haar zonen.","The mother calls her sons."],["Het water stroomt in de rivier.","The water flows in the river."],
+  ["Legati pacem petunt.","De gezanten vragen om vrede."],["De slaaf vreest zijn meester.","The slave fears his master."],
   ["Vir sapiens libros legit.","De wijze man leest boeken."],["Caesar Galliam vincit.","Caesar overwint Gallië."],
 ];
 function castraConsulTalk(){
   if(CASTRA_DLG) return;
-  romaSay("Consul", CASTRA_ROMA_LOOKS.consul, [ { la:"Salve, dux {naam}! Senatus te vocat.", nl:"Gegroet, leider {naam}! De senaat roept je." },
-    { la:"Sententias Latinas interpretare!", nl:"Vertaal Latijnse zinnen! Vijf vragen.", opts:[ { la:"Incipe", nl:"beginnen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
+  romaSay("Consul", CASTRA_ROMA_LOOKS.consul, [ { la:"Gegroet, leider {naam}! De senaat roept je.", nl:"Greetings, leader {naam}! The senate is calling you." },
+    { la:"Vertaal Latijnse zinnen! Vijf vragen.", nl:"Translate Latin sentences! Five questions.", opts:[ { la:"Incipe", nl:"beginnen" }, { la:"Nunc non", nl:"nu niet" } ] } ],
     k=>{ if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_consul", rid:"roma", words:CASTRA_QUIZ_SENT, title:"Senatus consultum" }; castraQuizStart(); } });
 }
 
@@ -198,9 +198,9 @@ function castraConsulTalk(){
 function castraBadTalk(){
   if(CASTRA_DLG) return;
   const w = CASTRA.wday || (CASTRA.wday = {}), done = w.thermae===castraWDay();
-  romaSay("Balneator", CASTRA_ROMA_LOOKS.balneator, [ { la:"Salve, hospes {naam}! Thermae tibi patent.", nl:"Gegroet, gast {naam}! De thermen staan voor je open." },
-    done ? { la:"Hodie iam lavisti. Cras redi!", nl:"Je hebt vandaag al gebaad. Kom morgen terug!" }
-         : { la:"Visne lavare?", nl:"Wil je een bad nemen?", opts:[ { la:"Lavo", nl:"baden" }, { la:"Vale", nl:"tot ziens" } ] } ],
+  romaSay("Balneator", CASTRA_ROMA_LOOKS.balneator, [ { la:"Gegroet, gast {naam}! De thermen staan voor je open.", nl:"Greetings, guest {naam}! The baths are open to you." },
+    done ? { la:"Je hebt vandaag al gebaad. Kom morgen terug!", nl:"You have already bathed today. Come back tomorrow!" }
+         : { la:"Wil je een bad nemen?", nl:"Do you want to take a bath?", opts:[ { la:"Lavo", nl:"baden" }, { la:"Vale", nl:"tot ziens" } ] } ],
     k=>{
       if(done || k!==0) return;
       const hurt = castraHealAll();
@@ -214,9 +214,9 @@ function castraLanistaTalk(){
   if(CASTRA_DLG) return;
   castraFsprProbe([["trn_kampioen_roma", "battle_front"]]);
   const done = (CASTRA.wday||{}).kampioen===castraWDay();
-  romaSay("Lanista", CASTRA_ROMA_LOOKS.lanista, [ { la:"Salve, dux {naam}! Gladiatorem fortem habeo.", nl:"Gegroet, leider {naam}! Ik heb een sterke gladiator." },
-    done ? { la:"Hodie eum vicisti. Cras redi!", nl:"Vandaag heb je hem verslagen. Kom morgen terug!" }
-         : { la:"Visne cum eo pugnare?", nl:"Durf je tegen hem te vechten? Wie wint, krijgt een beloning.", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Nunc non", nl:"nu niet" } ] } ],
+  romaSay("Lanista", CASTRA_ROMA_LOOKS.lanista, [ { la:"Gegroet, leider {naam}! Ik heb een sterke gladiator.", nl:"Greetings, leader {naam}! I have a strong gladiator." },
+    done ? { la:"Vandaag heb je hem verslagen. Kom morgen terug!", nl:"Today you have defeated him. Come back tomorrow!" }
+         : { la:"Durf je tegen hem te vechten? Wie wint, krijgt een beloning.", nl:"Do you dare to fight him? The winner gets a reward.", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Nunc non", nl:"nu niet" } ] } ],
     k=>{ if(!done && k===0) castraRomaFight("arena", "gla_primuspalus", 20, { key:"kampioen", reward:{ aes:90, frumentum:40 }, gloria:2, pxp:25, token:true, why:"kampioen verslagen", pose:"trn_kampioen_roma" }); });
 }
 
@@ -225,12 +225,12 @@ function castraCustosTalk(){
   if(CASTRA_DLG) return;
   const q = castraWQ("custos");
   if(q.step===0){
-    romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Salve, hospes {naam}! Tenebrae hic sunt. Lucernam meam quaero.", nl:"Gegroet, gast {naam}! Het is hier donker. Ik zoek mijn olielamp." },
-      { la:"Descende in catacumbas et refer lucernam.", nl:"Daal af in de diepe catacomben (trap bovenin) en breng mijn lamp terug." } ],
+    romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Gegroet, gast {naam}! Het is hier donker. Ik zoek mijn olielamp.", nl:"Greetings, guest {naam}! It is dark here. I am looking for my oil lamp." },
+      { la:"Daal af in de diepe catacomben (trap bovenin) en breng mijn lamp terug.", nl:"Descend into the deep catacombs (stairs at the top) and bring my lamp back." } ],
       ()=>{ q.step = 1; castraSave(); castraWobjDraw(); castraWRefreshHud && castraWRefreshHud(); });
   } else if(q.step===1){
     if(castraWItems().lucerna){
-      romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Lucerna mea! Gratias tibi ago, dux {naam}!", nl:"Mijn lamp! Dank je wel, leider {naam}!" } ],
+      romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Mijn lamp! Dank je wel, leider {naam}!", nl:"My lamp! Thank you, leader {naam}!" } ],
         ()=>{
           delete castraWItems().lucerna; q.step = 2;
           const t = castraWGive(Object.assign(castraWScaled({ aes:150, frumentum:75 }, castraWScale("roma")), { gloria:2 }));
@@ -239,15 +239,15 @@ function castraCustosTalk(){
           if(typeof castraCardToken==="function") castraCardToken(1, "opdracht voltooid");
           if(typeof castraWRefreshHud==="function") castraWRefreshHud();
         });
-    } else romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Ubi est lucerna mea?", nl:"Waar is mijn lamp?" } ], null);
-  } else romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Vale, dux {naam}! Bene vivas!", nl:"Tot ziens, leider {naam}! Het ga je goed!" } ], null);
+    } else romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Waar is mijn lamp?", nl:"Where is my lamp?" } ], null);
+  } else romaSay("Custos", CASTRA_ROMA_LOOKS.custos, [ { la:"Tot ziens, leider {naam}! Het ga je goed!", nl:"Goodbye, leader {naam}! Farewell!" } ], null);
 }
 
 /* Larva: de baas van de diepe catacomben */
 function castraLarvaTalk(){
   if(CASTRA_DLG) return;
-  romaSay("Larva", CASTRA_ROMA_LOOKS.larva, [ { la:"Larva sum. Hic dormio!", nl:"Ik ben een Larva, een spook. Hier slaap ik!" },
-    { la:"Visne me excitare?", nl:"Durf je mij wakker te maken?", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Fuge", nl:"wegrennen" } ] } ],
+  romaSay("Larva", CASTRA_ROMA_LOOKS.larva, [ { la:"Ik ben een Larva, een spook. Hier slaap ik!", nl:"I am a Larva, a ghost. Here I sleep!" },
+    { la:"Durf je mij wakker te maken?", nl:"Do you dare to wake me?", opts:[ { la:"Pugno", nl:"vechten" }, { la:"Fuge", nl:"wegrennen" } ] } ],
     k=>{ if(k===0) castraRomaFight("catacumbae", "myt_larva", 22, { key:"boss_boss_larva", reward:{ aes:120, frumentum:60 }, gloria:2, pxp:30, token:true, why:"Larva verslagen" }); });
 }
 
@@ -262,6 +262,6 @@ castraQuestHud = function(){
 const _castraWobjOpusRoma0 = castraWobjOpus;
 castraWobjOpus = function(){
   const out = _castraWobjOpusRoma0();
-  if(castraWQ("custos").step===1) out.push({ la:"Lucernam refer!", nl:"Roma: haal de lamp van de Custos uit de diepe catacomben (trap bovenin de eerste grot)." });
+  if(castraWQ("custos").step===1) out.push({ la:"Roma: haal de lamp van de Custos uit de diepe catacomben (trap bovenin de eerste grot).", nl:"Roma: fetch the Custos' lamp from the deep catacombs (stairs at the top of the first cave)." });
   return out;
 };
