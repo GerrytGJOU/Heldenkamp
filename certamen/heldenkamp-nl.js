@@ -96,6 +96,49 @@
   CASTRA_MENU_ICON.avatar = "🧑";
   { const pick = castraMenuPick; window.castraMenuPick = function(id){ if(id==="avatar"){ castraMenuClose(); BM_AV_RETURN = "castraHome"; go("battleAvatarEdit"); return; } return pick.apply(this, arguments); }; }
 
+  /* ---- Oefening "De of het?" (A1): lidwoord kiezen bij een zelfstandig naamwoord ---- */
+  const HK_DEHET = [["huis","het"],["brood","het"],["boek","het"],["water","het"],["paard","het"],["schip","het"],["kind","het"],["meisje","het"],["kamp","het"],["bos","het"],["veld","het"],["dorp","het"],["land","het"],["eiland","het"],["gebouw","het"],["raam","het"],["bed","het"],["licht","het"],["vuur","het"],["zwaard","het"],["schild","het"],["leven","het"],["werk","het"],["geld","het"],["goud","het"],["brons","het"],["ijzer","het"],["hout","het"],["weer","het"],["ei","het"],["vlees","het"],["fruit","het"],["glas","het"],["bier","het"],["bord","het"],["mes","het"],["kasteel","het"],["paleis","het"],["station","het"],["jaar","het"],["uur","het"],["woord","het"],["spel","het"],["geluid","het"],["verhaal","het"],["lied","het"],["hoofd","het"],["oog","het"],["oor","het"],["hart","het"],["haar","het"],["gezicht","het"],["lichaam","het"],["been","het"],["dier","het"],["volk","het"],["leger","het"],["gevecht","het"],["gesprek","het"],["antwoord","het"],["plan","het"],["doel","het"],["feest","het"],["café","het"],["hotel","het"],["kantoor","het"],["ziekenhuis","het"],["museum","het"],["konijn","het"],["schaap","het"],["boompje","het"],["huisje","het"],["jongetje","het"],["kopje","het"],["man","de"],["vrouw","de"],["jongen","de"],["vader","de"],["moeder","de"],["zoon","de"],["dochter","de"],["broer","de"],["zus","de"],["vriend","de"],["vriendin","de"],["hond","de"],["kat","de"],["vogel","de"],["vis","de"],["koe","de"],["boom","de"],["bloem","de"],["stad","de"],["straat","de"],["weg","de"],["rivier","de"],["zee","de"],["berg","de"],["tuin","de"],["school","de"],["markt","de"],["brug","de"],["muur","de"],["poort","de"],["deur","de"],["tafel","de"],["stoel","de"],["kamer","de"],["keuken","de"],["fiets","de"],["auto","de"],["trein","de"],["bus","de"],["boot","de"],["dag","de"],["nacht","de"],["week","de"],["maand","de"],["tijd","de"],["zon","de"],["maan","de"],["ster","de"],["regen","de"],["wind","de"],["sneeuw","de"],["melk","de"],["kaas","de"],["soep","de"],["appel","de"],["banaan","de"],["wijn","de"],["thee","de"],["koffie","de"],["krant","de"],["brief","de"],["tas","de"],["jas","de"],["schoen","de"],["broek","de"],["hand","de"],["voet","de"],["neus","de"],["mond","de"],["arm","de"],["vinger","de"],["tand","de"],["soldaat","de"],["leider","de"],["koning","de"],["koningin","de"],["held","de"],["boog","de"],["pijl","de"],["helm","de"],["grot","de"],["lucht","de"],["aarde","de"],["steen","de"],["tent","de"],["tempel","de"],["familie","de"],["wolf","de"],["draak","de"]];
+  window.hkDeHetStart = function(){
+    const rng = castraRng((castraNow() ^ CASTRA.seed ^ 0x6e41)>>>0); CASTRA.seed = (CASTRA.seed+7)>>>0;
+    const shuf = a => a.slice().sort(()=>rng()-0.5);
+    const het = shuf(HK_DEHET.filter(w=>w[1]==="het")).slice(0,2), de = shuf(HK_DEHET.filter(w=>w[1]==="de")).slice(0,3);
+    const qs = shuf(het.concat(de)).map(w=>({ la:w[0], opts:["de","het"], ans: w[1]==="de" ? 0 : 1 }));
+    CASTRA_QUIZ_KIND = { key:"quiz_dehet", rid:"latium", words:[], title:"De of het?" };
+    CASTRA_QUIZ = { qs, i:0, score:0, picked:null, done:false };
+    castraQuizRender();
+  };
+  { const qs0 = castraQuizStart; window.castraQuizStart = function(){ if(CASTRA_QUIZ_KIND && CASTRA_QUIZ_KIND.key==="quiz_dehet") return hkDeHetStart(); return qs0.apply(this, arguments); }; }
+  { // Vraagtekst en tip voor deze oefening (de gewone quizweergave vraagt "Wat betekent ...?")
+    const rr0 = window.castraQuizRender;
+    window.castraQuizRender = function(){
+      rr0();
+      if(!(CASTRA_QUIZ_KIND && CASTRA_QUIZ_KIND.key==="quiz_dehet") || !CASTRA_QUIZ) return;
+      const panel = document.querySelector("#cwPanel .panel"); if(!panel) return;
+      if(CASTRA_QUIZ.done){
+        panel.insertAdjacentHTML("beforeend", '<div class="note" style="margin-top:8px">Tip: ongeveer driekwart van de Nederlandse woorden is een <b>de</b>-woord. Verkleinwoorden (-je: huisje, boompje) zijn altijd <b>het</b>.<br><small style="opacity:.75">About three quarters of Dutch nouns take "de". Diminutives (-je) always take "het".</small></div>');
+        return;
+      }
+      const q = CASTRA_QUIZ.qs[CASTRA_QUIZ.i], d = panel.querySelector('div[style*="font-size:26px"]');
+      if(d) d.innerHTML = 'De of het? &nbsp;<b>' + esc(q.la) + '</b>';
+    };
+  }
+  // De Senator biedt nu twee oefeningen aan.
+  window.castraQuizOpen = function(){
+    if(CASTRA_DLG) return;
+    const e = CASTRA_WENT.find(x=>x.id==="senator");
+    castraLatSay("Senator", e.look, [ { la:"Gegroet, leider {naam}! Welke oefening kies je?", nl:"Greetings, leader {naam}! Which exercise do you choose?",
+        opts:[ { la:"Woorden", nl:"words" }, { la:"De of het?", nl:"de or het?" }, { la:"Nu niet", nl:"not now" } ] } ],
+      k=>{
+        if(k===0){ CASTRA_QUIZ_KIND = { key:"quiz_senator", rid:"latium", words:null, title:"Woordenquiz" }; castraQuizStart(); }
+        else if(k===1){ CASTRA_QUIZ_KIND = { key:"quiz_dehet", rid:"latium", words:[], title:"De of het?" }; castraQuizStart(); }
+      });
+  };
+
+  // Geen Certamen-profiel: quizbeloningen sturen geen XP/munten naar het Battle Mode-profiel, en de Schola
+  // (lastige Latijnse woorden uit Certamen) vervalt; de herhaallijst van eigen opgezochte woorden komt daarvoor in de plaats.
+  window.castraMasterXp = function(){ return 0; };
+  { const i = CASTRA_MENU_ITEMS.findIndex(x=>x.id==="schola"); if(i >= 0) CASTRA_MENU_ITEMS.splice(i, 1); }
+
   // Heldenkamp heeft geen docentoverzicht en geen Firebase: opzoekingen blijven lokaal in CASTRA.help.
   window.castraHelpSync = function(){};
 })();
