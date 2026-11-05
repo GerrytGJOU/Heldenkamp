@@ -57,7 +57,9 @@ castraTradeTradable = function(s){ return _castraTradeTradableOp0(s) && !s.job; 
 
 /* ---------- ontgrendeling, menu ---------- */
 if(typeof CASTRA_UNLOCKS!=="undefined" && !CASTRA_UNLOCKS.some(u=>u.id==="labor")){
-  CASTRA_UNLOCKS.push({ id:"labor", lvl:CASTRA_OPUS.unlockLvl, la:"Werk", nl:"put soldiers to work in the camp (menu: Work)" });
+  CASTRA_UNLOCKS.push({ id:"labor", lvl:CASTRA_OPUS.unlockLvl, la:"Werk", nl:"put soldiers to work in the camp (menu: Work)",
+    lines:[ { la:"Je soldaten kunnen nu aan het werk.", nl:"Je soldaten kunnen nu aan het werk." },
+            { la:"Kies een karwei in het menu (☰ → Milites → Labor) en wacht tot het klaar is.", nl:"Kies een karwei in het menu (☰ → Milites → Labor) en wacht tot het klaar is." } ] });
   CASTRA_UNLOCKS.sort((a,b)=>a.lvl-b.lvl);
 }
 (function(){
